@@ -46,6 +46,16 @@
   roles:
     - mesos
 
+- hosts: dc1:&name_node
+  gather_facts: no
+  roles:
+    - hdfs
+
+- hosts: dc1:&data_nodes
+  gather_facts: no
+  roles:
+    - hdfs
+
 - hosts: dc1:&marathon_servers
   gather_facts: no
   roles:
@@ -65,6 +75,16 @@
   gather_facts: no
   roles:
     - mesos
+
+- hosts: dc2:&name_nodes
+  gather_facts: no
+  roles:
+    - hdfs
+
+- hosts: dc2:&data_nodes
+  gather_facts: no
+  roles:
+    - hdfs
 
 - hosts: dc2:&marathon_servers
   gather_facts: no
