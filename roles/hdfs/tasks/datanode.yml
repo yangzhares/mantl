@@ -5,22 +5,13 @@
   with_items:
     - core-site
     - datanode-hdfs-site
-#  notify:
-#    - Restart Hadoop HDFS DataNode
-  tags:
-    - hdfs
-
-- name: Spread Public Key
-  authorized_key: 
-    user: hdfs 
-    key: "/tmp/id_dsa.pub" 
-    state: present
-  when: fetch_public_key
+  notify:
+    - Restart Hadoop HDFS DataNode
   tags:
     - hdfs
 
 - name: Create Hadoop HDFS DataNode data directories
-  sudo: yes
+  sudo: true
   file: 
     path: "/dfs/dn"
     owner: hdfs
@@ -30,9 +21,19 @@
   tags:
     - hdfs
 
+- name: Stop the Hadoop HDFS DataNode service if it running
+#  service: name=hadoop-hdfs-datanode enabled=yes state=started
+  sudo: true
+  sudo_user: hdfs
+  shell: source /etc/profile.d/hadoop.sh; hadoop-daemon.sh stop datanode
+  ignore_errors: True
+  tags:
+    - hdfs
+
 - name: Enable and start the Hadoop HDFS DataNode service
 #  service: name=hadoop-hdfs-datanode enabled=yes state=started
+  sudo: true
   sudo_user: hdfs
-  command: "hadoop-daemon.sh start datanode"
+  shell: source /etc/profile.d/hadoop.sh; hadoop-daemon.sh start datanode
   tags:
     - hdfs
