@@ -5,8 +5,8 @@
   with_items:
     - core-site
     - namenode-hdfs-site
-#  notify:
-#    - Restart Hadoop HDFS NameNode
+  notify:
+    - Restart Hadoop HDFS NameNode
   tags:
     - hdfs
 
@@ -20,7 +20,7 @@
     - hdfs
 
 - name: Create Hadoop HDFS NameNode data directories
-  sudo: yes
+  sudo: true
   file: 
     path: "/dfs/nn"
     owner: hdfs
@@ -32,14 +32,24 @@
 
 - name: Format HDFS NameNode data directories
   sudo_user: hdfs
-  command: "hdfs namenode -format"
+  sudo: true
+  shell: source /etc/profile.d/hadoop.sh; hdfs namenode -format
   when: created_hdfs_namenode_data_dir | changed
+  tags:
+    - hdfs
+
+- name: Stop HDFS NameNode 
+  sudo_user: hdfs
+  sudo: true
+  shell: source /etc/profile.d/hadoop.sh; hadoop-daemon.sh stop namenode
+  ignore_errors: True
   tags:
     - hdfs
 
 - name: Enable and start the Hadoop HDFS NameNode service
 #  service: name=hadoop-hdfs-namenode enabled=yes state=started
   sudo_user: hdfs
-  command: "hadoop-daemon.sh start namenode"
+  sudo: true
+  shell: source /etc/profile.d/hadoop.sh; hadoop-daemon.sh start namenode
   tags:
     - hdfs
