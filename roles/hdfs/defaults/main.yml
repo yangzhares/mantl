@@ -13,8 +13,8 @@ hdfs_core_properties:
 hdfs_namenode_properties:
   - { name: "dfs.name.dir", value: "/dfs/nn" }
   - { name: "dfs.data.dir", value: "/dfs/dn" }
-  - { name: "dfs.replication", value: 3 }
+  - { name: "dfs.replication", value: 1 }
 hdfs_datanode_properties:
   - { name: "dfs.name.dir", value: "/dfs/nn" }
   - { name: "dfs.data.dir", value: "/dfs/dn" }
-  - { name: "dfs.replication", value: 3 }
+  - { name: "dfs.replication", value: 1 }

@@ -1,10 +1,10 @@
 # all
 [all]
-host-[01:07]
+host-[01:05]
 
 # datacenters
 [dc1]
-host-[01:07]
+host-[01:05]
 
 # control
 [vault_servers]
@@ -27,13 +27,13 @@ host-01
 
 # resource nodes
 [consul_clients]
-host-[04:07]
+host-[04:05]
 
 [mesos_followers]
-host-[04:07]
+host-[04:05]
 
 [proxy_servers]
-host-[04:07]
+host-[04:05]
 
 [data_nodes]
-host-[02:07]
+host-[04:05]
