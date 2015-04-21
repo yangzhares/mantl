@@ -1,0 +1,9 @@
+---
+- name: Setup basic directory at HDFS
+  run_once: true
+  ignore_errors: True
+  sudo_user: hdfs
+  sudo: true
+  shell: source /etc/profile.d/hadoop.sh;hadoop fs -mkdir /tmp; hadoop fs -chmod 777 /tmp; hadoop fs -mkdir /user; hadoop fs -mkdir /apps
+  tags:
+    - hdfs
