@@ -1,10 +1,10 @@
 ---
 - name: Configure Hadoop HDFS DataNode
   sudo: yes
-  template: src={{ item }}.xml.j2 dest={{ hdfs_conf_dir }}/{{ item | replace("datanode-", "") }}.xml
+  template: src={{ item }}.xml.j2 dest={{ hdfs_conf_dir }}/{{ item | replace("namenode-", "") }}.xml
   with_items:
     - core-site
-    - datanode-hdfs-site
+    - namenode-hdfs-site
   notify:
     - Restart Hadoop HDFS DataNode
   tags:
