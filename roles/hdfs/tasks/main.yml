@@ -58,3 +58,5 @@
 
 - include: datanode.yml
   when: not hdfs_namenode 
+
+- include: hdfs.yml

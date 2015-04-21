@@ -1,0 +1,12 @@
+---
+# DC1
+- hosts: dc1:&name_node
+  gather_facts: no
+  roles:
+    - spark
+
+# DC2
+- hosts: dc2:&name_node
+  gather_facts: no
+  roles:
+    - spark
