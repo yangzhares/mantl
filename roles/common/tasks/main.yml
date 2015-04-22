@@ -31,4 +31,10 @@
     name: java-1.8.0-openjdk
     state: present
 
+- name: disable firewalld
+  service: 
+    name: firewalld 
+    enabled: false 
+    state: stopped
+
 - include: users.yml
