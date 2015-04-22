@@ -34,3 +34,5 @@
   when: spark_downloaded|changed
   tags:
     - spark         
+
+- include: client.yml
