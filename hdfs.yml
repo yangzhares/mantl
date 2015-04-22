@@ -8,6 +8,7 @@
 - hosts: dc1:&data_nodes
   gather_facts: no
   roles:
+    - hdfs
 
 # DC2
 - hosts: dc2:&name_node
