@@ -1,6 +1,5 @@
 ---
 - name: Download Spark binary
-  run_once: true
   sudo_user: hdfs
   sudo: true 
   get_url: 
