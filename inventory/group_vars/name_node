@@ -1,1 +1,2 @@
 hdfs_namenode: True
+hdfs_namenode_host: host-01
