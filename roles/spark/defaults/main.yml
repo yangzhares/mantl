@@ -5,4 +5,4 @@ spark_user: "centos"
 spark_client_dir: "/usr/local"
 spark_mesos_lib: "/usr/local/lib/libmesos.so"
 zookeeper_master: "zookeeper.service.consul"
-hdfs_url: host-01
+hdfs_namenode_host: localhost
