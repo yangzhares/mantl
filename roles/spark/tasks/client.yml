@@ -2,7 +2,7 @@
 - name: Setup Spark binary
   sudo: true
   unarchive:
-    src: /tmp/spark-{{ spark_version }}-bin-hadoop2.6.tgz  
+    src: "{{ spark_client_dir }}/spark/spark-{{ spark_version }}-bin-hadoop2.6.tgz" 
     dest: "{{ spark_client_dir }}" 
     copy: no
   tags:

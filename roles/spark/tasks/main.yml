@@ -1,10 +1,18 @@
 ---
+- name: Create Spark directory
+  sudo: true
+  file: 
+    path: "{{ spark_client_dir }}/spark"
+    state: directory
+  register: created_spark_install_dir
+  tags:
+    - spark
+
 - name: Download Spark binary
-  sudo_user: hdfs
   sudo: true 
   get_url: 
     url: "http://mirror.ox.ac.uk/sites/rsync.apache.org/spark/spark-{{ spark_version }}/spark-{{ spark_version }}-bin-hadoop2.6.tgz"
-    dest: /tmp/spark-{{ spark_version }}-bin-hadoop2.6.tgz 
+    dest: "{{ spark_client_dir }}/spark/spark-{{ spark_version }}-bin-hadoop2.6.tgz" 
   register: spark_downloaded
   tags:
     - spark 
@@ -29,7 +37,7 @@
 
 - name: Copy Spark binary to HDFS
   run_once: true
-  shell: source /etc/profile.d/hadoop.sh; hadoop fs -put /tmp/spark-{{ spark_version }}-bin-hadoop2.6.tgz {{ spark_install_dir }}/spark-{{ spark_version }}-bin-hadoop2.6.tgz 
+  shell: source /etc/profile.d/hadoop.sh; hadoop fs -put {{ spark_client_dir }}/spark/spark-{{ spark_version }}-bin-hadoop2.6.tgz {{ spark_install_dir }}/spark-{{ spark_version }}-bin-hadoop2.6.tgz 
   when: spark_downloaded|changed
   tags:
     - spark         
