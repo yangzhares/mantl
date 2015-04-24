@@ -80,7 +80,8 @@ class Component(object):
         try:
             content = yaml.safe_dump(
                 OrderedDict(sorted(options.items())),
-                explicit_start=True
+                explicit_start=True,
+                default_flow_style=False
             )
             with open(SECURITY_FILE, 'w') as out:
                 out.write(content)
@@ -332,16 +333,16 @@ class Marathon(Component):
 
     def mesos_auth(self):
         "marathon framework authentication"
-        with self.modify_security() as config:
-            config.setdefault('marathon_principal', 'marathon')
-            if 'marathon_secret' not in config and not self.args.no_authenticate_frameworks:
-                config['marathon_secret'] = self.random()
-                print('set marathon framework secret')
-            elif 'marathon_secret' not in config and self.args.no_authenticate_frameworks:
-                config['marathon_secret'] = '<secret>'
-                print('disable marathon framework authentication')
-            else:
-                print('marathon secret already set')
+        if not self.args.no_authenticate_frameworks:
+            with self.modify_security() as config:
+                if 'marathon_secret' not in config:
+                    config.setdefault('marathon_principal', 'marathon')
+                    config['marathon_secret'] = self.random()
+                    print('set marathon framework secret')
+                else:
+                    print('marathon secret already set')
+        else:
+            print('disable marathon framework authentication')
 
     def password(self):
         "admin password"
@@ -415,27 +416,30 @@ class Mesos(Component):  # Mesos should always come after any frameworks
 
     def framework_auth(self):
         "framework auth"
-        with self.modify_security() as config:
-            if 'marathon_principal' in config and 'marathon_secret' in config:
+        if not self.args.no_authenticate_frameworks:
+            with self.modify_security() as config:
                 config.setdefault('mesos_credentials', [])
-                credential = {
-                    'principal': config['marathon_principal'],
-                    'secret': config['marathon_secret'],
-                }
-                if credential not in config['mesos_credentials']:
-                    config['mesos_credentials'].append(credential)
-                    print('set auth for Marathon')
+                if 'marathon_principal' in config and 'marathon_secret' in config:
+                    credential = {
+                        'principal': config['marathon_principal'],
+                        'secret': config['marathon_secret'],
+                    }
+                    if credential not in config['mesos_credentials']:
+                        config['mesos_credentials'].append(credential)
+                        print('set auth for Marathon')
+        else:
+            print('disable framework auth')
+
 
     def follower_auth(self):
         "follower auth"
-        with self.modify_security() as config:
-            config.setdefault('mesos_follower_principal', 'follower')
-            if not self.args.no_authenticate_followers:
+        if not self.args.no_authenticate_followers:
+            with self.modify_security() as config:
+                config.setdefault('mesos_follower_principal', 'follower')
                 config.setdefault('mesos_follower_secret', self.random())
                 print('enabled follower auth')
-            else:
-                config.setdefault('mesos_follower_secret', '<secret>')
-                print('disable follower auth')
+        else:
+            print('disable follower auth')
 
     def deprecate(self):
         "remove deprecated settings"
@@ -449,17 +453,18 @@ class Mesos(Component):  # Mesos should always come after any frameworks
                 print('removed mesos_authenticate_followers. This value is now automatically generated - see the docs.')
 
             # remove follower credential from credential list
-            try:
-                credential_idx = config['mesos_credentials'].index({
-                    'principal': config['mesos_follower_principal'],
-                    'secret': config['mesos_follower_secret']
-                })
-            except ValueError:
-                credential_idx = None
+            if not self.args.no_authenticate_followers and not self.args.no_authenticate_frameworks:
+                try:
+                    credential_idx = config['mesos_credentials'].index({
+                        'principal': config['mesos_follower_principal'],
+                        'secret': config['mesos_follower_secret']
+                    })
+                except ValueError:
+                    credential_idx = None
 
-            if credential_idx is not None:
-                del config['mesos_credentials'][credential_idx]
-                print('removed follower credentials from credential list - it is now a separate setting.')
+                if credential_idx is not None:
+                    del config['mesos_credentials'][credential_idx]
+                    print('removed follower credentials from credential list - it is now a separate setting.')
 
 
 def main(args):
