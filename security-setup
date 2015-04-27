@@ -39,6 +39,8 @@ parser.add_argument('--consul-location', default='consul.example.com')  # used a
 parser.add_argument('--nginx-location', default='nginx.example.com')  # used as common name
 parser.add_argument('--no-authenticate-followers', action='store_true', help='no follower authentication')
 parser.add_argument('--no-authenticate-frameworks', action='store_true', help='no framework authentication')
+parser.add_argument('--no-ssl', action='store_true', help='no SSL')
+
 
 BASE = posixpath.abspath(posixpath.dirname(__file__)).replace("\\","/")
 SECURITY_FILE = posixpath.join(BASE, 'security.yml')
@@ -81,7 +83,8 @@ class Component(object):
         try:
             content = yaml.safe_dump(
                 OrderedDict(sorted(options.items())),
-                explicit_start=True
+                explicit_start=True,
+                default_flow_style=False
             )
             with open(SECURITY_FILE, 'w') as out:
                 out.write(content)
@@ -96,6 +99,10 @@ class Component(object):
         security = self.read_security()
         yield security
         security['security_enabled'] = True
+        if self.args.no_ssl:
+            security.setdefault('enable_ssl', False)
+        else:
+            security.setdefault('enable_ssl', True)
         self.write_security(security)
 
     def random(self, size=2**5+1):
@@ -298,11 +305,14 @@ class Consul(Component):
     def gossip_key(self):
         "gossip key"
         with self.modify_security() as config:
-            if 'consul_gossip_key' not in config:
-                config['consul_gossip_key'] = self.random(16)
-                print('set gossip key')
+            if not self.args.no_ssl:
+                if 'consul_gossip_key' not in config:
+                    config['consul_gossip_key'] = self.random(16)
+                    print('set gossip key')
+                else:
+                    print('gossip key already set')
             else:
-                print('gossip key already set')
+                print('disable ssl security')
 
     def master_acl_token(self):
         "master acl token"
@@ -333,16 +343,16 @@ class Marathon(Component):
 
     def mesos_auth(self):
         "marathon framework authentication"
-        with self.modify_security() as config:
-            config.setdefault('marathon_principal', 'marathon')
-            if 'marathon_secret' not in config and not self.args.no_authenticate_frameworks:
-                config['marathon_secret'] = self.random()
-                print('set marathon framework secret')
-            elif 'marathon_secret' not in config and self.args.no_authenticate_frameworks:
-                config['marathon_secret'] = '<secret>'
-                print('disable marathon framework authentication')
-            else:
-                print('marathon secret already set')
+        if not self.args.no_authenticate_frameworks:
+            with self.modify_security() as config:
+                if 'marathon_secret' not in config:
+                    config.setdefault('marathon_principal', 'marathon')
+                    config['marathon_secret'] = self.random()
+                    print('set marathon framework secret')
+                else:
+                    print('marathon secret already set')
+        else:
+            print('disable marathon framework authentication')
 
     def password(self):
         "admin password"
@@ -404,10 +414,13 @@ class Zookeeper(Component):
 
     def consul_ssl(self):
         "turn on consul ssl"
-        with self.modify_security() as config:
-             config.setdefault('zk_consul_ssl', 'true')
-             config.setdefault('zk_consul_ssl_verify', 'false')
-             print('configuring consul ssl defaults')
+        if not self.args.no_ssl:
+            with self.modify_security() as config:
+                 config.setdefault('zk_consul_ssl', 'true')
+                 config.setdefault('zk_consul_ssl_verify', 'false')
+                 print('configuring consul ssl defaults')
+        else:
+            print('disable consul ssl config')
 
 
 class Mesos(Component):  # Mesos should always come after any frameworks
@@ -416,27 +429,30 @@ class Mesos(Component):  # Mesos should always come after any frameworks
 
     def framework_auth(self):
         "framework auth"
-        with self.modify_security() as config:
-            if 'marathon_principal' in config and 'marathon_secret' in config:
+        if not self.args.no_authenticate_frameworks:
+            with self.modify_security() as config:
                 config.setdefault('mesos_credentials', [])
-                credential = {
-                    'principal': config['marathon_principal'],
-                    'secret': config['marathon_secret'],
-                }
-                if credential not in config['mesos_credentials']:
-                    config['mesos_credentials'].append(credential)
-                    print('set auth for Marathon')
+                if 'marathon_principal' in config and 'marathon_secret' in config:
+                    credential = {
+                        'principal': config['marathon_principal'],
+                        'secret': config['marathon_secret'],
+                    }
+                    if credential not in config['mesos_credentials']:
+                        config['mesos_credentials'].append(credential)
+                        print('set auth for Marathon')
+        else:
+            print('disable framework auth')
+
 
     def follower_auth(self):
         "follower auth"
-        with self.modify_security() as config:
-            config.setdefault('mesos_follower_principal', 'follower')
-            if not self.args.no_authenticate_followers:
+        if not self.args.no_authenticate_followers:
+            with self.modify_security() as config:
+                config.setdefault('mesos_follower_principal', 'follower')
                 config.setdefault('mesos_follower_secret', self.random())
                 print('enabled follower auth')
-            else:
-                config.setdefault('mesos_follower_secret', '<secret>')
-                print('disable follower auth')
+        else:
+            print('disable follower auth')
 
     def deprecate(self):
         "remove deprecated settings"
@@ -450,17 +466,18 @@ class Mesos(Component):  # Mesos should always come after any frameworks
                 print('removed mesos_authenticate_followers. This value is now automatically generated - see the docs.')
 
             # remove follower credential from credential list
-            try:
-                credential_idx = config['mesos_credentials'].index({
-                    'principal': config['mesos_follower_principal'],
-                    'secret': config['mesos_follower_secret']
-                })
-            except ValueError:
-                credential_idx = None
+            if not self.args.no_authenticate_followers and not self.args.no_authenticate_frameworks:
+                try:
+                    credential_idx = config['mesos_credentials'].index({
+                        'principal': config['mesos_follower_principal'],
+                        'secret': config['mesos_follower_secret']
+                    })
+                except ValueError:
+                    credential_idx = None
 
-            if credential_idx is not None:
-                del config['mesos_credentials'][credential_idx]
-                print('removed follower credentials from credential list - it is now a separate setting.')
+                if credential_idx is not None:
+                    del config['mesos_credentials'][credential_idx]
+                    print('removed follower credentials from credential list - it is now a separate setting.')
 
 
 def main(args):
