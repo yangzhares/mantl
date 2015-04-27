@@ -1,12 +1,4 @@
 ---
-- name: Install Java package
-  sudo: true
-  yum:
-    name: java-1.8.0-openjdk
-    state: present
-  tags:
-    - spark
-
 - name: Create Spark directory
   sudo: true
   file:
@@ -28,25 +20,25 @@
   run_once: true
   sudo_user: hdfs
   sudo: true
-  shell: source /etc/profile.d/hadoop.sh; if ! hadoop fs -test -d /user/{{ spark_user }}; then hadoop fs -mkdir -p /user/{{ spark_user }}; fi; hadoop fs -chown {{ spark_user }} /user/{{ spark_user }}
+  shell: source /etc/profile.d/hadoop.sh; if ! hdfs dfs -test -d /user/{{ spark_user }}; then hdfs dfs -mkdir -p /user/{{ spark_user }}; fi; hdfs dfs -chown {{ spark_user }} /user/{{ spark_user }}
   tags:
     - spark
 
 # for future use
-- name: Create Spark directory on HDFS
-  run_once: true
-  sudo_user: hdfs
-  sudo: true
-  shell: source /etc/profile.d/hadoop.sh; if ! hadoop fs -test -d {{ spark_install_dir }}; then hadoop fs -mkdir -p {{ spark_install_dir }}; fi; hadoop fs -chown {{ spark_user }} {{ spark_install_dir }}
-  tags:
-    - spark
 
-# for future use
-- name: Copy Spark binary to HDFS
-  run_once: true
-  shell: source /etc/profile.d/hadoop.sh; if ! hadoop fs -test -e {{ spark_install_dir }}/spark-{{ spark_version }}-bin-hadoop2.6.tgz; then hadoop fs -put {{ spark_client_dir }}/spark-{{ spark_version }}-bin-hadoop2.6.tgz {{ spark_install_dir }}/spark-{{ spark_version }}-bin-hadoop2.6.tgz; fi; hadoop fs -chown {{ spark_user }} {{ spark_install_dir }}/spark-{{ spark_version }}-bin-hadoop2.6.tgz
-  when: spark_downloaded|changed
-  tags:
-    - spark         
+#- name: Create Spark directory on HDFS
+#  run_once: true
+#  sudo_user: hdfs
+#  sudo: true
+#  shell: source /etc/profile.d/hadoop.sh; if ! hdfs dfs -test -d {{ spark_install_dir }}; then hdfs dfs -mkdir -p {{ spark_install_dir }}; fi; hdfs dfs -chown {{ spark_user }} {{ spark_install_dir }}
+#  tags:
+#    - spark
+
+#- name: Copy Spark binary to HDFS
+#  run_once: true
+#  shell: source /etc/profile.d/hadoop.sh; if ! hdfs dfs -test -e {{ spark_install_dir }}/spark-{{ spark_version }}-bin-hadoop2.6.tgz; then hdfs dfs -put {{ spark_client_dir }}/spark-{{ spark_version }}-bin-hadoop2.6.tgz {{ spark_install_dir }}/spark-{{ spark_version }}-bin-hadoop2.6.tgz; fi; hdfs dfs -chown {{ spark_user }} {{ spark_install_dir }}/spark-{{ spark_version }}-bin-hadoop2.6.tgz
+#  when: spark_downloaded|changed
+#  tags:
+#    - spark         
 
 - include: client.yml
