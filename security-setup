@@ -300,11 +300,14 @@ class Consul(Component):
     def gossip_key(self):
         "gossip key"
         with self.modify_security() as config:
-            if 'consul_gossip_key' not in config:
-                config['consul_gossip_key'] = self.random(16)
-                print('set gossip key')
+            if not self.args.no_ssl:
+                if 'consul_gossip_key' not in config:
+                    config['consul_gossip_key'] = self.random(16)
+                    print('set gossip key')
+                else:
+                    print('gossip key already set')
             else:
-                print('gossip key already set')
+                print('disable ssl security')
 
     def master_acl_token(self):
         "master acl token"
