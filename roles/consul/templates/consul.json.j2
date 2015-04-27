@@ -17,7 +17,7 @@
   "ca_file": "/etc/consul/ssl/{{ consul_ca_file }}",
   "cert_file": "/etc/consul/ssl/{{ consul_cert_file }}",
   "key_file": "/etc/consul/ssl/{{ consul_key_file }}",
-{% if consul_gossip_key is defined %}
+{% if enable_ssl|bool %}
   "verify_incoming": true,
   "verify_outgoing": true,
 {% endif %}

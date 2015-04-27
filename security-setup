@@ -40,7 +40,7 @@ parser.add_argument('--nginx-location', default='nginx.example.com')  # used as 
 parser.add_argument('--no-authenticate-followers', action='store_true', help='no follower authentication')
 parser.add_argument('--no-authenticate-frameworks', action='store_true', help='no framework authentication')
 parser.add_argument('--no-ssl', action='store_true', help='no SSL')
-
+parser.add_argument('--no-firewall', action='store_true', help='no firewall')
 
 BASE = posixpath.abspath(posixpath.dirname(__file__)).replace("\\","/")
 SECURITY_FILE = posixpath.join(BASE, 'security.yml')
@@ -99,10 +99,8 @@ class Component(object):
         security = self.read_security()
         yield security
         security['security_enabled'] = True
-        if self.args.no_ssl:
-            security.setdefault('enable_ssl', False)
-        else:
-            security.setdefault('enable_ssl', True)
+        security['enable_ssl'] = not self.args.no_ssl
+        security['enable_firewall'] = not self.args.no_firewall
         self.write_security(security)
 
     def random(self, size=2**5+1):
@@ -305,14 +303,11 @@ class Consul(Component):
     def gossip_key(self):
         "gossip key"
         with self.modify_security() as config:
-            if not self.args.no_ssl:
-                if 'consul_gossip_key' not in config:
-                    config['consul_gossip_key'] = self.random(16)
-                    print('set gossip key')
-                else:
-                    print('gossip key already set')
+            if 'consul_gossip_key' not in config:
+                config['consul_gossip_key'] = self.random(16)
+                print('set gossip key')
             else:
-                print('disable ssl security')
+                print('gossip key already set')
 
     def master_acl_token(self):
         "master acl token"
@@ -440,6 +435,8 @@ class Mesos(Component):  # Mesos should always come after any frameworks
                     if credential not in config['mesos_credentials']:
                         config['mesos_credentials'].append(credential)
                         print('set auth for Marathon')
+                else:
+                    print('failed to find marathon_principal or marathon_secret')
         else:
             print('disable framework auth')
 
