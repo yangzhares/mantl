@@ -38,6 +38,8 @@ parser.add_argument('--consul-location', default='consul.example.com')  # used a
 parser.add_argument('--nginx-location', default='nginx.example.com')  # used as common name
 parser.add_argument('--no-authenticate-followers', action='store_true', help='no follower authentication')
 parser.add_argument('--no-authenticate-frameworks', action='store_true', help='no framework authentication')
+parser.add_argument('--no-ssl', action='store_true', help='no SSL')
+
 
 BASE = os.path.abspath(os.path.dirname(__file__))
 SECURITY_FILE = os.path.join(BASE, 'security.yml')
@@ -404,10 +406,13 @@ class Zookeeper(Component):
 
     def consul_ssl(self):
         "turn on consul ssl"
-        with self.modify_security() as config:
-             config.setdefault('zk_consul_ssl', 'true')
-             config.setdefault('zk_consul_ssl_verify', 'false')
-             print('configuring consul ssl defaults')
+        if not self.args.no_ssl:
+            with self.modify_security() as config:
+                 config.setdefault('zk_consul_ssl', 'true')
+                 config.setdefault('zk_consul_ssl_verify', 'false')
+                 print('configuring consul ssl defaults')
+        else:
+            print('disable consul ssl config')
 
 
 class Mesos(Component):  # Mesos should always come after any frameworks
