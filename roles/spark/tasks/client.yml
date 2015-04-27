@@ -15,3 +15,12 @@
     dest: "/etc/profile.d/spark.sh"
   tags:
     - spark
+
+- name: Create Spark configuration
+  sudo: true
+  template:
+    src: "spark-defaults.conf.j2"
+    dest: "{{ spark_client_dir }}/spark-{{ spark_version }}-bin-hadoop2.6/conf/spark-defaults.conf"
+  tags:
+    - spark
+
