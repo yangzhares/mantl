@@ -1,4 +1,12 @@
 ---
+- name: Install Java package
+  sudo: true
+  yum:
+    name: java-1.8.0-openjdk
+    state: present
+  tags:
+    - spark
+
 - name: Create Spark directory
   sudo: true
   file:
