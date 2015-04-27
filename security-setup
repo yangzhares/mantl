@@ -98,6 +98,10 @@ class Component(object):
         security = self.read_security()
         yield security
         security['security_enabled'] = True
+        if self.args.no_ssl:
+            security.setdefault('enable_ssl', False)
+        else:
+            security.setdefault('enable_ssl', True)
         self.write_security(security)
 
     def random(self, size=2**5+1):
