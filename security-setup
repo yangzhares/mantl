@@ -39,7 +39,7 @@ parser.add_argument('--nginx-location', default='nginx.example.com')  # used as 
 parser.add_argument('--no-authenticate-followers', action='store_true', help='no follower authentication')
 parser.add_argument('--no-authenticate-frameworks', action='store_true', help='no framework authentication')
 parser.add_argument('--no-ssl', action='store_true', help='no SSL')
-
+parser.add_argument('--no-firewall', action='store_true', help='no firewall')
 
 BASE = os.path.abspath(os.path.dirname(__file__))
 SECURITY_FILE = os.path.join(BASE, 'security.yml')
@@ -102,6 +102,10 @@ class Component(object):
             security.setdefault('enable_ssl', False)
         else:
             security.setdefault('enable_ssl', True)
+        if self.args.no_firewall:
+            security.setdefault('enable_firewall', False)
+        else:
+            security.setdefault('enable_firewall', True)
         self.write_security(security)
 
     def random(self, size=2**5+1):
