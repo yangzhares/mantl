@@ -21,7 +21,7 @@
   tags:
     - hdfs
 
-- name: Stop the Hadoop HDFS DataNode service if it running
+- name: Stop the Hadoop HDFS DataNode service if it is running
 #  service: name=hadoop-hdfs-datanode enabled=yes state=started
   sudo: true
   sudo_user: hdfs

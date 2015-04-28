@@ -10,7 +10,7 @@
 - name: Create Spark directory
   sudo: true
   file:
-    path: "{{ spark_client_dir }}"
+    path: "{{ spark_install_dir }}"
     state: directory
   tags:
     - spark
@@ -18,8 +18,8 @@
 - name: Download Spark binary
   sudo: true 
   get_url: 
-    url: "http://mirror.ox.ac.uk/sites/rsync.apache.org/spark/spark-{{ spark_version }}/spark-{{ spark_version }}-bin-hadoop2.6.tgz"
-    dest: "{{ spark_client_dir }}/spark-{{ spark_version }}-bin-hadoop2.6.tgz"
+    url: "http://mirror.ox.ac.uk/sites/rsync.apache.org/spark/spark-{{ spark_version }}/spark-{{ spark_version }}-bin-hadoop{{ hadoop_version }}.tgz"
+    dest: "{{ spark_install_dir }}/spark-{{ spark_version }}-bin-hadoop{{ hadoop_version }}.tgz"
   register: spark_downloaded
   tags:
     - spark 
@@ -38,13 +38,13 @@
 #  run_once: true
 #  sudo_user: hdfs
 #  sudo: true
-#  shell: source /etc/profile.d/hadoop.sh; if ! hdfs dfs -test -d {{ spark_install_dir }}; then hdfs dfs -mkdir -p {{ spark_install_dir }}; fi; hdfs dfs -chown {{ spark_user }} {{ spark_install_dir }}
+#  shell: source /etc/profile.d/hadoop.sh; if ! hdfs dfs -test -d {{ spark_hdfs_dir }}; then hdfs dfs -mkdir -p {{ spark_hdfs_dir }}; fi; hdfs dfs -chown {{ spark_user }} {{ spark_hdfs_dir }}
 #  tags:
 #    - spark
 
 #- name: Copy Spark binary to HDFS
 #  run_once: true
-#  shell: source /etc/profile.d/hadoop.sh; if ! hdfs dfs -test -e {{ spark_install_dir }}/spark-{{ spark_version }}-bin-hadoop2.6.tgz; then hdfs dfs -put {{ spark_client_dir }}/spark-{{ spark_version }}-bin-hadoop2.6.tgz {{ spark_install_dir }}/spark-{{ spark_version }}-bin-hadoop2.6.tgz; fi; hdfs dfs -chown {{ spark_user }} {{ spark_install_dir }}/spark-{{ spark_version }}-bin-hadoop2.6.tgz
+#  shell: source /etc/profile.d/hadoop.sh; if ! hdfs dfs -test -e {{ spark_hdfs_dir }}/spark-{{ spark_version }}-bin-hadoop{{ hadoop_version }}.tgz; then hdfs dfs -put {{ spark_install_dir }}/spark-{{ spark_version }}-bin-hadoop{{ hadoop_version }}.tgz {{ spark_hdfs_dir }}/spark-{{ spark_version }}-bin-hadoop{{ hadoop_version }}.tgz; fi; hdfs dfs -chown {{ spark_user }} {{ spark_hdfs_dir }}/spark-{{ spark_version }}-bin-hadoop{{ hadoop_version }}.tgz
 #  when: spark_downloaded|changed
 #  tags:
 #    - spark         

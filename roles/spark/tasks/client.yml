@@ -2,8 +2,8 @@
 - name: Setup Spark binary
   sudo: true
   unarchive:
-    src: "{{ spark_client_dir }}/spark-{{ spark_version }}-bin-hadoop2.6.tgz"
-    dest: "{{ spark_client_dir }}"
+    src: "{{ spark_install_dir }}/spark-{{ spark_version }}-bin-hadoop{{ hadoop_version }}.tgz"
+    dest: "{{ spark_install_dir }}"
     copy: no
   tags:
     - spark
@@ -20,7 +20,7 @@
   sudo: true
   template:
     src: "spark-defaults.conf.j2"
-    dest: "{{ spark_client_dir }}/spark-{{ spark_version }}-bin-hadoop2.6/conf/spark-defaults.conf"
+    dest: "{{ spark_install_dir }}/spark-{{ spark_version }}-bin-hadoop{{ hadoop_version }}/conf/spark-defaults.conf"
   tags:
     - spark
 
