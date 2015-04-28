@@ -1,5 +1,7 @@
 # Overview
 
+[![Join the chat at https://gitter.im/CiscoCloud/microservices-infrastructure](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/CiscoCloud/microservices-infrastructure?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 Microservices infrastructure is a modern platform for rapidly deploying globally distributed services
 
 <!-- markdown-toc start - Don't edit this section. Run M-x markdown-toc/generate-toc again -->
@@ -178,10 +180,6 @@ Please see [milestones](https://github.com/CiscoCloud/microservices-infrastructu
 If you're interested in contributing to the project, install the software listed in `requirements.txt` and follow the Getting Started instructions. To build the docs, enter the `docs` directory and run `make html`. The docs will be output to `_build/html`.
 
 Good issues to start with are marked with the [low hanging fruit](https://github.com/CiscoCloud/microservices-infrastructure/issues?q=is%3Aopen+is%3Aissue+label%3A%22low+hanging+fruit%22) tag.
-
-## Get Involved
-
-You are invited to get involved and join the team!  The team collaborates on [Cisco Spark](http://www.webex.com/ciscospark) and [GitHub Issues](https://github.com/CiscoCloud/microservices-infrastructure/issues). Send an email to microservices-infrastructure-spark-room@external.cisco.com and we’ll add you to our Cisco Spark room!
 
 ## License
 

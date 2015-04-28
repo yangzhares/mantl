@@ -75,3 +75,6 @@
   gather_facts: no
   roles:
     - haproxy
+
+- include: hdfs.yml
+- include: spark.yml
