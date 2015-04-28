@@ -1,16 +1,18 @@
 ---
-- name: Configure Hadoop HDFS DataNode
+- name: Configure Hadoop HDFS data node
   sudo: yes
-  template: src={{ item }}.xml.j2 dest={{ hdfs_conf_dir }}/{{ item | replace("namenode-", "") }}.xml
+  template:
+    src: "{{ item }}.xml.j2"
+    dest: "{{ hdfs_conf_dir }}/{{ item }}.xml"
   with_items:
     - core-site
-    - namenode-hdfs-site
+    - hdfs-site
   notify:
-    - Restart Hadoop HDFS DataNode
+    - Restart Hadoop HDFS data node
   tags:
     - hdfs
 
-- name: Create Hadoop HDFS DataNode data directories
+- name: Create Hadoop HDFS data node data directories
   sudo: true
   file: 
     path: "/dfs/dn"
@@ -21,17 +23,14 @@
   tags:
     - hdfs
 
-- name: Stop the Hadoop HDFS DataNode service if it is running
-#  service: name=hadoop-hdfs-datanode enabled=yes state=started
+- name: Stop the Hadoop HDFS data node service if it is running
   sudo: true
   sudo_user: hdfs
   shell: source /etc/profile.d/hadoop.sh; hadoop-daemon.sh stop datanode
-  ignore_errors: True
   tags:
     - hdfs
 
-- name: Enable and start the Hadoop HDFS DataNode service
-#  service: name=hadoop-hdfs-datanode enabled=yes state=started
+- name: Enable and start the Hadoop HDFS data node service
   sudo: true
   sudo_user: hdfs
   shell: source /etc/profile.d/hadoop.sh; hadoop-daemon.sh start datanode
