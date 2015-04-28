@@ -60,7 +60,7 @@
       local_action:
         module: lineinfile
         dest: "/etc/hosts"
-        regexp: ".*{{ item }}$"
+        regexp: ".+ {{ item }}$"
         line: "{{ hostvars[item].ansible_ssh_host }} {{ item }}"
         state: present
       when: hostvars[item].ansible_ssh_host is defined

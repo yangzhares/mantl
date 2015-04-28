@@ -6,8 +6,6 @@ hdfs_namenode: False
 hdfs_namenode_host: localhost
 hdfs_namenode_port: 8020
 hdfs_hadoop_opts: "-Djava.net.preferIPv4Stack=true"
-
-
 hdfs_core_properties:
   - { name: "fs.defaultFS", value: "hdfs://{{ hdfs_namenode_host }}:{{ hdfs_namenode_port }}" }
 hdfs_namenode_properties:
