@@ -8,7 +8,7 @@
       local_action:
         module: lineinfile
         dest: "/etc/hosts"
-        regexp: ".*{{ item }}$"
+        regexp: ".+ {{ item }}$"
         state: absent
       with_items: groups['all']
 
