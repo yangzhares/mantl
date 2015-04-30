@@ -459,9 +459,9 @@ class Mesos(Component):  # Mesos should always come after any frameworks
         else:
             with self.modify_security() as config:
                 if 'mesos_follower_principal' in config:
-                    config['mesos_follower_principal']
+                    del config['mesos_follower_principal']
                 if 'mesos_follower_secret' in config:
-                    config['mesos_follower_secret']
+                    del config['mesos_follower_secret']
             print('disable follower auth')
 
     def deprecate(self):
