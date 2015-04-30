@@ -347,6 +347,11 @@ class Marathon(Component):
                 else:
                     print('marathon secret already set')
         else:
+            with self.modify_security() as config:
+                if 'marathon_secret' in config:
+                    del config['marathon_secret']
+                if 'marathon_principal' in config:
+                    del config['marathon_principal']
             print('disable marathon framework authentication')
 
     def password(self):
@@ -438,6 +443,9 @@ class Mesos(Component):  # Mesos should always come after any frameworks
                 else:
                     print('failed to find marathon_principal or marathon_secret')
         else:
+            with self.modify_security() as config:
+                if 'mesos_credentials' in config:
+                    del config['mesos_credentials']
             print('disable framework auth')
 
 
@@ -449,6 +457,11 @@ class Mesos(Component):  # Mesos should always come after any frameworks
                 config.setdefault('mesos_follower_secret', self.random())
                 print('enabled follower auth')
         else:
+            with self.modify_security() as config:
+                if 'mesos_follower_principal' in config:
+                    config['mesos_follower_principal']
+                if 'mesos_follower_secret' in config:
+                    config['mesos_follower_secret']
             print('disable follower auth')
 
     def deprecate(self):
