@@ -1,13 +1,13 @@
 ---
-- name: install Java SDK
-  sudo: yes
+- name: Install Java SDK
+  sudo: true
   yum: 
     name: java-1.8.0-openjdk
     state: present
 
 - include: users.yml
 
-- name: Create HDFS installation dir
+- name: Create HDFS installation directory
   sudo: true
   file: 
     path: "{{ hdfs_install_dir }}"
@@ -18,7 +18,7 @@
   tags:
     - hdfs
 
-- name: Create HDFS configuration dir
+- name: Create HDFS configuration directory
   sudo: true
   file: 
     path: "{{ hdfs_conf_dir }}"
@@ -49,7 +49,9 @@
 
 - name: Setup HDFS environment
   sudo: true
-  template: src=hadoop.sh.j2 dest=/etc/profile.d/hadoop.sh
+  template:
+    src: "hadoop.sh.j2"
+    dest: "/etc/profile.d/hadoop.sh"
   tags:
     - hdfs
 
@@ -60,3 +62,4 @@
   when: not hdfs_namenode 
 
 - include: hdfs.yml
+  when: hdfs_namenode
