@@ -10,6 +10,9 @@
 - `mesos_lib`: Specify mesos library location. Default: `/usr/local/lib/libmesos.so`
 - `zookeeper_master`: Specify FQDN for zookeeper master. Default for MI project is `zookeeper.service.consul`
 - `marathon`: Specify FQDN for marathon services. Default for MI project is `marathon.service.consul`
+- `kafka_brokers`: Define number of brokers that will be used in your cluster. Default: 3
+- `kafka_broker_memory`: Specify Java memory setting for broker. Default: 2048
+- `kafka_broker_heap`: Specify Java heap for broker. Default: 1024 
 
 ## Example Playbook
 
