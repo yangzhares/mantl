@@ -36,3 +36,11 @@
     state: started
   tags:
     - docker
+
+- name: install docker python module                                                                                                                                                                                                                                          
+  sudo: yes                                                                                                                                                                                                                                                                   
+  yum:                                                                                                                                                                                                                                                                        
+    name: docker-python                                                                                                                                                                                                                                                       
+    state: latest
+  tags:                                                                                                                                                                                                                                                                       
+    - docker     
