@@ -8,39 +8,39 @@ Variables
 
 .. data:: logging_host
 
-   default: ``{{ ansible_ssh_host }}``
-
    Host to receive collected metrics.
+
+   default: ``{{ ansible_ssh_host }}``
 
 .. data:: logging_host_port
 
-   default: ``25826``
-
    UDP port of logging_host
+
+   default: ``25826``
 
 .. data:: mesos_master_host
 
-   default: ``localhost``
-
    Host to get Mesos master metrics port. 
+
+   default: ``localhost``
 
 .. data:: mesos_master_port
 
-   default: ``15050``
-
    Mesos master HTTP API port.
+
+   default: ``15050``
 
 .. data:: mesos_slave_host
 
-   default: ``localhost``
-
    Host to get Mesos slave metrics port. 
+
+   default: ``localhost``
 
 .. data:: mesos_slave_port
 
-   default: ``15050``
-
    Mesos slave HTTP API port.
+
+   default: ``15050``
           
 
   
