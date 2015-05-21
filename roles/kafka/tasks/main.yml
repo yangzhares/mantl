@@ -11,7 +11,7 @@
   sudo: true
   git: 
     repo: "{{ kafka_mesos_repo }}" 
-    dest: "{{ kafka_install_dir }}"
+    dest: "{{ kafka_mesos_install_dir }}"
   tags:
     - kafka
 
@@ -19,19 +19,44 @@
   sudo: true
   command: "./gradlew jar"
   args:
-    chdir: "{{ kafka_install_dir }}"
-    creates: "{{ kafka_install_dir }}/.gradle"
+    chdir: "{{ kafka_mesos_install_dir }}"
+    creates: "{{ kafka_mesos_install_dir }}/.gradle"
   tags:
     - kafka
 
 - name: Download Kafka binary
   sudo: true 
   get_url: 
-    url: "{{ kafka_binary_url }}"
-    dest: "{{ kafka_install_dir }}"
+    url: "{{ kafka_binary_url }}/{{ kafka_archive }}"
+    dest: "{{ kafka_mesos_install_dir }}"
   register: kafka_downloaded
   tags:
     - kafka 
+
+#- name: Create Kafka directory
+#  sudo: true
+#  file: 
+#    path: "{{ kafka_install_dir }}"
+#    state: directory
+#  tags:
+#    - kafka
+
+#- name: Setup Kafka binary
+#  sudo: true
+#  unarchive:
+#    src: "{{ kafka_mesos_install_dir }}/{{ kafka_archive }}"
+#    dest: "{{ kafka_install_dir }}"
+#    copy: no
+#  tags:
+#    - kafka
+
+- name: Setup Kafka environment
+  sudo: true
+  template:
+    src: "kafka.sh.j2"
+    dest: "/etc/profile.d/kafka.sh"
+  tags:
+    - kafka
 
 - include: scheduler.yml
   when: kafka_downloaded | changed
