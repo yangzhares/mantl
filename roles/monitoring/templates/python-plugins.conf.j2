@@ -34,5 +34,11 @@ LoadPlugin python
     Port {{ marathon_port }}
     Verbose false
   </Module>
+  
+  Import "zookeper"
+
+  <Module "zookeper">
+    Hosts "{{ zookeper_hosts }}"
+  </Module>
 
 </Plugin>

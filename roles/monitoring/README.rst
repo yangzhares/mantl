@@ -1,7 +1,7 @@
 .. versionadded:: 0.1
 
 `Collectd <collectd https://collectd.org>`_ connects to
-:doc:`mesos`, :doc:`docker`, :doc:`marathon` and host OS via Python modules, and collects their performance/health metrics which then are sent to specified logging host.
+:doc:`mesos`, :doc:`docker`, :doc:`marathon`, :doc:`zookeper` and host OS via Python modules, and collects their performance/health metrics which then are sent to specified logging host.
 
 Variables
 ---------
@@ -20,7 +20,7 @@ Variables
 
 .. data:: mesos_master_host
 
-   Host to get Mesos master metrics from. 
+   Host to get Mesos master metrics from.
 
    default: ``localhost``
 
@@ -32,7 +32,7 @@ Variables
 
 .. data:: mesos_slave_host
 
-   Host to get Mesos slave metrics from. 
+   Host to get Mesos slave metrics from.
 
    default: ``localhost``
 
@@ -44,7 +44,7 @@ Variables
 
 .. data:: marathon_host
 
-   Host to get Marathon metrics from. 
+   Host to get Marathon metrics from.
 
    default: ``localhost``
 
@@ -54,9 +54,15 @@ Variables
 
    default: ``18080``
 
-          
+.. data:: zookeper_hosts
 
-  
+   Hosts to get Zookeper metrics from.
+
+   default: ``localhost``
+
+
+
+
 .. _monitoring-example-playbook:
 
 

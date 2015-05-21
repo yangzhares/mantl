@@ -15,3 +15,4 @@ You can use these variables (defaults/main.yml) to customize your collectd insta
 |`mesos_master_port`|mesos master http port|15050|
 |`mesos_slave_host`|host to get mesos slave data from|localhost|
 |`mesos_slave_port`|mesos slave http port|15050|
+|`zookeper_hosts`|zookeper hosts to get metrics from|localhost|

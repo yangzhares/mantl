@@ -1,71 +1,34 @@
-# collectd config
-
+#
+# - for static ip and valid dns fwd/rev
+#   uncomment next two lines
+##Hostname
+#FQDNLookup true
+#
+#
+# - for dynamic ip and hostname
+#   uncomment next two lines and put correct hostname between quotes
 Hostname "{{ ansible_hostname }}"
 FQDNLookup false
-Interval 10
-Include "/etc/collectd/conf.d/"
-Include "/etc/collectd/filters.conf"
-TypesDB "/usr/share/collectd/types.db"
 
-LoadPlugin "cpu"
-LoadPlugin "disk"
-LoadPlugin "df"
-LoadPlugin "interface"
-LoadPlugin "load"
-LoadPlugin "memory"
-loadPlugin "ntpd"
-LoadPlugin "processes"
-LoadPlugin "swap"
-LoadPlugin "syslog"
-LoadPlugin "uptime"
-LoadPlugin "users"
+# interval at which collectd will collect metrics
+Interval 5
 
-<Plugin "df">
-  FSType anon_inodefs
-  FSType bdev
-  FSType cgroup
-  FSType cpuset
-  FSType debugfs
-  FSType devpts
-  FSType devtmpfs
-  FSType ecryptfs
-  FSType fuse
-  FSType fusectl
-  FSType hugetlbfs
-  FSType mqueue
-  FSType nfs
-  FSType nfs4
-  FSType nfsd
-  FSType pipefs
-  FSType proc
-  FSType pstore
-  FSType ramfs
-  FSType rootfs
-  FSType rpc_pipefs
-  FSType securityfs
-  FSType sockfs
-  FSType sysfs
-  FSType tmpfs
-  FSType vboxsf
-  IgnoreSelected true
-  ReportByDevice false
-  ValuesAbsolute true
-  ReportInodes true
-</Plugin>
+TypesDB     "/usr/share/collectd/types.db"
 
-<Plugin "interface">
-  Interface "/^eth/"
-  IgnoreSelected false
-</Plugin>
+#Uncomment for debug purposes
+#LoadPlugin "logfile"
+#<Plugin "logfile">
+#  LogLevel "debug"
+#  File STDOUT
+#  Timestamp true
+#</Plugin>
 
-<Plugin "ntpd">
-  Host "localhost"
-  Port 123
-  ReverseLookups false
-</Plugin>
+# Example data
+LoadPlugin cpu
+LoadPlugin interface
+LoadPlugin load
+LoadPlugin memory
 
-<Plugin "syslog">
-  LogLevel "err"
-</Plugin>
 
-# EOF
+Include "/etc/collectd.d/*.conf"
+

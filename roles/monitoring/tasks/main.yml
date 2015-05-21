@@ -53,6 +53,7 @@
     - src: marathon.py
     - src: mesos-master.py
     - src: mesos-slave.py
+    - src: zookeper.py
   tags:
     - monitoring
 
