@@ -6,8 +6,9 @@
 
 - `kafka_install_dir`: define folder for kafka installation. Default `/usr/local/share/kafka`
 - `kafka_mesos_install_dir` define folder for kafka-mesos installation. Default `/usr/local/share/kafka-mesos`
-- `kafka_binary_url`: define URL for kafka binary installation. Default: https://archive.apache.org/dist/kafka/0.8.1.1/
-- `kafka_archive`: kafka archive name. Default:  kafka_2.9.2-0.8.1.1.tgz
+- `kafka_binary_url`: define URL for kafka binary installation. Default: https://archive.apache.org/dist/kafka/
+- `kafka_version`: specify version of kafka that will be used. Default: "0.8.2.1"
+- `kafka_scala_version`: version of scala. Default: "2.10"
 - `kafka_mesos_repo`: mesos-kafka repo URL. Default: https://github.com/mesos/kafka
 - `mesos_lib`: Specify mesos library location. Default: `/usr/local/lib/libmesos.so`
 - `zookeeper_master`: Specify FQDN for zookeeper master. Default for MI project is `zookeeper.service.consul`
