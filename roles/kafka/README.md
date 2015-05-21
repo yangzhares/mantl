@@ -15,8 +15,8 @@
 - `marathon`: Specify FQDN for marathon services. Default for MI project is `marathon.service.consul`
 - `kafka_scheduler_hostname`: hostname of kafka mesos scheduler. Default: `kafka-mesos-scheduler.service.consul`
 - `kafka_brokers`: Define number of brokers that will be used in your cluster. Default: 3
-- `kafka_broker_memory`: Specify Java memory setting for broker. Default: 2048
-- `kafka_broker_heap`: Specify Java heap for broker. Default: 1024 
+- `kafka_broker_memory`: Specify Java memory setting for broker. Default: 512
+- `kafka_broker_heap`: Specify Java heap for broker. Default: 256 
 - `debug_enabled`: enable or dissable debug mode for kafka-mesos. Default: false
 
 ## Example Playbook
