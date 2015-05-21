@@ -10,6 +10,6 @@ zookeeper_master: "zookeeper.service.consul"
 marathon: "marathon.service.consul"
 kafka_scheduler_hostname: "kafka-mesos-scheduler.service.consul"
 kafka_brokers: 3
-kafka_broker_memory: 2048
-kafka_broker_heap: 1024 
+kafka_broker_memory: 512
+kafka_broker_heap: 256 
 debug_enabled: false
