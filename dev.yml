@@ -1,0 +1,177 @@
+- hosts: dev
+  tasks:
+    - name: Install Java package
+      sudo: true
+      yum:
+        name: java-1.8.0-openjdk
+        state: present
+
+    - name: Install Maven package
+      sudo: true
+      yum:
+        name: maven
+        state: present
+
+    - name: Install GCC package
+      sudo: true
+      yum:
+        name: gcc
+        state: present
+
+    - name: Install GCC C++ package
+      sudo: true
+      yum:
+        name: gcc-c++
+        state: present
+
+    - name: Install Perl package
+      sudo: true
+      yum:
+        name: perl
+        state: present
+
+    - name: Install Ruby package
+      sudo: true
+      yum:
+        name: ruby
+        state: present
+
+    - name: Install Software collection utilities package (for Python 3.3)
+      sudo: true
+      yum:
+        name: scl-utils
+        state: present
+
+    - name: Install Python 3.3 collection repository package
+      sudo: true
+      yum:
+        name: https://www.softwarecollections.org/en/scls/rhscl/python33/epel-7-x86_64/download/rhscl-python33-epel-7-x86_64.noarch.rpm
+        state: present
+
+    - name: Install Python 3.3 package
+      sudo: true
+      yum:
+        name: python33
+        state: present
+
+    - name: Install Pip package
+      sudo: true
+      shell: "scl enable python33 \"bash -c 'easy_install pip'\""
+
+    - name: Install Scala package
+      sudo: true
+      yum:
+        name: http://downloads.typesafe.com/scala/2.11.6/scala-2.11.6.rpm
+        state: present
+
+    - name: Install SBT package
+      sudo: true
+      yum:
+        name: http://repo.scala-sbt.org/scalasbt/sbt-native-packages/org/scala-sbt/sbt/0.13.1/sbt.rpm
+        state: present
+
+    - name: Install Git package
+      sudo: true
+      yum:
+        name: git
+        state: present
+
+    - name: Install Emacs package
+      sudo: true
+      yum:
+        name: emacs
+        state: present
+
+    - name: Install Nano package
+      sudo: true
+      yum:
+        name: nano
+        state: present
+
+    - name: Install Vim package
+      sudo: true
+      yum:
+        name: vim
+        state: present
+
+    - name: Install Screen package
+      sudo: true
+      yum:
+        name: screen
+        state: present
+
+    - name: Install Unzip package
+      sudo: true
+      yum:
+        name: unzip
+        state: present
+
+    - name: Install Wget package
+      sudo: true
+      yum:
+        name: wget
+        state: present
+
+    - name: Install Mesosphere repository package
+      sudo: true
+      yum:
+        name: http://repos.mesosphere.io/el/7/noarch/RPMS/mesosphere-el-repo-7-1.noarch.rpm
+        state: present
+
+    - name: Install Mesos package
+      sudo: true
+      yum:
+        name: mesos
+        state: present
+
+    - name: Check whether Spark is already installed or not
+      shell: "[ -d /usr/local/share/spark ] && echo 'True' || echo 'False'"
+      register: spark_installed
+
+    - name: Create Spark directory
+      sudo: true
+      file:
+        path: "/usr/local/share/spark"
+        state: directory
+      when: spark_installed.stdout == 'False'
+
+    - name: Download Spark binary
+      sudo: true
+      get_url:
+        url: "http://mirror.ox.ac.uk/sites/rsync.apache.org/spark/spark-1.3.1/spark-1.3.1-bin-hadoop2.6.tgz"
+        dest: "/usr/local/share/spark/spark-1.3.1-bin-hadoop2.6.tgz"
+      when: spark_installed.stdout == 'False'
+
+    - name: Extract Spark archive
+      sudo: true
+      unarchive:
+        src: "/usr/local/share/spark/spark-1.3.1-bin-hadoop2.6.tgz"
+        dest: "/usr/local/share/spark"
+        copy: no
+      when: spark_installed.stdout == 'False'
+
+    - name: Setup Spark environment
+      sudo: true
+      lineinfile:
+        dest: "/etc/profile.d/spark.sh"
+        create: yes
+        state: present
+        line: "{{ item }}"
+      with_items:
+        - "export MESOS_NATIVE_JAVA_LIBRARY=/usr/local/lib/libmesos.so"
+        - "export SPARK_EXECUTOR_URI=file:///usr/local/share/spark/spark-1.3.1-bin-hadoop2.6.tgz"
+        - "export MASTER=mesos://zk://zookeeper.service.consul:2181/mesos"
+        - "export PATH=$PATH:/usr/local/share/spark/spark-1.3.1-bin-hadoop2.6/bin"
+      when: spark_installed.stdout == 'False'
+
+    - name: Create Spark configuration
+      sudo: true
+      lineinfile:
+        dest: "/usr/local/share/spark/spark-1.3.1-bin-hadoop2.6/conf/spark-defaults.conf"
+        create: yes
+        state: present
+        line: "{{ item }}"
+      with_items:
+        - "spark.master       mesos://zk://zookeeper.service.consul:2181/mesos"
+        - "spark.executor.uri file:///usr/local/share/spark/spark-1.3.1-bin-hadoop2.6.tgz"
+      when: spark_installed.stdout == 'False'
