@@ -5,7 +5,7 @@
   notify:
     - wait for marathon to listen
 
-- name: restart marathon 
+- name: restart marathon
   sudo: yes
   command: systemctl restart marathon
   notify:

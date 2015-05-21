@@ -20,7 +20,7 @@ Variables
 
 .. data:: mesos_master_host
 
-   Host to get Mesos master metrics port. 
+   Host to get Mesos master metrics port.
 
    default: ``localhost``
 
@@ -32,7 +32,7 @@ Variables
 
 .. data:: mesos_slave_host
 
-   Host to get Mesos slave metrics port. 
+   Host to get Mesos slave metrics port.
 
    default: ``localhost``
 
@@ -41,9 +41,9 @@ Variables
    Mesos slave HTTP API port.
 
    default: ``15050``
-          
 
-  
+
+
 .. _monitoring-example-playbook:
 
 
