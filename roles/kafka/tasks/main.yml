@@ -28,7 +28,7 @@
 - name: Download Kafka binary
   sudo: true 
   get_url: 
-    url: "{{ kafka_binary_url }}/{{ kafka_archive }}.tgz"
+    url: "{{ kafka_binary_url }}/{{ kafka_version }}/kafka_{{ kafka_scala_version }}-{{ kafka_version }}.tgz"
     dest: "{{ kafka_mesos_install_dir }}"
   register: kafka_downloaded
   tags:
@@ -38,24 +38,16 @@
   sudo: true
   file: 
     path: "{{ kafka_install_dir }}"
+    owner: "{{ ansible_user_id }}"
     state: directory
   tags:
     - kafka
 
 - name: Setup Kafka binary
-  sudo: true
   unarchive:
-    src: "{{ kafka_mesos_install_dir }}/{{ kafka_archive }}.tgz"
+    src: "{{ kafka_mesos_install_dir }}/kafka_{{ kafka_scala_version }}-{{ kafka_version }}.tgz"
     dest: "{{ kafka_install_dir }}"
     copy: no
-  tags:
-    - kafka
-
-- name: Setup Kafka environment
-  sudo: true
-  template:
-    src: "kafka.sh.j2"
-    dest: "/etc/profile.d/kafka.sh"
   tags:
     - kafka
 
@@ -64,3 +56,5 @@
 
 - include: client.yml
   when: kafka_downloaded | changed
+
+- include: config.yml

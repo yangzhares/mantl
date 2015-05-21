@@ -4,8 +4,7 @@
   wait_for: 
     host: "{{ ansible_hostname }}"
     port: 7000 
-    delay: 10
-    timeout: 300
+    delay: 30
   tags:
     - kafka
 
@@ -24,21 +23,5 @@
   command: "./kafka-mesos.sh start 0..{{ kafka_brokers - 1 }} --api http://{{ ansible_hostname }}:7000"
   args:
     chdir: "{{ kafka_mesos_install_dir }}"
-  tags:
-    - kafka
-
-- name: Create Kafka-Mesos configuration
-  sudo: true
-  template:
-    src: "kafka.properties.j2"
-    dest: "{{ kafka_mesos_install_dir }}/kafka-mesos.properties"
-  tags:
-    - kafka
-
-- name: Install basic Kafka client  
-  sudo: true
-  command: "./sbt update; ./sbt package"
-  args:
-    chdir: "{{ kafka_install_dir }}/{{ kafka_archive }}"
   tags:
     - kafka
