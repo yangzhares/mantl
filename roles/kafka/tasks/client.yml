@@ -35,10 +35,10 @@
   tags:
     - kafka
 
-# - name: Install basic Kafka client  
-#   sudo: true
-#   command: "./sbt update; ./sbt package"
-#   args:
-#     chdir: "{{ kafka_install_dir }}"
-#   tags:
-#     - kafka
+- name: Install basic Kafka client  
+  sudo: true
+  command: "./sbt update; ./sbt package"
+  args:
+    chdir: "{{ kafka_install_dir }}/{{ kafka_archive }}"
+  tags:
+    - kafka

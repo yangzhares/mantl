@@ -2,7 +2,7 @@
 kafka_install_dir: "/usr/local/share/kafka"
 kafka_mesos_install_dir: "/usr/local/share/kafka-mesos"
 kafka_binary_url: "https://archive.apache.org/dist/kafka/0.8.1.1"
-kafka_archive: "kafka_2.9.2-0.8.1.1.tgz"
+kafka_archive: "kafka_2.9.2-0.8.1.1"
 kafka_mesos_repo: "https://github.com/mesos/kafka"
 mesos_lib: "/usr/local/lib/libmesos.so"
 zookeeper_master: "zookeeper.service.consul"

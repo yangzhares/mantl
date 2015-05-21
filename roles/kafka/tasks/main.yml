@@ -12,6 +12,7 @@
   git: 
     repo: "{{ kafka_mesos_repo }}" 
     dest: "{{ kafka_mesos_install_dir }}"
+    force: yes
   tags:
     - kafka
 
@@ -27,28 +28,28 @@
 - name: Download Kafka binary
   sudo: true 
   get_url: 
-    url: "{{ kafka_binary_url }}/{{ kafka_archive }}"
+    url: "{{ kafka_binary_url }}/{{ kafka_archive }}.tgz"
     dest: "{{ kafka_mesos_install_dir }}"
   register: kafka_downloaded
   tags:
     - kafka 
 
-#- name: Create Kafka directory
-#  sudo: true
-#  file: 
-#    path: "{{ kafka_install_dir }}"
-#    state: directory
-#  tags:
-#    - kafka
+- name: Create Kafka directory
+  sudo: true
+  file: 
+    path: "{{ kafka_install_dir }}"
+    state: directory
+  tags:
+    - kafka
 
-#- name: Setup Kafka binary
-#  sudo: true
-#  unarchive:
-#    src: "{{ kafka_mesos_install_dir }}/{{ kafka_archive }}"
-#    dest: "{{ kafka_install_dir }}"
-#    copy: no
-#  tags:
-#    - kafka
+- name: Setup Kafka binary
+  sudo: true
+  unarchive:
+    src: "{{ kafka_mesos_install_dir }}/{{ kafka_archive }}.tgz"
+    dest: "{{ kafka_install_dir }}"
+    copy: no
+  tags:
+    - kafka
 
 - name: Setup Kafka environment
   sudo: true
