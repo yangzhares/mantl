@@ -1,37 +1,60 @@
+# Git development workflow
 
-features-master - release branch
-	1 only merges from qa-features-master-integration
-	2 manual merging by PR after code review by approvers
-	3 git tag
-	4 ci using git tag should build new test
-	4a should include multi data-center deployment
-	5 security check, security check list
+## Basic branches and purposes
 
-qa-features-master-integration - features not in production yet
-	1 daily merge/rebase, rebase as priority
-	1a ci to start integrity testing - rebase from master, PR from features or personal triggered
-	2 manual merging by PR after code review by approvers
+* master: main branch where the source code of HEAD always reflects a production-ready state for CORE services
+* features-master: main branch where the source code of HEAD always reflects a production-ready state for none CORE services
+* qa-features-master-integration: source code of HEAD always reflects a state with the latest delivered development changes for the next release. Some would call this the “integration branch”. This is where any automatic nightly builds are built from.
 
-master (core services)
-	1 only PRs from features or personal devs
-	2 manual merging by PR after code review by approvers
-	3 git tag when milestone has been reached
-	4 ci using should build new test
-	4a should include multi data-center deployment
-	5 security check, security check list
+## features-master - release branch
 
-feature/*
-	1 must be branched only from master or features-master
-	2 manual testing
-	3 open PR to master or qa-features-master-integration
-	4 get approve from maintainer
-	5 merge to master or features-master with --no-ff option - no fast forward
-	6 approved features/* branches must be deleted after successfull merge
+	Merges from: _qa-features-master-integration_
+#### Workflow:
+	1. Use PR to merge changes
+	2. Manual merging by responsible person after code review
+	3. Every comit should have tag with versoin number 
+	4. Use CI to validate commit. Use tags to clone new version.
+		1. Test should include multi data-center deployment
+	5. Minimal security check baseon  security check list (TBA)
 
-fix/*
-	1 branched from master or features-master
-	2 manual testing
-	3 open PR to master and features-master (ci testing)
-	4 get approve from maintainer
-	5 features-master - merge with hot fix have to be tagged
-	6 master - merge with hot fix have to be tagged
+## qa-features-master-integration - features not in production yet
+
+#### Workflow:
+	1. Daily rebase from master to get latest changes and keep branch up to date
+		1. Use automatic CI to start integrity testing for rebase from master, PR from features or personal triggered etc. 
+	2. Manual merging by PR after code review by approvers
+
+## master (core services)
+Main branch.
+
+#### Workflow
+
+	1. Use only PRs from features or personal devs
+	2. Manual merging by PR after code review by approvers
+	3. Use git tag when milestone has been reached
+	4. Satrt CI after merging and build new test
+		1. Should include multi data-center deployment
+	5.  Minimal security check baseon  security check list (TBA)
+
+## feature/*
+Branched from: _master_ or _features-master_
+
+#### Workflow:	
+	
+	1. Manual testing
+	2. Open PR to master or qa-features-master-integration
+	3. Get approve from maintainer
+	4. Merge  with --no-ff option - no fast forward (for local dev)
+	5. Approved features/* branches must be deleted after successfull merge
+
+## fix/*
+
+	Branched from: _master_ or _features-master_
+
+#### Workflow:	
+
+	1. Manually check testing
+	2. Open PR to master and features-master (ci testing)
+	3. Get approve from maintainer
+	4. features-master - merge with hot fix have to be tagged
+	5. master - merge with hot fix have to be tagged
