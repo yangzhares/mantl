@@ -15,14 +15,14 @@ Fill the form, sign up and send the message to the maintainers who are able to g
 
 Current workflow is the following:
 
-1.     All jobs are tied to the particular GitHUB branch and tenant:
-1.     It has two types of jobs:
+1. All jobs are tied to the particular GitHUB branch and tenant.
+1. It has two types of jobs:
 
-    1.     triggered by PR (pull request) to the particular branch
-    1.     triggered by commit to the particular branch
+    - triggered by **PR (pull request)** to the particular branch
+    - triggered by **commit** to the particular branch
 
-1.     Mentioned triggers are automate all testing process.
-1.     All jobs has the naming template shown below:
+1. Mentioned triggers are automate all testing process.
+1. All jobs has the naming template shown below:
 
 
 -     **View** reflects the particular tenant which was used for deployment process, gather all jobs tied to this tenant.
