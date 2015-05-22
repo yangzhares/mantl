@@ -22,7 +22,7 @@ Currently workflow is:
     - triggered by **commit** to the particular branch
 
 1. These triggers automates the whole testing process.
-1. We're usng folling naming template for jobs:
+1. We're using following naming template for jobs:
 
 
 -     **View** reflects the particular tenant which was used for deployment process, it gathers all jobs tied to this tenant.
