@@ -6,6 +6,6 @@ yum makecache -y
 yum install -y nmap-ncat
 yum upgrade -y nmap-ncat
 
-docker pull asteris/zookeeper:latest
+docker pull ciscocloud/zookeeper:0.2
 
 # EOF
