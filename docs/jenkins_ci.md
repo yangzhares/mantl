@@ -5,15 +5,15 @@
 
 # Steps to create account
 
-Anonymous access is granted for read for all jobs/reports/logs.
+Anonymous access is granted with permissions to view all jobs/reports/logs.
 
-To get the specific/admin access to the Jenkins please sign up - click on link "**Create an account if you are not a member yet.**"
+To get a specific/admin access to Jenkins please sign up - click on a link "**Create an account if you are not a member yet.**"
 
-Fill the form, sign up and send the message to the maintainers who are able to grant access, the following email can be used [mi-build-notifications](mi-build-notifications@external.cisco.com)
+Fill the form, sign up and send an e-mail to the following DL asking to get access: [mi-build-notifications](mi-build-notifications@external.cisco.com)
 
 # Steps to test a branch
 
-Current workflow is the following:
+Currently workflow is:
 
 1. All jobs are tied to the particular GitHUB branch and tenant.
 1. It has two types of jobs:
@@ -21,17 +21,17 @@ Current workflow is the following:
     - triggered by **PR (pull request)** to the particular branch
     - triggered by **commit** to the particular branch
 
-1. Mentioned triggers are automate all testing process.
-1. All jobs has the naming template shown below:
+1. These triggers automates the whole testing process.
+1. We're usng folling naming template for jobs:
 
 
--     **View** reflects the particular tenant which was used for deployment process, gather all jobs tied to this tenant.
--     Branch name which job controls, e.g. **master**
--     Trigger type - **provision** for commit trigger, ++job can be started manually++, pr-provision for **PR** trigger, ++job mustn't be started manually++.
--     Tenant name where job is restricted to run, e.g. **CCS-MI-US-INTERNAL-1-QA-1**
--     Job which **destroys** cluster in the tenant, it starts always as post build step of deploying job, job can be started manually.
+-     **View** reflects the particular tenant which was used for deployment process, it gathers all jobs tied to this tenant.
+-     Branch name which is being tested by job, e.g. **master**
+-     Trigger type - **provision** for commit trigger, ++job can be started manually++, pr-provision for **PR** trigger, ++job can't be started manually++.
+-     QA Tenant name where job is restricted to run, e.g. **CCS-MI-US-INTERNAL-1-QA-1**
+-     Job which **destroys** cluster in the tenant. This job starts as a madnatory post-build step of deploying job. This job could be started manually.
 
-So you get the main idea of job naming.
+So you get the main idea of job naming conventions.
 
 # Mail List for Jenkins notifications and how to subscribe to it (using mailer.cisco.com) 
 
@@ -43,18 +43,18 @@ Job which are triggered by commit to the particular branch can be started manual
 
 Job is configurable an pretty flexible and it has the next main steps:
 
-1.     Grabs the code base from GitHUB
+1.     Grabs the code base from GitHub
 1.     Configures tenant
-1.     Deploys configured cluster and run smoke testing
-1.     Runs automated tests (robot-framework) in case we have successfully deployed cluster
+1.     Deploys configured cluster and run smoke tests
+1.     Runs automated tests (robot-framework) (in case if cluster was successfully deployed)
 1.     Gathers reports
 1.     Destroys cluster
 
 To start test deployment the next few steps have to be done:
 
-1.     Open the particular view with tenant to test cluster deployment
+1.     Open a particular view with tenant to test cluster deployment
 1.     Choose which branch you want test
-1.     Start testing by pushing the button play
+1.     Start testing by pushing "Play" button
 
 # Steps to check issues (if any) during last (current) test
 
