@@ -24,11 +24,11 @@ Currently workflow is:
 3. These triggers automate the whole testing process.
 4. We're using following naming template for jobs:
 
--     **View** reflects the particular tenant which was used for deployment process, it gathers all jobs tied to this tenant.
--     Trigger type - **COMMIT** for commit trigger, job can be started manually, **PR** for pull request trigger, job can't be started manually.
--     Branch name which is being tested by job, e.g. **master** or **qa-integration**
--     QA Tenant name where job is restricted to run, e.g. **CCS-MI-US-INTERNAL-1-QA-1**
--     Job named as **destroy** destroys cluster in the given tenant. This job starts as a madnatory post-build step of deploying job. This job could be started manually.
+    -     **View** reflects the particular tenant which was used for deployment process, it gathers all jobs tied to this tenant.
+    -     Trigger type - **COMMIT** for commit trigger, job can be started manually, **PR** for pull request trigger, job can't be started manually.
+    -     Branch name which is being tested by job, e.g. **master** or **qa-integration**
+    -     QA Tenant name where job is restricted to run, e.g. **CCS-MI-US-INTERNAL-1-QA-1**
+    -     Job named as **destroy** destroys cluster in the given tenant. This job starts as a madnatory post-build step of deploying job. This job could be started manually.
 
 So you get the main idea of job naming conventions.
 
