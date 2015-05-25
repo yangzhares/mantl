@@ -40,7 +40,3 @@ host-[04:05]
 
 [kafka_scheduler]
 host-[04:05]
-
-# developer hosts
-[dev]
-host-04
