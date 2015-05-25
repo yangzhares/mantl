@@ -20,6 +20,8 @@
         - screen
         - unzip
         - wget
+        - tmux
+        - zsh
 
     # Python 3.3
     - name: Install Software collection utilities package (for Python 3.3)
