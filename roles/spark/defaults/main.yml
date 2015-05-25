@@ -5,3 +5,5 @@ spark_user: "centos"
 spark_install_dir: "/usr/local/share/spark"
 spark_mesos_lib: "/usr/local/lib/libmesos.so"
 zookeeper_master: "zookeeper.service.consul"
+spark_log4j_host: localhost
+spark_log4j_port: 4560

@@ -33,3 +33,13 @@
   command: cp {{ spark_install_dir }}/spark-{{ spark_default_version }}-bin-hadoop{{ spark_default_version < '1.3.1' and '2.4' or '2.6' }}/conf/spark-env.sh /etc/profile.d/spark-env.sh
   tags:
     - spark
+
+- name: Setup Spark log4j properties file
+  sudo: true
+  template:
+    src: "log4j.properties.j2"
+    dest: "{{ spark_install_dir }}/spark-{{ item }}-bin-hadoop{{ item < '1.3.1' and '2.4' or '2.6' }}/conf/log4j.properties"
+    mode: 0775
+  with_items: spark_versions
+  tags:
+    - spark

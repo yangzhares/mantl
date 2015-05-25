@@ -16,6 +16,8 @@ graph processing.
   `/usr/local/lib/libmesos.so`).
 - `zookeeper_master` - Hostname of Zookeeper master (default:
   `zookeeper.service.consul`).
+- `spark_log4j_host` - Hostname for logstash server (default: localhost)
+- `spark_log4j_port` - Port for logstash server (default: 4560)
 
 ## Example Playbook
 
