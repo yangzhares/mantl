@@ -2,13 +2,13 @@
 
 ## Basic branches and purposes
 
-* master: main branch where the source code of HEAD always reflects a production-ready state for CORE services
-* features-master: main branch where the source code of HEAD always reflects a production-ready state for none CORE services
-* qa-features-master-integration: source code of HEAD always reflects a state with the latest delivered development changes for the next release. Some would call this the “integration branch”. This is where any automatic nightly builds are built from.
+* `master`: main branch where the source code of HEAD always reflects a production-ready state for CORE services
+* `features-master`: main branch where the source code of HEAD always reflects a production-ready state for none CORE services
+* `qa\features-master-integration`: source code of HEAD always reflects a state with the latest delivered development changes for the next release. Some would call this the “integration branch”. This is where any automatic nightly builds are built from.
 
 ## features-master - release branch
 
-Merges from: _qa-features-master-integration_
+Merges from: _qa/features-master-integration_
 
 #### Workflow:
 
@@ -19,7 +19,7 @@ Merges from: _qa-features-master-integration_
 	1. Test should include multi data-center deployment
 5. Minimal security check baseon  security check list (TBA)
 
-## qa-features-master-integration - features not in production yet
+## qa/features-master-integration - features not in production yet
 
 #### Workflow:
 
@@ -41,15 +41,15 @@ Main branch.
 
 ## feature/*
 
-Branched from: _master_ or _features-master_
+Branched from: _master_ or _qa/features_master_integration_
 
 #### Workflow:	
 	
 1. Manual testing
-2. Open PR to master or qa-features-master-integration
+2. Open PR to `master` or `qa/features-master-integration`
 3. Get approve from maintainer
 4. Merge  with --no-ff option - no fast forward (for local dev)
-5. Approved features/* branches must be deleted after successfull merge
+5. Approved `features/*` branches must be deleted after successfull merge
 
 ## fix/*
 
@@ -58,7 +58,7 @@ Branched from: _master_ or _features-master_
 #### Workflow:	
 
 1. Manually check testing
-2. Open PR to master and features-master (ci testing)
+2. Open PR to `master` and `features-master` (ci testing)
 3. Get approve from maintainer
-4. features-master - merge with hot fix have to be tagged
-5. master - merge with hot fix have to be tagged
+4. `features-master` - merge with hot fix have to be tagged
+5. `master` - merge with hot fix have to be tagged
