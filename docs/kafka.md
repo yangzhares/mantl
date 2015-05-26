@@ -3,7 +3,7 @@ Short guide about kafka-mesos and kafka usage at MI cluster
 
 ## kafka-mesos.sh
 
-Kafka-mesos.sh utility built to control kafka brokers/server on top of mesos.
+Kafka-mesos.sh utility is built to control kafka brokers/server on top of mesos.
 
 ### Typical operation
 
@@ -36,7 +36,7 @@ Start with creating/provisioning brokers on top of mesos
         resources: cpus:1.00, mem:2048, heap:1024
         failover: delay:10s, max-delay:60s
 
-Now you be able to start specific broker:
+Now you are able to start a specific broker:
 
        $ ./kafka-mesos.sh start 0
        Broker 0 started
@@ -161,4 +161,4 @@ Make SSH connection to any Mesos follower (see your inventory file) using "cento
         message two
 
 
-_Note: If you have each of the above commands (producer and consumer) running in a different terminal then you should be able to type messages into the producer terminal and see them appear in the consumer terminal._
+_Note: If you have each of the above commands (producer and consumer) running in a different terminal then you should be able to type messages into the producer terminal and observe them appear in the consumer terminal._
