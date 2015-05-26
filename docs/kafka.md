@@ -145,7 +145,7 @@ Make SSH connection to any Mesos follower (see your inventory file) using "cento
 
         test
 
-3. Run the producer and then type a few messages into the console. Instead of `<endpoint>` use any kafka broker endpoint received from step 8. It would be something like `host-04:4001` or similar.
+3. Run the producer and then type a few messages into the console. Instead of `<endpoint>` use any kafka broker endpoint received from output of `./kafka-mesos.sh status` command. It would be something like `host-04:4001` or similar.
 
         $ kafka-console-producer.sh --broker-list <endpoint> --topic test
         message one
