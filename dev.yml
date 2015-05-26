@@ -75,4 +75,9 @@
 - hosts: all
   gather_facts: no
   roles:
+    - {role: hdfs-standalone, hdfs_namenode: false, hdfs_datanode: false}
+
+- hosts: all
+  gather_facts: no
+  roles:
     - spark
