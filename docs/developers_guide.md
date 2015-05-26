@@ -23,7 +23,7 @@ Merges from: _qa-features-master-integration_
 
 #### Workflow:
 
-1. Daily rebase from master to get latest changes and keep branch up to date
+1. Daily rebase from master to get latest changes and [keep branch up to date](https://github.com/CiscoCloud/microservices-infrastructure/blob/qa/features-master-integration/docs/keep_branch_up_to_date.md)
 	1. Use automatic CI to start integrity testing for rebase from master, PR from features or personal triggered etc. 
 2. Manual merging by PR after code review by approvers
 
