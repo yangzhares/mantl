@@ -57,9 +57,59 @@ To start test deployment the next few steps have to be done:
 
 # Steps to check issues (if any) during last (current) test
 
-TBD
+Status of job:
+
+- Green ball all seems well, last one build was tested with no issues found
+- Red ball something went wrong with last build, status is build failed
+- Blinking/Fading build is in queue for run or job is running
+
+Open job you want to check (click on the particular link with job name), so you can see status of job.
 
 # Steps to see tests of all pull requests to mater branch and see any issues
 
-TBD
+All builds runs can be found in job build history pane.
+
+Each build has two reports:
+
+- console log which has been taken during the deploy
+- robot-framework testing report
+
+All reports are viewable in case of performed steps and results.
+
+Pull request is triggered and starts running by cronjob, it polls GitHub every 5 min.
+
+Each build has pull request information - number and link to GitHub, so status of testing each PR can be found easily.
+
+After job build is done it updates status of GitHub pull request.
+
+# Robot-framework automated testing
+
+Each job performs after deployment automated testing, gathers and publish reports which is accessible from the Jenkins CI job run page.
+The following components and features are covered by automated testing:
+
+##### Core Components and Features
+
+- [x] Mesos
+	1. verify port :5050 HTML respond
+	1. verify :5050/state.json
+	1. verify :5050/stats.json
+- [x] Consul
+	1. verify if consul service is up and running on each host
+- [ ] Multi-datacenter
+- [ ] High availablity
+- [ ] Rapid immutable deployment (with Terraform + Packer)
+
+##### Mesos Frameworks
+
+- [ ] Marathon
+- [ ] Kubernetes
+- [ ] Kafka
+- [ ] Riak
+- [ ] Cassandra
+- [ ] Elasticsearch
+- [x] HDFS
+	1. upload file to each HDFS
+- [ ] Spark
+- [ ] Storm
+- [ ] Chronos
 
