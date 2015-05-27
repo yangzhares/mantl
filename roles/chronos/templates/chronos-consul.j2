@@ -1,0 +1,11 @@
+{
+  "service": {
+    "name": "chronos",
+    "tags": [ "chronos" ],
+    "port": 18081,
+    "check": {
+      "script": "curl --silent --show-error --fail --dump-header /dev/stderr --retry 2 {% if chronos_http_credentials is defined %}-u {{ chronos_http_credentials }}{% endif %} http://127.0.0.1:18080/ping",
+      "interval": "10s"
+    }
+  }
+}

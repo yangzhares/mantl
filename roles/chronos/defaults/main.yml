@@ -1,0 +1,29 @@
+---
+chronos_zk_auth: "{% if zk_chronos_user_secret is defined %}{{ zk_chronos_user }}:{{ zk_chronos_user_secret }}@{% endif %}"
+chronos_zk_dns: "zookeeper.service.{{ consul_dns_domain }}"
+chronos_zk_port: 2181
+chronos_zk_chroot: chronos
+chronos_zk_connect: "zk://{{ chronos_zk_auth}}{{ chronos_zk_dns }}:{{ chronos_zk_port }}/{{ chronos_zk_chroot }}"
+
+zk_docker_image: "ciscocloud/zookeeper:0.2"
+chronos_zk_acl_world: "world:anyone:cdrwa"
+chronos_zk_acl: "{% if zk_chronos_user_secret is defined %}digest:{{ zk_chronos_user }}:{{ zk_chronos_user_secret_digest}}:cdraw{% endif  %}"
+
+chronos_zk_acl_cmd: "docker run --rm -e ZK_AUTH=super:{{ zk_super_user_secret }} -e ZNODE=/{{ chronos_zk_chroot }} -e ZNODE_ACL={{ chronos_zk_acl_world }},{{ chronos_zk_acl }} -e ZK_SERVER={{ chronos_zk_dns }}:{{ chronos_zk_port }} --entrypoint /usr/local/bin/setacl.sh {{ zk_docker_image }}"
+
+chronos_http_credentials: ""
+chronos_keystore_path: ""
+chronos_keystore_password: ""
+
+chronos_port: 18081
+chronos_proxy_port: 4040
+
+# framework authentication
+chronos_principal: chronos
+chronos_secret: ""
+
+# register service with consul
+consul_bin: /bin/consul
+consul_dir: /etc/consul
+consul_nginx_image: ciscocloud/nginx-consul
+consul_nginx_image_tag: 1.1
