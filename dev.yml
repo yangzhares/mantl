@@ -72,6 +72,34 @@
         name: mesos
         state: present
 
+    - name: Resolve HDFS name node hostname to IP
+      connection: local
+      shell: ping -q -c 1 -t 1 {{ hdfs_namenode_host }} | grep PING | sed -e "s/).*//" | sed -e "s/.*(//"
+      register: hdfs_namenode_ip
+
+    - name: Add HDFS name node to /etc/hosts
+      sudo: true
+      lineinfile:
+        dest: "/etc/hosts"
+        regexp: ".+ {{ hdfs_namenode_host }}$"
+        line: "{{ hdfs_namenode_ip.stdout }} {{ hdfs_namenode_host }}"
+        state: present
+      when: hdfs_namenode_ip.stdout != ''
+
+    - name: Resolve Mesos leader hostname to IP
+      connection: local
+      shell: ping -q -c 1 -t 1 {{ mesos_leader_host }} | grep PING | sed -e "s/).*//" | sed -e "s/.*(//"
+      register: mesos_leader_ip
+
+    - name: Add Mesos leader to /etc/hosts
+      sudo: true
+      lineinfile:
+        dest: "/etc/hosts"
+        regexp: ".+ zookeeper.service.consul$"
+        line: "{{ mesos_leader_ip.stdout }} zookeeper.service.consul"
+        state: present
+      when: mesos_leader_ip.stdout != ''
+
 - hosts: all
   gather_facts: no
   roles:
