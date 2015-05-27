@@ -28,11 +28,11 @@
   gather_facts: no
   roles:
     - consul
-
+    
 - hosts: dc2
   gather_facts: no
   roles:
-    - consul
+    - consul 
 
 - include: playbooks/consul-join-wan.yml
 
@@ -60,11 +60,6 @@
   gather_facts: no
   roles:
     - marathon
-
-- hosts: dc1:&chronos_servers
-  gather_facts: no
-  roles:
-    - chronos
 
 - hosts: dc2:&zookeeper_servers
   gather_facts: no
