@@ -81,3 +81,4 @@
   gather_facts: no
   roles:
     - spark
+    - kafka

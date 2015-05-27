@@ -7,7 +7,7 @@
     timeout: 1800
     delay: 30
   tags:
-    - kafka
+    - kafka-mesos
 
 - name: Add Kafka brockers  
   run_once: true
@@ -16,7 +16,7 @@
   args:
     chdir: "{{ kafka_mesos_install_dir }}"
   tags:
-    - kafka
+    - kafka-mesos
 
 - name: Start Kafka brockers  
   run_once: true
@@ -25,4 +25,4 @@
   args:
     chdir: "{{ kafka_mesos_install_dir }}"
   tags:
-    - kafka
+    - kafka-mesos

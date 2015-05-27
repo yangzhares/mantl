@@ -6,7 +6,7 @@
     src: "kafka.json.j2"
     dest: "/tmp/kafka.json"
   tags:
-    - kafka
+    - kafka-mesos
 
 - name: Deploy Kafka scheduler to marathon  
   run_once: true
@@ -15,5 +15,5 @@
   args:
     chdir: /tmp
   tags:
-    - kafka
+    - kafka-mesos
 
