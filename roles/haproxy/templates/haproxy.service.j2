@@ -18,6 +18,7 @@ ExecStart=/usr/bin/docker run \
     --name=haproxy \
     --net=host \
     --env-file={{ haproxy_env }}  \
+    -v /etc/pki/ca-trust/source/anchors:/usr/local/share/ca-certificates:ro \
     {{ haproxy_image }}:{{ haproxy_image_tag }} 
 
 ExecStop=/usr/bin/docker kill haproxy
