@@ -18,7 +18,7 @@ To purge logs older than 3 days
 ```
 ./hdfs-log-rotate.py -n host-01 -p 8020 -d 3
 ```
-Te test script you can use `--test` parameter
+To test script you can use `--test` parameter
 ```
 ./hdfs-log-rotate.py -n host-01 -p 8020 -d 3 --test
 ```
