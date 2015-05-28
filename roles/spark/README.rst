@@ -1,10 +1,12 @@
-# Spark
+Spark
+=====
 
-[Apache Spark](https://spark.apache.org/) is a fast and general engine for big
+`Apache Spark <https://spark.apache.org/>`_ is a fast and general engine for big
 data processing, with built-in modules for streaming, SQL, machine learning and
 graph processing.
 
-## Variables
+Variables
+---------
 
 - `spark_versions` - Spark versions to be installed (default:
   `["1.2.1", "1.2.2", "1.3.0", "1.3.1"]`).
@@ -19,7 +21,10 @@ graph processing.
 - `spark_log4j_host` - Hostname for logstash server (default: `localhost`).
 - `spark_log4j_port` - Port for logstash server (default: `4560`).
 
-## Example Playbook
+Example Playbook
+----------------
+
+.. code-block:: yaml+jinja
 
     ---
     - hosts: mesos_followers
