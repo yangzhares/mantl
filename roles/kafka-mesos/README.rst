@@ -1,8 +1,10 @@
-# Spark
+Kafka Mesos
+===========
 
-[Apache Kafka](https://kafka.apache.org) is publish-subscribe messaging rethought as a distributed commit log
+`Apache Kafka <https://kafka.apache.org>`_ is a publish-subscribe messaging rethought as a distributed commit log.
 
-## Variables
+Variables
+---------
 
 - `kafka_mesos_install_dir` define folder for kafka-mesos installation. Default: `/usr/local/share/kafka-mesos`
 - `kafka_binary_url`: define URL for kafka binary installation. Default: `https://archive.apache.org/dist/kafka/`
@@ -18,7 +20,10 @@
 - `kafka_broker_heap`: Specify Java heap for broker. Default: `256`
 - `debug_enabled`: enable or disable debug mode for kafka-mesos. Default: `false`
 
-## Example Playbook
+Example Playbook
+----------------
+
+.. code-block:: yaml+jinja
 
     ---
     - hosts: mesos_followers
