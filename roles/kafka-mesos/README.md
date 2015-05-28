@@ -16,7 +16,7 @@
 - `kafka_brokers`: Define number of brokers that will be used in your cluster. Default: 3
 - `kafka_broker_memory`: Specify Java memory setting for broker. Default: 512
 - `kafka_broker_heap`: Specify Java heap for broker. Default: 256 
-- `debug_enabled`: enable or dissable debug mode for kafka-mesos. Default: false
+- `debug_enabled`: enable or disable debug mode for kafka-mesos. Default: false
 
 ## Example Playbook
 
