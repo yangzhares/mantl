@@ -12,3 +12,4 @@ which can be customized, generally using Ansible variables.
    marathon.rst
    mesos.rst
    zookeeper.rst
+   logstash.rst
