@@ -1,17 +1,8 @@
 ---
-
 - name: Setup Kafka environment
   sudo: true
   template:
     src: "kafka.sh.j2"
     dest: "/etc/profile.d/kafka.sh"
-  tags:
-    - kafka
-
-- name: Create Kafka-Mesos configuration
-  sudo: true
-  template:
-    src: "kafka.properties.j2"
-    dest: "{{ kafka_mesos_install_dir }}/kafka-mesos.properties"
   tags:
     - kafka
