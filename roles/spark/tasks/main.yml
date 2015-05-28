@@ -24,17 +24,4 @@
   tags:
     - spark 
 
-- name: Check whether hdfs user exists or not
-  shell: "getent passwd hdfs >/dev/null 2>&1 && echo 'True' || echo 'False'"
-  register: hdfs_exists
-
-- name: Create Spark user home directory on HDFS
-  run_once: true
-  sudo_user: hdfs
-  sudo: true
-  shell: source /etc/profile.d/hadoop.sh; if ! hdfs dfs -test -d /user/{{ spark_user }}; then hdfs dfs -mkdir -p /user/{{ spark_user }}; fi; hdfs dfs -chown {{ spark_user }} /user/{{ spark_user }}
-  when: hdfs_exists.stdout == 'True'
-  tags:
-    - spark
-
 - include: client.yml
