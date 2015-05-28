@@ -4,6 +4,7 @@
   wait_for: 
     host: "{{ ansible_hostname }}"
     port: 7000 
+    timeout: 1800
     delay: 30
   tags:
     - kafka
