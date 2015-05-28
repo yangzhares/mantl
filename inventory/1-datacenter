@@ -38,5 +38,5 @@ host-[04:05]
 [data_nodes]
 host-[04:05]
 
-[kafka_scheduler]
+[kafka]
 host-[04:05]
