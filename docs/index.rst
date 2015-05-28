@@ -10,6 +10,7 @@ Features
 * `Consul`_ for service discovery
 * `Vault`_ for managing secrets
 * `Docker`_ container runtime
+* `Logstash`_ for logs management
 * Multi-datacenter support
 * High availablity
 
@@ -38,6 +39,7 @@ Contents:
 .. _Vault: http://vaultproject.io
 .. _Docker: http://docker.io
 .. _Marathon: https://mesosphere.github.io/marathon/
+.. _Logstash: https://www.elastic.co/products/logstash
 
 
 License
