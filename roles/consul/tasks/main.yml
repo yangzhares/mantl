@@ -99,6 +99,25 @@
   tags:
     - consul
 
+# Enables system moniroting 
+- name: configure consul health check
+  sudo: yes
+  template:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    mode: "{{ item.mode }}"
+  with_items:
+    - src: health-check.json.j2
+      dest: /etc/consul/health-check.json
+      mode: u=rw
+    - src: health-check.sh.j2
+      dest: /usr/local/bin/health-check.sh
+      mode: u=rwx,g=rx,o=rx
+  notify:
+    - reload consul
+  tags:
+    - consul
+
 # Give consul time to elect a leader
 - name: wait for leader
   command: consul-wait-for-leader.sh
