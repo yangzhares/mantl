@@ -22,6 +22,9 @@ host-[01:03]
 [marathon_servers]
 host-[01:03]
 
+[chronos_servers]
+host-[01:03]
+
 [name_node]
 host-01
 
