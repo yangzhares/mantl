@@ -24,4 +24,8 @@ Example Playbook
         - dev
         - {role: hdfs-standalone, hdfs_namenode: false, hdfs_datanode: false}
         - spark
+
+    - hosts: all
+      gather_facts: yes
+      roles:
         - kafka
