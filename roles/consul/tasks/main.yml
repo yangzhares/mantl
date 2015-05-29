@@ -99,7 +99,7 @@
   tags:
     - consul
 
-# Enables system moniroting 
+# Enable system monitoring
 - name: configure consul health check
   sudo: yes
   template:
