@@ -85,3 +85,23 @@
   tags:
     - mesos
 
+- name: install collectd mesos-slave plugin
+  sudo: yes
+  copy:
+    src: mesos-slave.py
+    dest: /usr/share/collectd/plugins
+    mode: u=r
+  tags:
+    - mesos
+    - collectd
+
+- name: configure collectd mesos-slave plugin
+  sudo: yes
+  copy:
+    src: mesos-slave.conf
+    dest: /etc/collectd.d
+  notify:
+    - restart collectd
+  tags:
+    - mesos
+    - collectd
