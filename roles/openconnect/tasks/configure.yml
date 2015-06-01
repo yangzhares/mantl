@@ -1,0 +1,66 @@
+- name: check local server key
+  local_action: stat path="{{ role_path }}/files/server-key.pem"
+  register: local_server_key
+
+- name: check local server cert
+  local_action: stat path="i{{ role_path }}/files/server-cert.pem"
+  register: local_server_cert
+
+- name: copy local server key
+  copy:
+    src: "{{ openconnect_key }}"
+    dest: "{{ openconnect_conf_path }}"
+    mode: 0600
+    owner: root
+    group: root
+  ignore_errors: yes
+  register: copy_server_key
+  when: local_server_key.stat.exists
+
+- name: copy local server cert
+  copy:
+    src: "{{ openconnect_cert }}"
+    dest: "{{ openconnect_conf_path }}"
+    mode: 0644
+    owner: root
+    group: root
+  ignore_errors: yes
+  register: copy_server_cert
+  when: local_server_cert.stat.exists
+
+- include: certificates.yml
+  when: not local_server_key.stat.exists or not local_server_cert.stat.exists
+
+- name: generate users and passwords
+  sudo: yes
+  shell: echo -e "{{ item.password }}\n{{ item.password }}" | (ocpasswd -c /etc/ocserv/ocpasswd {{ item.username }})
+  with_items:
+    - "{{ openconnect_users }}"
+  tags:
+    - openconnect
+
+- name: enable openconnect
+  sudo: yes
+  service:
+    name: ocserv
+    enabled: yes
+  tags:
+    - openconnect
+
+- name: copy config files
+  sudo: yes
+  template:
+    src: ocserv.conf.j2
+    dest: "{{ openconnect_conf_file }}"
+    owner: root
+    group: root
+    mode: 0644
+  notify: reload openconnect
+  tags:
+    - openconnect
+
+- name: be sure openconnect service is started
+  sudo: yes
+  service:
+    name: ocserv 
+    state: started

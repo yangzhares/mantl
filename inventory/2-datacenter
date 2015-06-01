@@ -46,3 +46,7 @@ host-[09:10]
 [proxy_servers]
 host-[04:05]
 host-[09:10]
+
+[vpn_servers]
+host-02
+host-07
