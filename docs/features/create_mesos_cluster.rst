@@ -63,17 +63,17 @@ Step-by-step Guide
 
    *Mesos:*
 
-   Open *https://&lt;any mesos_leader&gt;:5050*
-   Open *https://&lt;any mesos_leader&gt;:5050/state.json*
-   Open *https://&lt;any mesos_leader&gt;:5050/stats.json*
+   Open *https://<any mesos_leader>:5050*
+   Open *https://<any mesos_leader>:5050/state.json*
+   Open *https://<any mesos_leader>:5050/stats.json*
 
    *Consul:*
 
-   Open *https://&lt;any consul_server&gt;:8500* and make sure that all services are passing
+   Open *https://<any consul_server>:8500* and make sure that all services are passing
 
    *Marathon:*
 
-   Open *https://&lt;any marathon_server&gt;:8080*.  Click "+ New App" and create some
+   Open *https://<any marathon_server>:8080*.  Click "+ New App" and create some
    test application (for example, id: "sleep" and command: "sleep 3600").
 
    Note: If in Firefox you encounter "Secure Connection Failed" error, please try
