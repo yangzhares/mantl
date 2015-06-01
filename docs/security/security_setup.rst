@@ -95,6 +95,12 @@ Options
 
    Default: ``True``
 
+.. option:: --chronos
+
+   Enable Chronos security. This overrides all other Chronos options.
+
+   Default: ``True``
+
 .. option:: --iptables
 
    Use iptables rules. This overrides all other options related to iptables.
@@ -214,5 +220,23 @@ Options
 .. option:: --marathon-iptables
 
    enable Marathon iptables rules to restrict access
+
+   default: ``True``
+
+.. option:: --chronos-ssl
+
+   enable Chronos SSL
+
+   default: ``True``
+
+.. option:: --chronos-auth
+
+   enable Chronos authentication
+
+   default: ``True``
+
+.. option:: --chronos-iptables
+
+   enable Chronos iptables rules to restrict access
 
    default: ``True``
