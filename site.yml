@@ -27,7 +27,7 @@
 
 - include: playbooks/consul-join-wan.yml
 
-- hosts: vault_servers
+- hosts: dc1:&vault_servers
   gather_facts: no
   roles:
    - vault
@@ -57,6 +57,16 @@
   roles:
     - chronos
 
+- hosts: dc1:&proxy_servers
+  gather_facts: no
+  roles:
+    - haproxy
+
+- hosts: dc2:&vault_servers
+  gather_facts: no
+  roles:
+   - vault
+
 - hosts: dc2:&zookeeper_servers
   gather_facts: no
   roles:
@@ -81,11 +91,6 @@
   gather_facts: no
   roles:
     - chronos
-
-- hosts: dc1:&proxy_servers
-  gather_facts: no
-  roles:
-    - haproxy
 
 - hosts: dc2:&proxy_servers
   gather_facts: no
