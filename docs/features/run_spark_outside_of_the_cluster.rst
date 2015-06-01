@@ -4,7 +4,12 @@ Run Spark Outside of the Cluster
 Purpose
 -------
 
-Run a Spark job from a client machine outside of the cluster created using existing instructions.
+Run a Spark job from a client machine outside of the cluster.
+
+Pre-requisites
+--------------
+
+All steps from `Create Mesos Cluster <create_mesos_cluster.rst>`_ have been done.
 
 Step-by-step Guide
 ------------------
