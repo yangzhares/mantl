@@ -43,3 +43,6 @@ host-[04:05]
 
 [kafka]
 host-[04:05]
+
+[vpn_servers]
+host-02

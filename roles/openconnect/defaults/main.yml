@@ -1,0 +1,37 @@
+---
+
+openconnect_conf_path: /etc/ocserv
+openconnect_passwd_file: "{{ openconnect_conf_path }}/ocpasswd"
+openconnect_conf_file: "{{ openconnect_conf_path }}/ocserv.conf"
+openconnect_user: ocserv
+openconnect_group: ocserv
+openconnect_tcp_port: 443
+openconnect_udp_port: 443
+openconnect_chroot: /var/lib/ocserv
+
+openconnect_cert:  server-cert.pem
+openconnect_key: server-key.pem
+
+openconnect_ca_cert:  ca-cert.pem
+openconnect_ca_key: ca-key.pem
+
+openconnect_cert_path:  "{{ openconnect_conf_path }}/{{ openconnect_cert }}"
+openconnect_key_path: "{{ openconnect_conf_path }}/{{ openconnect_key }}"
+
+openconnect_ca_cert_path:  "{{ openconnect_conf_path }}/{{ openconnect_ca_cert }}"
+openconnect_ca_key_path: "{{ openconnect_conf_path }}/{{ openconnect_ca_key }}"
+
+openconnect_ca_template: "{{ openconnect_conf_path }}/ca.tmpl"
+openconnect_server_template: "{{ openconnect_conf_path }}/server.tmpl"
+openconnect_cert_gen_script: "{{ openconnect_conf_path }}/gen_certs.sh"
+
+openconnect_int_net: 192.168.253.0
+openconnect_int_mask: 255.255.255.0
+openconnect_dns: 8.8.8.8
+
+openconnect_org: "Example Inc."
+
+openconnect_route_list: [ "{{ ansible_default_ipv4.network }}/{{ ansible_default_ipv4.netmask }}" ]
+
+openconnect_users:
+  - {username: test, password: pass}
