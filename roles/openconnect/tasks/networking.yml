@@ -1,5 +1,4 @@
 ---
-
 - name: enable ipv4 forwarding
   sudo: yes
   sysctl:
