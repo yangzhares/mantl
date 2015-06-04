@@ -15,10 +15,32 @@
     - nano
     - vim
     - screen
+    - bzip2
+    - ncompress
     - unzip
     - wget
     - tmux
     - zsh
+
+# p7zip
+- name: p7zip repository package
+  sudo: true
+  yum:
+    name: http://packages.sw.be/rpmforge-release/rpmforge-release-0.5.2-2.el6.rf.i686.rpm
+    state: present
+
+- name: Install p7zip package
+  sudo: true
+  yum:
+    name: p7zip
+    state: present
+
+# RAR
+- name: Install RAR package
+  sudo: true
+  yum:
+    name: http://pkgs.repoforge.org/rar/rar-3.8.0-1.el6.rf.x86_64.rpm
+    state: present
 
 # Python 3.3
 - name: Install Software collection utilities package (for Python 3.3)
@@ -79,7 +101,6 @@
   connection: local
   shell: ping -q -c 1 -t 1 {{ hdfs_namenode_host }} | grep PING | sed -e "s/).*//" | sed -e "s/.*(//"
   register: hdfs_namenode_ip
-  when: hdfs_namenode_resolved.stdout == ''
 
 - name: Add HDFS name node to /etc/hosts
   sudo: true
@@ -88,7 +109,7 @@
     regexp: ".+ {{ hdfs_namenode_host }}$"
     line: "{{ hdfs_namenode_ip.stdout }} {{ hdfs_namenode_host }}"
     state: present
-  when: hdfs_namenode_ip is defined and hdfs_namenode_ip.stdout != ''
+  when: hdfs_namenode_ip.stdout != '' and hdfs_namenode_ip.stdout != hdfs_namenode_resolved.stdout
 
 - name: Try to resolve zookeeper.service.consul on the machine
   sudo: true
@@ -99,7 +120,6 @@
   connection: local
   shell: ping -q -c 1 -t 1 {{ mesos_leader_host }} | grep PING | sed -e "s/).*//" | sed -e "s/.*(//"
   register: mesos_leader_ip
-  when: mesos_leader_resolved.stdout == ''
 
 - name: Add Mesos leader to /etc/hosts
   sudo: true
@@ -108,4 +128,11 @@
     regexp: ".+ zookeeper.service.consul$"
     line: "{{ mesos_leader_ip.stdout }} zookeeper.service.consul"
     state: present
-  when: mesos_leader_ip is defined and mesos_leader_ip.stdout != ''
+  when: mesos_leader_ip.stdout != '' and mesos_leader_ip.stdout != mesos_leader_resolved.stdout
+
+- name: Put fetch2hdfs.sh
+  sudo: true
+  template:
+    src: "fetch2hdfs.sh"
+    dest: "/usr/local/bin/fetch2hdfs.sh"
+    mode: 0775
