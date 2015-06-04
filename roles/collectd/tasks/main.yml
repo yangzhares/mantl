@@ -7,6 +7,20 @@
   tags:
     - collectd
 
+- name: create collectd config directory
+  sudo: yes
+  file:
+    path: {{ item }}
+    state: directory
+    mode: 0755
+  with_items:
+    - /etc/collectd/conf.d/
+    - /etc/collect.d
+
+  tags:
+    - collectd
+(/etc/collectd/conf.d/
+
 - name: create collectd plugin directory
   sudo: yes
   file:
