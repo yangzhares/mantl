@@ -20,19 +20,19 @@ fetch2hdfs_file () {
 
     if [ $EXTRACT = 1 ] ; then
         case "$FILE" in
-            *.tar.bz2)   tar xvjf "$FILE"; rm "$FILE"   ;;
-            *.tar.xz)    tar xvJf "$FILE"; rm "$FILE"   ;;
-            *.tar.gz)    tar xvzf "$FILE"; rm "$FILE"   ;;
-            *.bz2)       bunzip2 "$FILE"; rm "$FILE"    ;;
-            *.rar)       rar x "$FILE"; rm "$FILE"      ;;
-            *.gz)        gunzip "$FILE"; rm "$FILE"     ;;
-            *.tar)       tar xvf "$FILE"; rm "$FILE"    ;;
-            *.tbz2)      tar xvjf "$FILE"; rm "$FILE"   ;;
-            *.tgz)       tar xvzf "$FILE"; rm "$FILE"   ;;
-            *.zip)       unzip "$FILE"; rm "$FILE"      ;;
-            *.Z)         uncompress "$FILE"; rm "$FILE" ;;
-            *.7z)        7za x "$FILE"; rm "$FILE"      ;;
-            *.a)         ar x "$FILE"; rm "$FILE"       ;;
+            *.tar.bz2)   tar xvjf "$FILE"; rm -f "$FILE"   ;;
+            *.tar.xz)    tar xvJf "$FILE"; rm -f "$FILE"   ;;
+            *.tar.gz)    tar xvzf "$FILE"; rm -f "$FILE"   ;;
+            *.bz2)       bunzip2 "$FILE"; rm -f "$FILE"    ;;
+            *.rar)       rar x "$FILE"; rm -f "$FILE"      ;;
+            *.gz)        gunzip "$FILE"; rm -f "$FILE"     ;;
+            *.tar)       tar xvf "$FILE"; rm -f "$FILE"    ;;
+            *.tbz2)      tar xvjf "$FILE"; rm -f "$FILE"   ;;
+            *.tgz)       tar xvzf "$FILE"; rm -f "$FILE"   ;;
+            *.zip)       unzip "$FILE"; rm -f "$FILE"      ;;
+            *.Z)         uncompress "$FILE"; rm -f "$FILE" ;;
+            *.7z)        7za x "$FILE"; rm -f "$FILE"      ;;
+            *.a)         ar x "$FILE"; rm -f "$FILE"       ;;
         esac
     fi
 
