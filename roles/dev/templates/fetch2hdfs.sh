@@ -8,7 +8,7 @@ fetch2hdfs_file () {
     rm -rf $FOLDER
     mkdir $FOLDER
     cd $FOLDER
-    curl -O "$URL"
+    curl -O -J -L "$URL"
     FILE=`ls`
 
     if [ ! "$FILE" ] ; then
