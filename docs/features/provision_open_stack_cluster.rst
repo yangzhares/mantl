@@ -75,7 +75,7 @@ Step-by-step Guide
 
 6. Save OpenStack settings in a datacenter file:
 
-   Go to `inventory/group_vars` folder and edit either `dc1` or `dc2` (at the moment
+   Go to `inventory/group_vars` folder and edit `dc1` (at the moment
    it's not possible to use files with your own names).  Set "os_auth_url",
    "os_tenant_name" and "os_tenant_id" using the values from OpenStack RC-file that
    you got in step 3 (see its content).  Set "os_net_id" to the "id" of the chosen
@@ -83,8 +83,8 @@ Step-by-step Guide
 
 7. Create inventory file:
 
-   Go to `inventory` folder and either edit existing `1-datacenter` or `2-datacenter`
-   or create a new file using one of them as a template.  Update the number of hosts
+   Go to `inventory` folder and either edit existing `1-datacenter` file
+   or create a new file using that file as a template.  Update the number of hosts
    and their hostnames if needed.  Update datacenters if needed.
 
 8. Update the flavor of the instances if needed:
@@ -101,18 +101,6 @@ Step-by-step Guide
 
         ansible-playbook -i inventory/<your inventory file> openstack/provision-nova-key.yml
 
-   Note: When you add a keypair with Nova, it's being added for all tenants in the
-   current zone.  That is why if you see that the default "ansible_key" is already
-   present in the system, don't remove or alter it.  Otherwise, someone will lose
-   access to his or her environment. Instead, it has been agreed for our team to use
-   the shared gluon private key (and the corresponding public key) for all deployments.
-   Here are links to the keys::
-
-        http://gitlab.cisco.com/ccs-bdaas-projects/ccs-bdaas/blob/master/CCS-GLUON/id_rsa_gluonmi
-        http://gitlab.cisco.com/ccs-bdaas-projects/ccs-bdaas/blob/master/CCS-GLUON/id_rsa_gluonmi.pub
-
-   You need to put them as id_rsa and id_rsa.pub in your $HOME/.ssh directory on the gluon host.
-
 10. Provision hosts::
 
         ansible-playbook -i inventory/<your inventory file> openstack/provision-hosts.yml
@@ -128,18 +116,3 @@ Step-by-step Guide
     `/etc/hosts`, otherwise you won't be able to access them.  To do that just copy the content
     of `hosts.merge` (it should be created by `openstack/provision-hosts.yml`) into `/etc/hosts`.
     When you destroy the cluster, don't forget to remove them from `/etc/hosts`.
-
-Demo Environment
-----------------
-
-It should be always working and ready for demos::
-
-        CCS-MI-US-INTERNAL-1-CI-1
-
-        host-01 ansible_ssh_host=10.203.30.29
-        host-02 ansible_ssh_host=10.203.30.31
-        host-03 ansible_ssh_host=10.203.30.37
-        host-04 ansible_ssh_host=10.203.30.35
-        host-05 ansible_ssh_host=10.203.30.30
-
-Use the gluon private key to ssh to the hosts.
