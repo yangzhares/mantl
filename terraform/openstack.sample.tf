@@ -29,5 +29,5 @@ module "dc2-volumes" {
         region = "${ module.dc2-keypair.region }"
         volume_size = ""
         short_name = ""
-        volume_count = ""
+        volume_count = "${ module.dc2-hosts.control_count + module.dc2-hosts.resource_count }"
 }

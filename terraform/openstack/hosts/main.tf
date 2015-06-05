@@ -43,3 +43,10 @@ resource "openstack_compute_instance_v2" "resource" {
   count			= "${ var.resource_count }"
 }
 
+output "control_count" {
+  value = "${ openstack_compute_instance_v2.control_count }"
+}
+
+output "resource_count" {
+  value = "${ openstack_compute_instance_v2.resource_count }"
+}
