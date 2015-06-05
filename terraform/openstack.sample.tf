@@ -24,3 +24,10 @@ module "dc2-hosts" {
 	security_groups = "default"
 }
 
+module "dc2-volumes" {
+        source = "./terraform/openstack/volume"
+        region = "${ module.dc2-keypair.region }"
+        volume_size = ""
+        short_name = ""
+        volume_count = ""
+}
