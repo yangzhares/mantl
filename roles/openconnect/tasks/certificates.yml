@@ -1,0 +1,52 @@
+- name: copy ca certificate template
+  sudo: yes
+  template:
+    src: ca.tmpl.j2
+    dest: "{{ openconnect_ca_template }}"
+    owner: root
+    group: root
+    mode: 0644
+  register: ca_template
+  tags:
+    - openconnect
+
+- name: copy server certificate template
+  sudo: yes
+  template:
+    src: server.tmpl.j2
+    dest: "{{ openconnect_server_template }}"
+    owner: root
+    group: root
+    mode: 0644
+  register: server_template
+  tags:
+    - openconnect
+
+- name: check server key file
+  stat:
+    path: "{{ openconnect_key_path }}"
+  register: key_file
+
+- name: check server cert file
+  stat:
+    path: "{{ openconnect_cert_path }}"
+  register: cert_file
+
+- name: copy certificate generation script
+  sudo: yes
+  template:
+    src: gen_certs.sh.j2
+    dest: "{{ openconnect_cert_gen_script }}"
+    owner: root
+    group: root
+    mode: 0755
+  tags:
+    - openconnect
+
+- name: generate certificates
+  sudo: yes
+  command: "{{ openconnect_cert_gen_script }}"
+  when: server_template.changed or ca_template.changed or not cert_file.stat.exists or not key_file.stat.exists
+  notify: restart openconnect
+  tags:
+    - openconnect

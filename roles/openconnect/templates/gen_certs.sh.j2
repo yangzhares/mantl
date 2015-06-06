@@ -1,0 +1,12 @@
+#! /bin/bash
+
+certtool --generate-privkey --outfile {{ openconnect_ca_key_path}}
+certtool --generate-self-signed --load-privkey {{ openconnect_ca_key_path }} \
+  --template {{ openconnect_conf_path }}/ca.tmpl \
+  --outfile  {{ openconnect_ca_cert_path }}
+certtool --generate-privkey --outfile  {{openconnect_key_path}}
+certtool --generate-certificate --load-privkey {{ openconnect_key_path }} \
+  --load-ca-certificate {{ openconnect_ca_cert_path }} \
+  --load-ca-privkey {{ openconnect_ca_key_path }} \
+  --template {{ openconnect_conf_path }}/server.tmpl \
+  --outfile {{ openconnect_cert_path }}

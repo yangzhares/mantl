@@ -47,3 +47,7 @@ host-01
 
 [data_nodes]
 host-[04:07]
+
+# vpn
+[vpn_servers]
+host-02

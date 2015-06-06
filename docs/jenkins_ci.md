@@ -90,18 +90,23 @@ The following components and features are covered by automated testing:
 ##### Core Components and Features
 
 - [x] Mesos
-	1. verify port :5050 HTML respond
-	1. verify :5050/state.json
-	1. verify :5050/stats.json
+	1. verify HTML respond on port :5050
+	2. verify state :5050/state.json
+	3. verify status :5050/stats.json
 - [x] Consul
 	1. verify if consul service is up and running on each host
+	2. get catalog/services list
+	3. verify catalog/services if status is "passing"  
 - [ ] Multi-datacenter
 - [ ] High availablity
 - [ ] Rapid immutable deployment (with Terraform + Packer)
 
 ##### Mesos Frameworks
 
-- [ ] Marathon
+- [x] Marathon
+	1. create test app "sleep 3600" using REST API
+	2. verify app status using REST API
+	3. delete app using REST API
 - [ ] Kubernetes
 - [ ] Kafka
 - [ ] Riak
@@ -109,7 +114,10 @@ The following components and features are covered by automated testing:
 - [ ] Elasticsearch
 - [x] HDFS
 	1. upload file to each HDFS
+	2. remove file from each HDFS
 - [ ] Spark
 - [ ] Storm
 - [ ] Chronos
+- [x] Logstash
+	1. verify if collectd service is up and running on each host
 
