@@ -33,11 +33,11 @@
   tags:
     - hdfs
 
-- name: Create home directory for centos user on HDFS
+- name: Create home directory for the default Linux user on HDFS
   run_once: true
   sudo_user: hdfs
   sudo: true
-  shell: source /etc/profile.d/hadoop.sh; if ! hdfs dfs -test -d /user/centos; then hdfs dfs -mkdir -p /user/centos; fi; hdfs dfs -chown centos /user/centos
+  shell: source /etc/profile.d/hadoop.sh; if ! hdfs dfs -test -d /user/{{ ansible_user_id }}; then hdfs dfs -mkdir -p /user/{{ ansible_user_id }}; fi; hdfs dfs -chown {{ ansible_user_id }} /user/{{ ansible_user_id }}
   tags:
     - hdfs
 
