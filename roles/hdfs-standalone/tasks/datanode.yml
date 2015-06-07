@@ -1,4 +1,14 @@
 ---
+- name: Spread authorization key
+  sudo_user: hdfs
+  sudo: true
+  authorized_key:
+    user: hdfs
+    key: "{{ lookup('file', '/tmp/id_rsa.pub') }}"
+    state: present
+  tags:
+    - hdfs
+
 - name: Create Hadoop HDFS data node directories
   sudo: true
   file: 

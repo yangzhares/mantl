@@ -10,6 +10,35 @@
   tags:
     - hdfs
 
+- name: Downloading pub key
+  sudo: true
+  sudo_user: hdfs
+  fetch: 
+    src: "/home/hdfs/.ssh/id_rsa.pub"
+    dest: "/tmp/id_rsa.pub"
+    flat: yes
+  register: fetch_public_key
+  tags:
+    - hdfs
+
+- name: Spread authorization key
+  sudo_user: hdfs
+  sudo: true
+  authorized_key:
+    user: hdfs
+    key: "{{ lookup('file', '/tmp/id_rsa.pub') }}"
+    state: present
+  tags:
+    - hdfs
+
+- name: Create HDFS slaves files
+  sudo: true
+  template:
+    src: "slaves.j2"
+    dest: "{{ hdfs_conf_dir }}/slaves"
+  tags:
+    - hdfs
+
 - name: Format HDFS name node data directories
   sudo_user: hdfs
   sudo: true
