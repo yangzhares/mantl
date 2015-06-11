@@ -1,5 +1,5 @@
 - hosts: all
-  gather_facts: no
+  gather_facts: yes
   roles:
     - dev
     - {role: hdfs-standalone, hdfs_namenode: false, hdfs_datanode: false}

@@ -134,5 +134,25 @@
   sudo: true
   template:
     src: "fetch2hdfs.sh"
-    dest: "/usr/local/bin/fetch2hdfs.sh"
+    dest: "/usr/sbin/fetch2hdfs.sh"
     mode: 0775
+
+- name: Create .ssh directory
+  sudo: true
+  file:
+    path: /home/{{ ansible_user_id }}/.ssh
+    owner: "{{ ansible_user_id }}"
+    group: "{{ ansible_user_id }}"
+    mode: 0700
+    state: directory
+  when: private_key is defined
+
+- name: Put the private key
+  sudo: true
+  copy:
+    src: "{{ private_key }}"
+    dest: /home/{{ ansible_user_id }}/.ssh/id_rsa
+    owner: "{{ ansible_user_id }}"
+    group: "{{ ansible_user_id }}"
+    mode: 0600
+  when: private_key is defined
