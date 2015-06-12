@@ -31,12 +31,6 @@
   tags:
     - bootstrap
 
-- name: disable firewalld
-  sudo: yes
-  service:
-    name: firewalld
-    enabled: false
-    state: stopped
 
 - name: enable EPEL repo
   sudo: yes
@@ -58,6 +52,11 @@
   with_items:
     - name: pip
     - name: setuptools
+
+- name: ensure xt_set iptables module is loaded.
+  modprobe:
+     name: xt_set
+     state: present
 
 - include: users.yml
 - include: ssl.yml
