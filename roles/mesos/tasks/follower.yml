@@ -121,6 +121,7 @@
     dest: /etc/sysconfig/mesos-slave
     line: DOCKER_HOST=localhost:2377
     state: present
+    create: yes
   notify: restart mesos follower
   tags:
     - mesos
@@ -128,7 +129,7 @@
 - name: configure mesos systemd unit for networking integration
   sudo: yes
   lineinfile:
-    dest: /etc/sysconfig/mesos-slave
+    dest: /lib/systemd/system/mesos-slave.service
     insertafter: ^ExecStart
     line: EnvironmentFile=-/etc/sysconfig/mesos-slave
     state: present
