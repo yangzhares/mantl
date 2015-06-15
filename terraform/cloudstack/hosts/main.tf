@@ -12,6 +12,7 @@ variable zone { default = "dc1" }
 variable short_name { default = "mi" }
 variable control_name { }
 variable worker_name { }
+variable keypair_name { }
 
 provider "cloudstack" {
   api_url   = "${ var.api_url }"
@@ -26,6 +27,7 @@ resource "cloudstack_instance" "mi-control-nodes" {
   control_name = "${ var.short_name }-control-${ format("%02d", count.index+1) }"
   network = "${ var.network_id }"
   count = "${ var.control_count }"
+  keypair = ${ var.keypair_name }
 }
 
 resource "cloudstack_instance" "mi-worker-nodes" {
@@ -35,4 +37,5 @@ resource "cloudstack_instance" "mi-worker-nodes" {
   worker_name = "${ var.short_name }-worker-${ format("%02d", count.index+1) }"
   network = "${ var.network_id }"
   count = "${ var.worker_count }"
+  keypair = ${ var.keypair_name }
 }

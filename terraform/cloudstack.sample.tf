@@ -3,8 +3,7 @@ module "cs-keypair" {
   api_url = ""
   api_key = ""
   secret_key = ""
-  short_name = ""
-  public_key_filename = ""
+  keypair_name = ""
 }
 
 module "cs-hosts" {

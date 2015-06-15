@@ -2,7 +2,7 @@
 variable api_url { }
 variable api_key { }
 variable secret_key { }
-variable short_name { default = "mi" }
+variable keypair_name { default = "mi" }
 variable public_key_filename { default = "~/.ssh/id_rsa.pub" }
 
 provider "cloudstack" {
@@ -13,11 +13,11 @@ provider "cloudstack" {
 
 # create resources
 resource "cloudstack_ssh_keypair" "default" {
-  name = "${var.short_name}-key"
+  name = "${var.keypair_name}"
   public_key = "${file(var.public_key_filename)}"
 }
 
 # output variables
 output "keypair_name" {
-  value = "${cloudstack_ssh_keypair.default.id}"
+  value = "${cloudstack_ssh_keypair.default.name}"
 }
