@@ -33,3 +33,10 @@ request.
    For this to work, you need to have a wildcard dns entry for
    ``*.example.com``, so when your browser goes to ``http://myapp.example.com``,
    your DNS settings forward that traffic to one of the nodes running haproxy.
+
+.. data:: haproxy_mode
+
+   default: ``marathon``
+
+   haproxy-consul can either pull app state from Consul services or Marathon
+   tasks, this chooses between them. Valid values: ``marathon`` and ``consul``.
