@@ -10,7 +10,6 @@ Variables
 - `hdfs_conf_dir` - Configuration directory for HDFS (default: `/etc/hadoop/conf`)
 - `hdfs_install_dir` - Directory where to install HDFS (default: `/usr/local/share`)
 - `hdfs_namenode_port` - Port of the HDFS name node (default: `8020`)
-- `hdfs_namenode_host` - Default host of the HDFS name node (don't change its value)
 - `hdfs_hadoop_opts` - Extra Java runtime options for Hadoop (default: `-Djava.net.preferIPv4Stack=true`)
 - `hdfs_properties` - A list of properties for `hdfs-site.xml` configuration file on the name node
 

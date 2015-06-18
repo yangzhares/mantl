@@ -64,7 +64,9 @@ Step-by-step Guide
    *Mesos:*
 
    Open *https://<any mesos_leader>:5050*
+
    Open *https://<any mesos_leader>:5050/state.json*
+
    Open *https://<any mesos_leader>:5050/stats.json*
 
    *Consul:*
@@ -81,7 +83,7 @@ Step-by-step Guide
 
 7. Verify HDFS:
 
-   Make SSH connection to any Mesos follower (see your inventory file) using
+   Make SSH connection to any edge node (see "dev" role in your inventory file) using
    "centos" user and run::
 
         hdfs dfs -ls /
@@ -101,7 +103,7 @@ Step-by-step Guide
 
 8. Verify Spark:
 
-   Make SSH connection to any Mesos follower (see your inventory file) using
+   Make SSH connection to any edge node (see "dev" role in your inventory file) using
    "centos" user and run::
 
         spark-shell
@@ -155,7 +157,7 @@ Step-by-step Guide
 
 9. Verify Kafka-mesos utility:
 
-   Make SSH connection to any Mesos follower (see your inventory file)
+   Make SSH connection to any edge node (see "dev" role in your inventory file)
    using "centos" user and run::
 
         cd /usr/local/share/kafka-mesos
@@ -178,18 +180,18 @@ Step-by-step Guide
             task:
               id: broker-0-67e702ad-c719-493e-8e19-95ecb8151dec
               state: running
-              endpoint: aomelian-ci-host-04:4001
-              attributes: node_id=aomelian-ci-host-04
+              endpoint: host-04:4001
+              attributes: node_id=host-04
         
         <next output is omitted>
 
-   Note: amount of Kafka brokers and their mem/heap values depends on configuration
+   Note: amount of Kafka brokers and their mem/heap values depend on configuration
    file `roles/kafka/defaults/main.yml` inside your project directory.
 
 10. Verify basic Kafka functionality:
 
-    Make SSH connection to any Mesos follower (see your inventory file) using "centos" user. 
-    Create a topic named "test" with a single partition and one replica::
+    Make SSH connection to any edge node (see "dev" role in your inventory file)
+    using "centos" user.  Create a topic named "test" with a single partition and one replica::
 
         kafka-topics.sh --create --zookeeper zookeeper.service.consul:2181 --replication-factor 1 --partitions 1 --topic test
 
@@ -206,7 +208,7 @@ Step-by-step Guide
         test
 
     Run the producer and then type a few messages into the console.  Instead of
-    `<endpoint>` use any Kafka broker endpoint received from step 8.  It would be
+    `<endpoint>` use any Kafka broker endpoint received from step 9.  It would be
     something like `host-04:4001` or similar::
 
         kafka-console-producer.sh --broker-list <endpoint> --topic test

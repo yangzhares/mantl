@@ -1,10 +1,10 @@
 # all
 [all]
-host-[01:07]
+host-[01:08]
 
 # datacenters
 [dc1]
-host-[01:07]
+host-[01:08]
 
 # control
 [vault_servers]
@@ -47,6 +47,10 @@ host-01
 
 [data_nodes]
 host-[04:07]
+
+#dev
+[dev]
+host-08
 
 # vpn
 [vpn_servers]

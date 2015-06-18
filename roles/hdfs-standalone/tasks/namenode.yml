@@ -1,21 +1,14 @@
 ---
-- name: Create Hadoop HDFS name node directories
-  sudo: true
-  file:
-    path: "/dfs/nn"
-    owner: hdfs
-    group: hdfs
-    state: directory
-  register: created_hdfs_namenode_data_dir
-  tags:
-    - hdfs
+- name: Get the local username
+  local_action: command whoami
+  register: local_username
 
-- name: Downloading pub key
+- name: Downloading a public key
   sudo: true
   sudo_user: hdfs
   fetch: 
     src: "/home/hdfs/.ssh/id_rsa.pub"
-    dest: "/tmp/id_rsa.pub"
+    dest: "/tmp/id_rsa.pub.{{ local_username.stdout }}"
     flat: yes
   register: fetch_public_key
   tags:
@@ -26,16 +19,27 @@
   sudo: true
   authorized_key:
     user: hdfs
-    key: "{{ lookup('file', '/tmp/id_rsa.pub') }}"
+    key: "{{ lookup('file', '/tmp/id_rsa.pub.%s' % local_username.stdout) }}"
     state: present
   tags:
     - hdfs
 
-- name: Create HDFS slaves files
+- name: Create HDFS slaves file
   sudo: true
   template:
     src: "slaves.j2"
     dest: "{{ hdfs_conf_dir }}/slaves"
+  tags:
+    - hdfs
+
+- name: Create Hadoop HDFS name node directories
+  sudo: true
+  file:
+    path: "/dfs/nn"
+    owner: hdfs
+    group: hdfs
+    state: directory
+  register: created_hdfs_namenode_data_dir
   tags:
     - hdfs
 
