@@ -17,14 +17,14 @@ Example Playbook
 .. code-block:: yaml+jinja
 
     ---
-    - hosts: dc1:&dev
+    - hosts: dev
       gather_facts: no
       roles:
         - dev
         - {role: hdfs-standalone, hdfs_namenode: false, hdfs_datanode: false}
         - spark
 
-    - hosts: dc1:&dev
+    - hosts: dev
       gather_facts: yes
       roles:
         - kafka
