@@ -1,4 +1,16 @@
 ---
+- name: Install Mesosphere repository package
+  sudo: true
+  yum:
+    name: http://repos.mesosphere.io/el/7/noarch/RPMS/mesosphere-el-repo-7-1.noarch.rpm
+    state: present
+
+- name: Install Mesos package
+  sudo: true
+  yum:
+    name: mesos
+    state: present
+
 - name: Unarchive Spark binaries
   sudo: true
   unarchive:

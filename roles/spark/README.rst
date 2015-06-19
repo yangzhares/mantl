@@ -26,7 +26,7 @@ Example Playbook
 .. code-block:: yaml+jinja
 
     ---
-    - hosts: mesos_followers
+    - hosts: spark
       gather_facts: no
       roles:
         - spark

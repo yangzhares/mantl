@@ -1,10 +1,14 @@
 ---
+- name: Get the local username
+  local_action: command whoami
+  register: local_username
+
 - name: Spread authorization key
   sudo_user: hdfs
   sudo: true
   authorized_key:
     user: hdfs
-    key: "{{ lookup('file', '/tmp/id_rsa.pub') }}"
+    key: "{{ lookup('file', '/tmp/id_rsa.pub.%s' % local_username.stdout) }}"
     state: present
   tags:
     - hdfs

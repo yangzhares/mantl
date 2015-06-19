@@ -1,11 +1,25 @@
-- hosts: all
-  gather_facts: yes
+# DC1
+- hosts: dc1:&dev
+  gather_facts: no
   roles:
     - dev
     - {role: hdfs-standalone, hdfs_namenode: false, hdfs_datanode: false}
     - spark
 
-- hosts: all
+- hosts: dc1:&dev
+  gather_facts: yes
+  roles:
+    - kafka
+
+# DC2
+- hosts: dc2:&dev
+  gather_facts: no
+  roles:
+    - dev
+    - {role: hdfs-standalone, hdfs_namenode: false, hdfs_datanode: false}
+    - spark
+
+- hosts: dc2:&dev
   gather_facts: yes
   roles:
     - kafka

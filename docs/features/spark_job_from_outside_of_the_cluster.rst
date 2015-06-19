@@ -1,5 +1,5 @@
-Launch a Spark Job from Outside of the Cluster
-==============================================
+Launch a Spark Job from Outside of the Cluster [DEPRECATED]
+===========================================================
 
 Purpose
 -------
