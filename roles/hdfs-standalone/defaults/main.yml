@@ -1,7 +1,7 @@
 ---
 hdfs_version: "2.6.0"
 hdfs_conf_dir: "/etc/hadoop/conf"
-hdfs_install_dir: "/usr/local/share"
+hdfs_install_dir: "/opt"
 hdfs_namenode_port: 8020
 hdfs_hadoop_opts: "-Djava.net.preferIPv4Stack=true"
 hdfs_properties:
