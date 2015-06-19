@@ -1,0 +1,19 @@
+variable auth_url { default = "https://us-internal-1.cloud.cisco.com:5000/v2.0" }
+variable datacenter { default = "dc2" }
+variable tenant_id { default = "fc86ff9d79cd4440aeb35f2a1004a6cc" }
+variable tenant_name { default = "CCS-MI-US-INTERNAL-1-QA-3" }
+variable flavor_name { default = "Micro-Small" }
+variable image_name { default = "centos-7_x86_64-2015-01-27-v6" }
+variable security_groups { default = "default" }
+variable floating_pool { default = "public-floating-601" }
+variable floating_ip_count { default = 3 }
+variable external_net_id { default = "ca80ff29-4f29-49a5-aa22-549f31b09268" }
+variable subnet_cidr { default = "10.10.10.0/24" }
+variable ip_version { default = "4" }
+variable short_name { default = "mi" }
+variable instance_name { default = {
+                                "0" = "test04"
+                                "1" = "test05"
+                                "2" = "test08"
+}}
+variable instance_count { default = 4 }

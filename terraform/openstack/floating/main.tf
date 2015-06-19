@@ -1,19 +1,3 @@
-variable auth_url { }
-variable datacenter { default = "openstack" }
-variable tenant_id { }
-variable tenant_name { }
-variable flavor_name { }
-variable image_name { }
-variable security_groups { default = "default" }
-variable floating_pool {}
-variable floating_ip_count {}
-variable external_net_id { }
-variable subnet_cidr { default = "10.10.10.0/24" }
-variable ip_version { default = "4" }
-variable short_name { default = "mi" }
-variable instance_name { }
-variable long_name { default = "microservices-infrastructure" }
-
 provider "openstack" {
   auth_url      = "${ var.auth_url }"
   tenant_id     = "${ var.tenant_id }"
@@ -23,7 +7,7 @@ provider "openstack" {
 resource "openstack_compute_instance_v2" "control" {
   floating_ip = "${ element(openstack_compute_floatingip_v2.ms-control-floatip.*.address, count.index) }"
   # name                  = "${ var.instance_name }"
-  name                  = "${split(",", var.instance_name)}"
+  name                  = "${lookup(var.instance_name, count.index)}"
   image_name            = "${ var.image_name }"
   flavor_name           = "${ var.flavor_name }"
   security_groups       = [ "${ var.security_groups }" ]
@@ -32,6 +16,7 @@ resource "openstack_compute_instance_v2" "control" {
                             dc = "${var.datacenter}"
                             role = "control"
                           }
+  count                 = "${ var.instance_count }"
 }
 
 resource "openstack_compute_floatingip_v2" "ms-control-floatip" {
@@ -47,7 +32,7 @@ resource "openstack_networking_network_v2" "ms-network" {
 }
 
 resource "openstack_networking_subnet_v2" "ms-subnet" {
-  name          ="${ var.short_name }-subnet"
+  name          = "${ var.short_name }-subnet"
   network_id    = "${ openstack_networking_network_v2.ms-network.id }"
   cidr          = "${ var.subnet_cidr }"
   ip_version    = "${ var.ip_version }"
