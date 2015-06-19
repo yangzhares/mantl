@@ -43,11 +43,11 @@ Step-by-step Guide
    If later you want to temporarily change the Spark version, run the command below
    (on the client machine)::
 
-        source /usr/local/share/spark/<correct spark folder>/conf/spark-env.sh
+        source /opt/spark/<correct spark folder>/conf/spark-env.sh
 
    For example::
 
-        source /usr/local/share/spark/spark-1.3.1-bin-hadoop2.6/conf/spark-env.sh
+        source /opt/spark/spark-1.3.1-bin-hadoop2.6/conf/spark-env.sh
 
    It will change the Spark version only for the current user session.
 
@@ -160,7 +160,7 @@ Step-by-step Guide
    Make SSH connection to any edge node (see "dev" role in your inventory file)
    using "centos" user and run::
 
-        cd /usr/local/share/kafka-mesos
+        cd /opt/kafka-mesos
 
    After that run::
 

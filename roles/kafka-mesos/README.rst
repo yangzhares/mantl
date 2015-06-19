@@ -6,7 +6,7 @@ Kafka Mesos
 Variables
 ---------
 
-- `kafka_mesos_install_dir` define folder for kafka-mesos installation. Default: `/usr/local/share/kafka-mesos`
+- `kafka_mesos_install_dir` define folder for kafka-mesos installation. Default: `/opt/kafka-mesos`
 - `kafka_binary_url`: define URL for kafka binary installation. Default: `https://archive.apache.org/dist/kafka/`
 - `kafka_version`: specify version of kafka that will be used. Default: `0.8.2.1`
 - `kafka_scala_version`: version of scala. Default: `2.10`

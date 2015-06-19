@@ -6,7 +6,7 @@ Kafka
 Variables
 ---------
 
-- `kafka_install_dir`: define folder for kafka installation. Default: `/usr/local/share/kafka`
+- `kafka_install_dir`: define folder for kafka installation. Default: `/opt/kafka`
 - `kafka_binary_url`: define URL for kafka binary installation. Default: `https://archive.apache.org/dist/kafka/`
 - `kafka_version`: specify version of kafka that will be used. Default: `0.8.2.1`
 - `kafka_scala_version`: version of scala. Default: `2.10`
