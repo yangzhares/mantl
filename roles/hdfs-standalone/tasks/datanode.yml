@@ -2,6 +2,8 @@
 - name: Get the local username
   local_action: command whoami
   register: local_username
+  tags:
+    - hdfs
 
 - name: Spread authorization key
   sudo_user: hdfs
@@ -13,7 +15,62 @@
   tags:
     - hdfs
 
-- name: Create Hadoop HDFS data node directories
+- name: Check whether we have an external storage
+  shell: ls -l /dev | awk '{print $10}' | egrep '^vd[a-z]$' | grep -v 'vda' | head -n1
+  register: external_storage
+  tags:
+    - hdfs
+
+- name: Define a partition if needed
+  sudo: true
+  shell: "if ! test -e /dev/{{ external_storage.stdout }}1; then echo ';' | sfdisk /dev/{{ external_storage.stdout }}; fi;"
+  when: external_storage.stdout != ''
+  tags:
+    - hdfs
+
+- name: Collect information about the partition
+  sudo: true
+  shell: "file -sL /dev/{{ external_storage.stdout }}1"
+  when: external_storage.stdout != ''
+  register: partition_info
+  tags:
+    - hdfs
+
+- name: Format the partition
+  sudo: true
+  shell: "mkfs.ext4 /dev/{{ external_storage.stdout }}1"
+  when: external_storage.stdout != '' and 'ext4' not in partition_info.stdout
+  tags:
+    - hdfs
+
+- name: Create a mount directory
+  sudo: true
+  file:
+    path: "/mnt/{{ external_storage.stdout }}"
+    state: directory
+  when: external_storage.stdout != ''
+  tags:
+    - hdfs
+
+- name: Mount the partition
+  sudo: true
+  mount:
+    name: "/mnt/{{ external_storage.stdout }}"
+    src: "/dev/{{ external_storage.stdout }}1"
+    fstype: ext4
+    state: mounted
+  when: external_storage.stdout != ''
+  tags:
+    - hdfs
+
+- name: Stop Hadoop HDFS data node
+  sudo: true
+  sudo_user: hdfs
+  shell: source /etc/profile.d/hadoop.sh; hadoop-daemon.sh stop datanode
+  tags:
+    - hdfs
+
+- name: Create Hadoop HDFS data node directory
   sudo: true
   file: 
     path: "/dfs/dn"
@@ -23,9 +80,16 @@
   tags:
     - hdfs
 
-- name: Restart Hadoop HDFS data node
+- name: Move /dfs to the partition if needed
+  shell: "if ! test -h /dfs; then mv /dfs /mnt/{{ external_storage.stdout }}; ln -s /mnt/{{ external_storage.stdout }}/dfs /dfs; fi"
+  sudo: yes
+  when: external_storage.stdout != ''
+  tags:
+    - hdfs
+
+- name: Start Hadoop HDFS data node
   sudo: true
   sudo_user: hdfs
-  shell: source /etc/profile.d/hadoop.sh; hadoop-daemon.sh stop datanode; hadoop-daemon.sh start datanode
+  shell: source /etc/profile.d/hadoop.sh; hadoop-daemon.sh start datanode
   tags:
     - hdfs
