@@ -32,7 +32,7 @@
   tags:
     - hdfs
 
-- name: Create Hadoop HDFS name node directories
+- name: Create Hadoop HDFS name node directory
   sudo: true
   file:
     path: "/dfs/nn"
@@ -43,11 +43,19 @@
   tags:
     - hdfs
 
-- name: Format HDFS name node data directories
+- name: Check whether HDFS name node data directory is formatted or not
+  sudo_user: hdfs
+  sudo: true
+  shell: if [ -f "/dfs/nn/current/VERSION" ]; then echo 1; fi
+  register: hdfs_namenode_data_dir_formatted
+  tags:
+    - hdfs
+
+- name: Format HDFS name node data directory
   sudo_user: hdfs
   sudo: true
   shell: source /etc/profile.d/hadoop.sh; hdfs namenode -format
-  when: created_hdfs_namenode_data_dir|changed
+  when: hdfs_namenode_data_dir_formatted.stdout == ''
   tags:
     - hdfs
 
