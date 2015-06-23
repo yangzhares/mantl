@@ -4,6 +4,8 @@
   group: 
     name: hdfs 
     state: present
+  tags:
+    - hdfs
 
 - name: Create HDFS user
   sudo: true
@@ -11,3 +13,5 @@
     name: hdfs
     groups: wheel,hdfs
     generate_ssh_key: yes
+  tags:
+    - hdfs

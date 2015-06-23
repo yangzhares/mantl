@@ -6,6 +6,8 @@
   yum: 
     name: java-1.8.0-openjdk
     state: present
+  tags:
+    - hdfs
 
 - name: Create HDFS installation directory
   sudo: true
