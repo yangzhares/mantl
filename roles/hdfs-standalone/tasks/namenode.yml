@@ -2,6 +2,8 @@
 - name: Get the local username
   local_action: command whoami
   register: local_username
+  tags:
+    - hdfs
 
 - name: Downloading a public key
   sudo: true
