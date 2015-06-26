@@ -40,9 +40,21 @@
   tags:
     - spark
 
-- name: Setup default Spark environment
+- name: Create symbolic link to Spark folder
   sudo: true
-  command: cp {{ spark_install_dir }}/{{ spark_default_package }}/conf/spark-env.sh /etc/profile.d/spark-env.sh
+  file:
+    src: "{{ spark_install_dir }}/{{ spark_default_package }}"
+    dest: "{{ spark_install_dir }}/spark"
+    state: link
+  tags:
+    - spark
+
+- name: Create symbolic link to spark-env.sh
+  sudo: true
+  file:
+    src: "{{ spark_install_dir }}/spark/conf/spark-env.sh"
+    dest: "/etc/profile.d/spark-env.sh"
+    state: link
   tags:
     - spark
 

@@ -47,6 +47,15 @@
   tags:
     - hdfs
 
+- name: Create symbolic link to HDFS folder
+  sudo: true
+  file:
+    src: "{{ hdfs_install_dir }}/hadoop-{{ hdfs_version }}"
+    dest: "{{ hdfs_install_dir }}/hadoop"
+    state: link
+  tags:
+    - hdfs
+
 - name: Setup HDFS environment
   sudo: true
   template:
