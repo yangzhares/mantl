@@ -31,14 +31,14 @@ Step-by-step Guide
    Go to `inventory/group_vars/all` folder and edit `users.yml`.
    Add all the needed users and their public keys.
 
-4. If you want to use a particular version of Spark ("1.3.0" is used by default),
-   then edit `roles/spark/defaults/main.yml` and set::
+4. If you want to use a particular package of Spark ("spark-1.3.0-bin-hadoop2.4" is used
+   by default), then edit `roles/spark/defaults/main.yml` and set::
 
-        spark_default_version: "<version number>"
+        spark_default_package: "<package name>"
 
    For example::
 
-        spark_default_version: "1.3.1"
+        spark_default_package: "spark-1.3.1-bin-hadoop2.6"
 
    If later you want to temporarily change the Spark version, run the command below
    (on the client machine)::
