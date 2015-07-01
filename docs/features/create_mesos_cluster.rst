@@ -31,28 +31,33 @@ Step-by-step Guide
    Go to `inventory/group_vars/all` folder and edit `users.yml`.
    Add all the needed users and their public keys.
 
-4. If you want to use a particular package of Spark ("spark-1.3.0-bin-hadoop2.4" is used
+4. If you want to use a particular package of Spark ("spark-1.3.1-bin-hadoop2.6" is used
    by default), then edit `roles/spark/defaults/main.yml` and set::
 
         spark_default_package: "<package name>"
 
    For example::
 
-        spark_default_package: "spark-1.3.1-bin-hadoop2.6"
+        spark_default_package: "spark-1.3.0-bin-hadoop2.4"
 
    If later you want to temporarily change the Spark version, run the command below
    (on the client machine)::
 
-        source /opt/spark/<correct spark folder>/conf/spark-env.sh
+        source /opt/<correct spark folder>/conf/spark-env.sh
 
    For example::
 
-        source /opt/spark/spark-1.3.1-bin-hadoop2.6/conf/spark-env.sh
+        source /opt/spark-1.3.0-bin-hadoop2.4/conf/spark-env.sh
 
    It will change the Spark version only for the current user session.
 
-   If you want to permanently change the Spark version, then copy a correct
-   `spark-env.sh` to `/etc/profile.d`.
+   If you want to permanently change the Spark version, run::
+
+        sudo ln -s /opt/<correct spark folder> /opt/spark
+
+   For example::
+
+        sudo ln -s /opt/spark-1.3.0-bin-hadoop2.4 /opt/spark
 
 5. Run::
 
