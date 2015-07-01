@@ -158,9 +158,17 @@ Step-by-step Guide
    Make SSH connection to any Mesos follower (see your inventory file)
    using "centos" user and run::
 
-        cd /usr/local/share/kafka-mesos
+        cd /opt/kafka-mesos
 
-   After that run::
+   After that create kafka broker run::
+        
+        ./kafka-mesos.sh add 0
+        
+   And start brocker::
+   
+        ./kafka-mesos.sh start 0
+        
+   Check status to see that broker is running::
 
         ./kafka-mesos.sh status
 
