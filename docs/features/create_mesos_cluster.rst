@@ -31,28 +31,33 @@ Step-by-step Guide
    Go to `inventory/group_vars/all` folder and edit `users.yml`.
    Add all the needed users and their public keys.
 
-4. If you want to use a particular version of Spark ("1.3.0" is used by default),
-   then edit `roles/spark/defaults/main.yml` and set::
+4. If you want to use a particular package of Spark ("spark-1.3.1-bin-hadoop2.6" is used
+   by default), then edit `roles/spark/defaults/main.yml` and set::
 
-        spark_default_version: "<version number>"
+        spark_default_package: "<package name>"
 
    For example::
 
-        spark_default_version: "1.3.1"
+        spark_default_package: "spark-1.3.0-bin-hadoop2.4"
 
    If later you want to temporarily change the Spark version, run the command below
    (on the client machine)::
 
-        source /usr/local/share/spark/<correct spark folder>/conf/spark-env.sh
+        source /opt/<correct spark folder>/conf/spark-env.sh
 
    For example::
 
-        source /usr/local/share/spark/spark-1.3.1-bin-hadoop2.6/conf/spark-env.sh
+        source /opt/spark-1.3.0-bin-hadoop2.4/conf/spark-env.sh
 
    It will change the Spark version only for the current user session.
 
-   If you want to permanently change the Spark version, then copy a correct
-   `spark-env.sh` to `/etc/profile.d`.
+   If you want to permanently change the Spark version, run::
+
+        sudo ln -s /opt/<correct spark folder> /opt/spark
+
+   For example::
+
+        sudo ln -s /opt/spark-1.3.0-bin-hadoop2.4 /opt/spark
 
 5. Run::
 
@@ -64,7 +69,9 @@ Step-by-step Guide
    *Mesos:*
 
    Open *https://<any mesos_leader>:5050*
+
    Open *https://<any mesos_leader>:5050/state.json*
+
    Open *https://<any mesos_leader>:5050/stats.json*
 
    *Consul:*
@@ -81,7 +88,7 @@ Step-by-step Guide
 
 7. Verify HDFS:
 
-   Make SSH connection to any Mesos follower (see your inventory file) using
+   Make SSH connection to any edge node (see "dev" role in your inventory file) using
    "centos" user and run::
 
         hdfs dfs -ls /
@@ -101,7 +108,7 @@ Step-by-step Guide
 
 8. Verify Spark:
 
-   Make SSH connection to any Mesos follower (see your inventory file) using
+   Make SSH connection to any edge node (see "dev" role in your inventory file) using
    "centos" user and run::
 
         spark-shell
@@ -155,7 +162,7 @@ Step-by-step Guide
 
 9. Verify Kafka-mesos utility:
 
-   Make SSH connection to any Mesos follower (see your inventory file)
+   Make SSH connection to any edge node (see "dev" role in your inventory file)
    using "centos" user and run::
 
         cd /opt/kafka-mesos
@@ -186,18 +193,18 @@ Step-by-step Guide
             task:
               id: broker-0-67e702ad-c719-493e-8e19-95ecb8151dec
               state: running
-              endpoint: aomelian-ci-host-04:4001
-              attributes: node_id=aomelian-ci-host-04
+              endpoint: host-04:4001
+              attributes: node_id=host-04
         
         <next output is omitted>
 
-   Note: amount of Kafka brokers and their mem/heap values depends on configuration
+   Note: amount of Kafka brokers and their mem/heap values depend on configuration
    file `roles/kafka/defaults/main.yml` inside your project directory.
 
 10. Verify basic Kafka functionality:
 
-    Make SSH connection to any Mesos follower (see your inventory file) using "centos" user. 
-    Create a topic named "test" with a single partition and one replica::
+    Make SSH connection to any edge node (see "dev" role in your inventory file)
+    using "centos" user.  Create a topic named "test" with a single partition and one replica::
 
         kafka-topics.sh --create --zookeeper zookeeper.service.consul:2181 --replication-factor 1 --partitions 1 --topic test
 
@@ -214,7 +221,7 @@ Step-by-step Guide
         test
 
     Run the producer and then type a few messages into the console.  Instead of
-    `<endpoint>` use any Kafka broker endpoint received from step 8.  It would be
+    `<endpoint>` use any Kafka broker endpoint received from step 9.  It would be
     something like `host-04:4001` or similar::
 
         kafka-console-producer.sh --broker-list <endpoint> --topic test

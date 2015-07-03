@@ -16,18 +16,18 @@
 - hosts: all
   roles:
     - common
+    - collectd
     - logrotate
     - consul-template
     - docker
     - dnsmasq
-    - monitoring
     - nginx
     - consul
     - logstash
 
 - include: playbooks/consul-join-wan.yml
 
-- hosts: vault_servers
+- hosts: dc1:&vault_servers
   gather_facts: no
   roles:
    - vault
@@ -36,6 +36,7 @@
   gather_facts: no
   roles:
     - zookeeper
+    - exhibitor
 
 - hosts: dc1:&mesos_leaders
   gather_facts: no
@@ -52,10 +53,26 @@
   roles:
     - marathon
 
+- hosts: dc1:&chronos_servers
+  gather_facts: no
+  roles:
+    - chronos
+
+- hosts: dc1:&proxy_servers
+  gather_facts: no
+  roles:
+    - haproxy
+
+- hosts: dc2:&vault_servers
+  gather_facts: no
+  roles:
+   - vault
+
 - hosts: dc2:&zookeeper_servers
   gather_facts: no
   roles:
     - zookeeper
+    - exhibitor
 
 - hosts: dc2:&mesos_leaders
   gather_facts: no
@@ -72,10 +89,10 @@
   roles:
     - marathon
 
-- hosts: dc1:&proxy_servers
+- hosts: dc2:&chronos_servers
   gather_facts: no
   roles:
-    - haproxy
+    - chronos
 
 - hosts: dc2:&proxy_servers
   gather_facts: no
@@ -85,3 +102,4 @@
 - include: hdfs.yml
 - include: spark.yml
 - include: kafka.yml
+- include: dev.yml

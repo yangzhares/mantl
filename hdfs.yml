@@ -1,7 +1,7 @@
 ---
 # DC1
 - hosts: dc1:&name_node
-  gather_facts: no
+  gather_facts: yes
   roles:
     - {role: hdfs-standalone, hdfs_namenode: true, hdfs_datanode: false}
 
@@ -12,7 +12,7 @@
 
 # DC2
 - hosts: dc2:&name_node
-  gather_facts: no
+  gather_facts: yes
   roles:
     - {role: hdfs-standalone, hdfs_namenode: true, hdfs_datanode: false}
 

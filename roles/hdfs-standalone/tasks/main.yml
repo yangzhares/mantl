@@ -6,6 +6,8 @@
   yum: 
     name: java-1.8.0-openjdk
     state: present
+  tags:
+    - hdfs
 
 - name: Create HDFS installation directory
   sudo: true
@@ -42,6 +44,15 @@
     src: /tmp/hadoop-{{ hdfs_version }}.tar.gz 
     dest: "{{ hdfs_install_dir }}"
     copy: no
+  tags:
+    - hdfs
+
+- name: Create symbolic link to HDFS folder
+  sudo: true
+  file:
+    src: "{{ hdfs_install_dir }}/hadoop-{{ hdfs_version }}"
+    dest: "{{ hdfs_install_dir }}/hadoop"
+    state: link
   tags:
     - hdfs
 

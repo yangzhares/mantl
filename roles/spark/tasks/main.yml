@@ -18,9 +18,9 @@
 - name: Download Spark binaries
   sudo: true 
   get_url: 
-    url: "http://mirror.ox.ac.uk/sites/rsync.apache.org/spark/spark-{{ item }}/spark-{{ item }}-bin-hadoop{{ item < '1.3.1' and '2.4' or '2.6' }}.tgz"
-    dest: "{{ spark_install_dir }}/spark-{{ item }}-bin-hadoop{{ item < '1.3.1' and '2.4' or '2.6' }}.tgz"
-  with_items: spark_versions
+    url: "http://mirror.ox.ac.uk/sites/rsync.apache.org/spark/spark-{{ item.split('-')[1] }}/{{ item }}.tgz"
+    dest: "{{ spark_install_dir }}/{{ item }}.tgz"
+  with_items: spark_packages
   tags:
     - spark 
 

@@ -31,5 +31,5 @@ consul_nginx_image_tag: 1.1
 # jobs
 mesos_consul_image: drifting/mesos-consul
 mesos_consul_image_tag: latest
-marathon_consul_image: brianhicks/marathon-consul
-marathon_consul_image_tag: latest
+marathon_consul_image: ciscocloud/marathon-consul
+marathon_consul_image_tag: 0.1

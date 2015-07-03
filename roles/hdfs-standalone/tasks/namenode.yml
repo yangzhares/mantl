@@ -1,5 +1,40 @@
 ---
-- name: Create Hadoop HDFS name node directories
+- name: Get the local username
+  local_action: command whoami
+  register: local_username
+  tags:
+    - hdfs
+
+- name: Downloading a public key
+  sudo: true
+  sudo_user: hdfs
+  fetch: 
+    src: "/home/hdfs/.ssh/id_rsa.pub"
+    dest: "/tmp/id_rsa.pub.{{ local_username.stdout }}"
+    flat: yes
+  register: fetch_public_key
+  tags:
+    - hdfs
+
+- name: Spread authorization key
+  sudo_user: hdfs
+  sudo: true
+  authorized_key:
+    user: hdfs
+    key: "{{ lookup('file', '/tmp/id_rsa.pub.%s' % local_username.stdout) }}"
+    state: present
+  tags:
+    - hdfs
+
+- name: Create HDFS slaves file
+  sudo: true
+  template:
+    src: "slaves.j2"
+    dest: "{{ hdfs_conf_dir }}/slaves"
+  tags:
+    - hdfs
+
+- name: Create Hadoop HDFS name node directory
   sudo: true
   file:
     path: "/dfs/nn"
@@ -10,11 +45,19 @@
   tags:
     - hdfs
 
-- name: Format HDFS name node data directories
+- name: Check whether HDFS name node data directory is formatted or not
+  sudo_user: hdfs
+  sudo: true
+  shell: if [ -f "/dfs/nn/current/VERSION" ]; then echo 1; fi
+  register: hdfs_namenode_data_dir_formatted
+  tags:
+    - hdfs
+
+- name: Format HDFS name node data directory
   sudo_user: hdfs
   sudo: true
   shell: source /etc/profile.d/hadoop.sh; hdfs namenode -format
-  when: created_hdfs_namenode_data_dir|changed
+  when: hdfs_namenode_data_dir_formatted.stdout == ''
   tags:
     - hdfs
 
@@ -22,6 +65,13 @@
   sudo: true
   sudo_user: hdfs
   shell: source /etc/profile.d/hadoop.sh; hadoop-daemon.sh stop namenode; hadoop-daemon.sh start namenode
+  tags:
+    - hdfs
+
+- name: Wait until HDFS name node leaves the safe mode
+  sudo: true
+  sudo_user: hdfs
+  shell: source /etc/profile.d/hadoop.sh; until [ "`hdfs dfsadmin -safemode get`" == "Safe mode is OFF" ]; do sleep 10; done
   tags:
     - hdfs
 
@@ -33,11 +83,11 @@
   tags:
     - hdfs
 
-- name: Create home directory for centos user on HDFS
+- name: Create home directory for the default Linux user on HDFS
   run_once: true
   sudo_user: hdfs
   sudo: true
-  shell: source /etc/profile.d/hadoop.sh; if ! hdfs dfs -test -d /user/centos; then hdfs dfs -mkdir -p /user/centos; fi; hdfs dfs -chown centos /user/centos
+  shell: source /etc/profile.d/hadoop.sh; if ! hdfs dfs -test -d /user/{{ ansible_user_id }}; then hdfs dfs -mkdir -p /user/{{ ansible_user_id }}; fi; hdfs dfs -chown {{ ansible_user_id }} /user/{{ ansible_user_id }}
   tags:
     - hdfs
 

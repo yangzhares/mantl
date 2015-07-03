@@ -1,5 +1,5 @@
-Launch a Spark Job from Outside of the Cluster
-==============================================
+Launch a Spark Job from Outside of the Cluster [DEPRECATED]
+===========================================================
 
 Purpose
 -------
@@ -26,6 +26,10 @@ Step-by-step Guide
         ansible-playbook -i "<client machine's hostname>," -u centos -e "hdfs_namenode_host=<hostname of HDFS name node> mesos_leader_host=<hostname of any Mesos leader>" dev.yml
 
    Please note a comma after the client machine's hostname.
+
+   If you also want to deploy a private key, then run::
+
+        ansible-playbook -i "<client machine's hostname>," -u centos -e "hdfs_namenode_host=<hostname of HDFS name node> mesos_leader_host=<hostname of any Mesos leader> private_key=<path to the private key>" dev.yml
 
    If later you want to temporarily change the Spark version, run the command below (on the client machine)::
 

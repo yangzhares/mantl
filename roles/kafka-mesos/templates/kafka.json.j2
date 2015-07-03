@@ -11,7 +11,7 @@
     "id":"kafka-mesos-scheduler",
     "cpus": 1,
     "mem": 2048,
-    "cmd": "./kafka-mesos.sh scheduler --master=zk://{{ zookeeper_master }}:2181/mesos --zk={{ zookeeper_master }}:2181 --api=http://{{ ansible_hostname }}:7000 --storage=zk:/kafka-mesos",
+    "cmd": "./kafka-mesos.sh scheduler --master=zk://{{ zookeeper_master }}:2181/mesos --zk={{ zookeeper_master }}:2181 --api=http://{{ kafka_scheduler_hostname }}:7000 --storage=zk:/kafka-mesos",
     "instances": 1,
     "constraints": [["hostname", "LIKE", "{{ ansible_hostname }}"]]
 }

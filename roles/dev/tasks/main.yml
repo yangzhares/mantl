@@ -1,5 +1,6 @@
 - name: Install general packages
   sudo: true
+  ignore_errors: true
   yum:
     name: "{{ item }}"
     state: present
@@ -25,12 +26,14 @@
 # p7zip
 - name: p7zip repository package
   sudo: true
+  ignore_errors: true
   yum:
     name: http://packages.sw.be/rpmforge-release/rpmforge-release-0.5.2-2.el6.rf.i686.rpm
     state: present
 
 - name: Install p7zip package
   sudo: true
+  ignore_errors: true
   yum:
     name: p7zip
     state: present
@@ -38,6 +41,7 @@
 # RAR
 - name: Install RAR package
   sudo: true
+  ignore_errors: true
   yum:
     name: http://pkgs.repoforge.org/rar/rar-3.8.0-1.el6.rf.x86_64.rpm
     state: present
@@ -45,12 +49,14 @@
 # Python 3.3
 - name: Install Software collection utilities package (for Python 3.3)
   sudo: true
+  ignore_errors: true
   yum:
     name: scl-utils
     state: present
 
 - name: Install Python 3.3 collection repository package
   sudo: true
+  ignore_errors: true
   yum:
     name: https://www.softwarecollections.org/en/scls/rhscl/python33/epel-7-x86_64/download/rhscl-python33-epel-7-x86_64.noarch.rpm
     state: present
@@ -63,76 +69,28 @@
 
 - name: Install Pip package
   sudo: true
+  ignore_errors: true
   shell: "scl enable python33 \"bash -c 'easy_install pip'\""
 
 # Scala
 - name: Install Scala package
   sudo: true
+  ignore_errors: true
   yum:
     name: http://downloads.typesafe.com/scala/2.11.6/scala-2.11.6.rpm
     state: present
 
 - name: Install SBT package
   sudo: true
+  ignore_errors: true
   yum:
     name: http://repo.scala-sbt.org/scalasbt/sbt-native-packages/org/scala-sbt/sbt/0.13.1/sbt.rpm
     state: present
 
-# Mesos
-- name: Install Mesosphere repository package
-  sudo: true
-  yum:
-    name: http://repos.mesosphere.io/el/7/noarch/RPMS/mesosphere-el-repo-7-1.noarch.rpm
-    state: present
-
-- name: Install Mesos package
-  sudo: true
-  yum:
-    name: mesos
-    state: present
-
-# Update /etc/hosts
-- name: Try to resolve HDFS name node hostname on the machine
-  sudo: true
-  shell: ping -q -c 1 -t 1 {{ hdfs_namenode_host }} | grep PING | sed -e "s/).*//" | sed -e "s/.*(//"
-  register: hdfs_namenode_resolved
-
-- name: Resolve HDFS name node hostname to IP
-  connection: local
-  shell: ping -q -c 1 -t 1 {{ hdfs_namenode_host }} | grep PING | sed -e "s/).*//" | sed -e "s/.*(//"
-  register: hdfs_namenode_ip
-
-- name: Add HDFS name node to /etc/hosts
-  sudo: true
-  lineinfile:
-    dest: "/etc/hosts"
-    regexp: ".+ {{ hdfs_namenode_host }}$"
-    line: "{{ hdfs_namenode_ip.stdout }} {{ hdfs_namenode_host }}"
-    state: present
-  when: hdfs_namenode_ip.stdout != '' and hdfs_namenode_ip.stdout != hdfs_namenode_resolved.stdout
-
-- name: Try to resolve zookeeper.service.consul on the machine
-  sudo: true
-  shell: ping -q -c 1 -t 1 zookeeper.service.consul | grep PING | sed -e "s/).*//" | sed -e "s/.*(//"
-  register: mesos_leader_resolved
-
-- name: Resolve Mesos leader hostname to IP
-  connection: local
-  shell: ping -q -c 1 -t 1 {{ mesos_leader_host }} | grep PING | sed -e "s/).*//" | sed -e "s/.*(//"
-  register: mesos_leader_ip
-
-- name: Add Mesos leader to /etc/hosts
-  sudo: true
-  lineinfile:
-    dest: "/etc/hosts"
-    regexp: ".+ zookeeper.service.consul$"
-    line: "{{ mesos_leader_ip.stdout }} zookeeper.service.consul"
-    state: present
-  when: mesos_leader_ip.stdout != '' and mesos_leader_ip.stdout != mesos_leader_resolved.stdout
-
+# fetch2hdfs.sh
 - name: Put fetch2hdfs.sh
   sudo: true
   template:
     src: "fetch2hdfs.sh"
-    dest: "/usr/local/bin/fetch2hdfs.sh"
+    dest: "/usr/sbin/fetch2hdfs.sh"
     mode: 0775

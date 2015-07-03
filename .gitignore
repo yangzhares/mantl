@@ -2,6 +2,7 @@ docs/_build
 *.pyc
 .vagrant
 security.yml
+hosts.merge
 ssl/**/*.pem
 ssl/index.txt*
 ssl/serial*

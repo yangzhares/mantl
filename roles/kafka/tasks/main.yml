@@ -33,4 +33,14 @@
   tags:
     - kafka
 
+- name: Create Kafka log directory
+  sudo: true
+  file: 
+    path: "{{ kafka_install_dir }}/kafka_{{ kafka_scala_version }}-{{ kafka_version }}/logs"
+    owner: "{{ ansible_user_id }}"
+    mode: 0775
+    state: directory
+  tags:
+    - kafka
+
 - include: config.yml

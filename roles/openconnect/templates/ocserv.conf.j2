@@ -1,0 +1,40 @@
+auth = "plain[passwd={{ openconnect_passwd_file }}]"
+tcp-port = {{ openconnect_tcp_port }}
+udp-port = {{ openconnect_udp_port }}
+run-as-user = {{ openconnect_user }}
+run-as-group = {{ openconnect_user }}
+socket-file = ocserv.sock
+chroot-dir = {{ openconnect_chroot }}
+isolate-workers = true
+max-clients = 16
+max-same-clients = 16
+keepalive = 32400
+dpd = 90
+mobile-dpd = 1800
+try-mtu-discovery = false
+server-cert = {{ openconnect_cert_path }}
+server-key = {{ openconnect_key_path }}
+tls-priorities = "NORMAL:%SERVER_PRECEDENCE:%COMPAT:-VERS-SSL3.0"
+auth-timeout = 40
+cookie-timeout = 300
+rekey-time = 172800
+rekey-method = ssl
+use-utmp = true
+use-occtl = true
+pid-file = /var/run/ocserv.pid
+device = vpns
+predictable-ips = true
+ipv4-network = {{ openconnect_int_net }}
+ipv4-netmask = {{ openconnect_int_mask }}
+dns = {{ openconnect_dns }}
+ping-leases = false
+{% if openconnect_route_list is defined and openconnect_route_list %}
+{% for custom_route in openconnect_route_list %}
+route = {{ custom_route }}
+{% endfor %}
+{% endif %}
+select-group = connect
+auto-select-group = true
+route-add-cmd = "ip route add %{R} dev %{D}"
+route-del-cmd = "ip route delete %{R} dev %{D}"
+cisco-client-compat = true

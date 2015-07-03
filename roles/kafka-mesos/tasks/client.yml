@@ -12,7 +12,7 @@
 - name: Add Kafka brockers  
   run_once: true
   sudo: true
-  command: "./kafka-mesos.sh add  0..{{ kafka_brokers - 1 }} --heap {{ kafka_broker_heap }} --mem {{ kafka_broker_memory }} --api http://{{ ansible_hostname }}:7000"
+  command: "./kafka-mesos.sh add  0..{{ kafka_brokers - 1 }} --heap {{ kafka_broker_heap }} --mem {{ kafka_broker_memory }} --api http://{{ kafka_scheduler_hostname }}:7000"
   args:
     chdir: "{{ kafka_mesos_install_dir }}"
   tags:
@@ -21,7 +21,7 @@
 - name: Start Kafka brockers  
   run_once: true
   sudo: true
-  command: "./kafka-mesos.sh start 0..{{ kafka_brokers - 1 }} --api http://{{ ansible_hostname }}:7000"
+  command: "./kafka-mesos.sh start 0..{{ kafka_brokers - 1 }} --api http://{{ kafka_scheduler_hostname }}:7000"
   args:
     chdir: "{{ kafka_mesos_install_dir }}"
   tags:

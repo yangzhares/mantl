@@ -1,11 +1,10 @@
 Dev
 ===
 
-Install all the needed development software on the client machine.
+Install all the needed development software on the edge node.
 
-Run::
-
-    ansible-playbook -i "<client machine's hostname>," -u centos -e "hdfs_namenode_host=<hostname of HDFS name node> mesos_leader_host=<hostname of any Mesos leader>" dev.yml
+Please note that you will also need to install hdfs-standalone, spark
+and kafka roles.
 
 Variables
 ---------
@@ -18,14 +17,14 @@ Example Playbook
 .. code-block:: yaml+jinja
 
     ---
-    - hosts: all
+    - hosts: dev
       gather_facts: no
       roles:
         - dev
         - {role: hdfs-standalone, hdfs_namenode: false, hdfs_datanode: false}
         - spark
 
-    - hosts: all
+    - hosts: dev
       gather_facts: yes
       roles:
         - kafka

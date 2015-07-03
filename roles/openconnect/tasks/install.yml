@@ -1,0 +1,27 @@
+---
+
+- name: check epel repository
+  sudo: yes
+  yum:
+    pkg: epel-release
+    state: present
+  tags:
+    - openconnect
+
+- name: install openconnect
+  sudo: yes
+  yum:
+    pkg: ocserv
+    state: installed
+  tags:
+    - openconnect
+
+- name: copy systemd unit file
+  sudo: yes
+  template:
+    src: ocserv.service.j2
+    dest: /usr/lib/systemd/system/ocserv.service
+    owner: root
+    group: root
+  tags:
+    - openconnect

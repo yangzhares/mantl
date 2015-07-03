@@ -1,10 +1,10 @@
 # all
 [all]
-host-[01:05]
+host-[01:08]
 
 # datacenters
 [dc1]
-host-[01:05]
+host-[01:08]
 
 # control
 [vault_servers]
@@ -22,21 +22,36 @@ host-[01:03]
 [marathon_servers]
 host-[01:03]
 
-[name_node]
-host-01
+[chronos_servers]
+host-[01:03]
 
 # resource nodes
 [consul_clients]
-host-[04:05]
+host-[04:07]
 
 [mesos_followers]
-host-[04:05]
+host-[04:07]
 
 [proxy_servers]
-host-[04:05]
+host-[04:07]
 
-[data_nodes]
-host-[04:05]
+[spark]
+host-[04:07]
 
 [kafka]
-host-[04:05]
+host-[04:07]
+
+# hdfs-standalone
+[name_node]
+host-01
+
+[data_nodes]
+host-[04:07]
+
+#dev
+[dev]
+host-08
+
+# vpn
+[vpn_servers]
+host-02
