@@ -55,10 +55,13 @@
 
 - hosts: data_nodes
   gather_facts: no
+  vars:
+    nova_compute_state: present
   tasks:
     - name: Check whether we need to attach another external storage
       shell: ls -l /dev | awk '{print $10}' | egrep '^vd[a-z]$' | grep -v 'vda' | head -n1
       register: external_storage
+      when: nova_compute_state == "present"
       tags: host
 
     - name: Attach an external storage
@@ -72,21 +75,23 @@
         login_tenant_name: "{{ os_tenant_name }}"
         device_name: "/dev/vdb"
         size: "{{ storage_size }}"
-        state: present
-      when: storage_size is defined and storage_size > 0 and external_storage.stdout == ''
+        state: "{{ nova_compute_state }}"
+      when: (nova_compute_state == "absent" or external_storage.stdout == '') and storage_size is defined and storage_size > 0
       tags: host
 
 - hosts: localhost
   gather_facts: no
+  vars:
+    nova_compute_state: present
   tasks:
-    - name: list of newly provisioned hosts to merge with local /etc/hosts file
+    - name: Create list of newly provisioned hosts to merge with local /etc/hosts file
       local_action:
         module: lineinfile
         dest: "{{ playbook_dir }}/../hosts.merge"
         regexp: ".+ {{ item }}$"
-        line: "{{ hostvars[item].ansible_ssh_host }} {{ item }}"
-        state: present
+        line: "{{ hostvars[item].get('ansible_ssh_host') }} {{ item }}"
+        state: "{{ nova_compute_state }}"
         create: True
-      when: hostvars[item].ansible_ssh_host is defined
+      when: nova_compute_state == "absent" or hostvars[item].ansible_ssh_host is defined
       with_items: groups['all']
       tags: host
