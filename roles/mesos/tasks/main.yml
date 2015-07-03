@@ -6,6 +6,7 @@
     state: present
   tags:
     - mesos
+    - bootstrap
 
 - name: install mesos package
   sudo: yes
@@ -14,6 +15,7 @@
     state: present
   tags:
     - mesos
+    - bootstrap
 
 - name: install cyrus-sasl-md5
   sudo: yes
@@ -22,12 +24,22 @@
     state: present
   tags:
     - mesos
+    - bootstrap
 
 - name: configure /etc/mesos/zk
   sudo: yes
   template:
     src: zk.j2
     dest: /etc/mesos/zk
+  tags:
+    - mesos
+
+- name: configure /etc/mesos/hostname
+  sudo: yes
+  template:
+    src: hostname.j2
+    dest: /etc/mesos/hostname
+    mode: 0600
   tags:
     - mesos
 

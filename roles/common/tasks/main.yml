@@ -13,25 +13,26 @@
   sudo: yes
   lineinfile:
     dest: /etc/hosts
-    regexp: "^{{ hostvars[item].ansible_default_ipv4.address }} {{ item }} {{ item }}.novalocal$"
-    line: "{{ hostvars[item].ansible_default_ipv4.address }} {{ item }} {{ item }}.novalocal"
+    regexp: "^{{ hostvars[item].ansible_default_ipv4.address }} {{ item }}{% if use_host_domain %} {{ item }}.{{ host_domain }}{% endif %}$"
+    line: "{{ hostvars[item].ansible_default_ipv4.address }} {{ item }}{% if use_host_domain %} {{ item }}.{{ host_domain}}{% endif %}"
     state: present
   when: hostvars[item].ansible_default_ipv4.address is defined
   with_items: groups['all']
 
-- name: install httpd-tools
+- name: install system utilities
   sudo: yes
   yum:
-    name: httpd-tools
-    state: present
-
-- name: install nc
-  sudo: yes
-  yum:
-    name: nmap-ncat
-    state: present
+    name: "{{ item }}"
+    state: latest
+  with_items:
+    - httpd-tools
+    - nc
+    - openssh
+  tags:
+    - bootstrap
 
 - name: disable firewalld
+  sudo: yes
   service:
     name: firewalld
     enabled: false
@@ -58,5 +59,16 @@
     - name: pip
     - name: setuptools
 
+- name: install distributive
+  sudo: yes
+  yum:
+    name: "https://bintray.com/artifact/download/ciscocloud/rpm/distributive-0.1-1.x86_64.rpm"
+    state: present
+  tags:
+    - distributive
+
 - include: users.yml
 - include: ssl.yml
+
+- include: digitalocean.yml
+  when: provider == 'digitalocean'

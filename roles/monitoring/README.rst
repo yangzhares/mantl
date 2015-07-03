@@ -59,20 +59,3 @@ Variables
    Hosts to get Zookeper metrics from.
 
    default: ``localhost``
-
-
-
-
-.. _monitoring-example-playbook:
-
-
-Example Playbook
-----------------
-
-.. code-block:: yaml+jinja
-
-    ---
-    - hosts: all
-      roles:
-        - monitoring
-

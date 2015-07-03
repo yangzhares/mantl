@@ -62,6 +62,12 @@ REPOS+=(
     gpgcheck=0
     exclude=kernel
 
+    [epel-release]
+    name=epel-release
+    baseurl=https://mirrors.kernel.org/fedora-epel/7/x86_64/
+    gpgcheck=1
+    gpgkey=https://dl.fedoraproject.org/pub/epel/RPM-GPG-KEY-EPEL-7
+
     [ciscocloud]
     name=ciscocloud
     baseurl=https://dl.bintray.com/ciscocloud/rpm/
@@ -79,6 +85,5 @@ REPOS+=(
 )
 
 IMAGES+=(
-    ciscocloud/logstash:0.1
-    gliderlabs/registrator:latest
+    keithchambers/logstash:latest
 )

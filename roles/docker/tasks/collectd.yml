@@ -7,6 +7,27 @@
   with_items:
     - py-dateutil
     - docker-py>=1.0.0
+    - six>=1.9.0
+  tags:
+    - docker
+    - collectd
+
+- name: create collectd config directory
+  sudo: yes
+  file:
+    path: /etc/collectd.d
+    state: directory
+    mode: 0755
+  tags:
+    - docker
+    - collectd
+
+- name: create collectd plugin directory
+  sudo: yes
+  file:
+    path: /usr/share/collectd/plugins
+    state: directory
+    mode: 0755
   tags:
     - docker
     - collectd
