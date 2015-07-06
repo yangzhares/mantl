@@ -71,4 +71,3 @@
 - include: ssl.yml
 
 - include: digitalocean.yml
-  when: provider == 'digitalocean'

@@ -10,6 +10,7 @@ mesos_follower_cmd: mesos-slave
 mesos_executor_registration_timeout: 10mins
 mesos_resources: "ports(*):[4000-5000, 31000-32000]"
 mesos_cluster: cluster1
+private_ipv4: "{{ ansible_default_ipv4.address }}"
 
 mesos_zk_auth: "{% if zk_mesos_user_secret is defined %}{{ zk_mesos_user }}:{{ zk_mesos_user_secret }}@{% endif %}"
 mesos_zk_dns: "zookeeper.service.{{ consul_dns_domain }}"
