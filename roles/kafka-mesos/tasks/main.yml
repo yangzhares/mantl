@@ -45,7 +45,7 @@
 - include: scheduler.yml
   when: kafka_downloaded | changed
 
-#- include: client.yml
-#  when: kafka_downloaded | changed
+- include: client.yml
+  when: kafka_downloaded | changed
 
 - include: config.yml
