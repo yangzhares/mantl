@@ -42,11 +42,6 @@ commonly used to least.
    IP address Consul will advertise as available for other nodes to connect to.
    Defaults to the value of ``ansible_default_ipv4.address``.
 
-.. data:: consul_is_server
-
-   Whether this node should be a server (``true``) or an agent (``false``).
-   (default ``true``)
-
 .. data:: consul_bootstrap_expect
 
    The number of servers to expect to join the cluster before bootstrapping.

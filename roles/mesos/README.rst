@@ -16,7 +16,7 @@ Marathon can be run in one of two "modes":
  - A client mode (called "slave" or "follower")
 
 This project prefers the "leader/follower nomenclature". In addition to the
-"official" modes described below, :data:`mesos_mode` supports running both modes
+"official" modes described below, it supports running both modes
 on a single machine for testing or development scenarios.
 
 Leader
@@ -40,14 +40,6 @@ Variables
 ---------
 
 You can use these variables to customize your Mesos installation.
-
-.. data:: mesos_mode
-
-   Set to ``leader`` for leader mode, and ``follower`` for follower mode. Set to
-   ``mixed`` to run both leader and follower on the same machine (useful for
-   development or testing.)
-
-   default: ``follower``
 
 .. data:: mesos_log_dir
 

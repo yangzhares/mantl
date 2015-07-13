@@ -18,83 +18,55 @@
     - common
     - collectd
     - logrotate
-    - consul-template
     - docker
     - dnsmasq
     - nginx
-    - consul
     - logstash
+
+- hosts: consul_servers
+  roles:
+    - consul-template
+    - {role: consul, consul_is_server: yes}
+
+- hosts: consul_clients
+  roles:
+    - consul-template
+    - {role: consul, consul_is_server: no}
 
 - include: playbooks/consul-join-wan.yml
 
-- hosts: dc1:&vault_servers
+- hosts: vault_servers
   gather_facts: no
   roles:
    - vault
 
-- hosts: dc1:&zookeeper_servers
+- hosts: zookeeper_servers
   gather_facts: no
   roles:
     - zookeeper
     - exhibitor
 
-- hosts: dc1:&mesos_leaders
+- hosts: mesos_leaders
   gather_facts: no
   roles:
-    - mesos
+    - {role: mesos, mesos_mode: leader}
 
-- hosts: dc1:&mesos_followers
+- hosts: mesos_followers
   gather_facts: no
   roles:
-    - mesos
+    - {role: mesos, mesos_mode: follower}
 
-- hosts: dc1:&marathon_servers
-  gather_facts: no
-  roles:
-    - marathon
-
-- hosts: dc1:&chronos_servers
-  gather_facts: no
-  roles:
-    - chronos
-
-- hosts: dc1:&proxy_servers
-  gather_facts: no
-  roles:
-    - haproxy
-
-- hosts: dc2:&vault_servers
-  gather_facts: no
-  roles:
-   - vault
-
-- hosts: dc2:&zookeeper_servers
-  gather_facts: no
-  roles:
-    - zookeeper
-    - exhibitor
-
-- hosts: dc2:&mesos_leaders
-  gather_facts: no
-  roles:
-    - mesos
-
-- hosts: dc2:&mesos_followers
-  gather_facts: no
-  roles:
-    - mesos
-
-- hosts: dc2:&marathon_servers
+- hosts: marathon_servers
   gather_facts: no
   roles:
     - marathon
 
-- hosts: dc2:&chronos_servers
+- hosts: chronos_servers
   gather_facts: no
   roles:
     - chronos
 
-- hosts: dc2:&proxy_servers
+- hosts: proxy_servers
   gather_facts: no
   roles:
     - haproxy
