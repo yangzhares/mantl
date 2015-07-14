@@ -10,5 +10,6 @@ marathon: "marathon.service.consul"
 kafka_scheduler_hostname: "kafka-mesos-scheduler.service.consul"
 kafka_brokers: 3
 kafka_broker_memory: 512
-kafka_broker_heap: 256 
+kafka_broker_heap: 256
 debug_enabled: false
+enable_client_install: false

@@ -6,8 +6,9 @@
     state: present
   tags:
     - consul-template
+    - bootstrap
 
-- name: deploy consul config
+- name: configure consul-template
   sudo: yes
   copy:
     src: consul.cfg

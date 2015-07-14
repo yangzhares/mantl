@@ -6,7 +6,7 @@ host-[01:08]
 [dc1]
 host-[01:08]
 
-# control
+# control nodes
 [vault_servers]
 host-[01:03]
 

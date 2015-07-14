@@ -9,7 +9,7 @@ host-[01:08]
 [dc2]
 host-[09:16]
 
-# control 
+# control nodes 
 [vault_servers]
 host-[01:03]
 host-[09:11]

@@ -6,6 +6,7 @@
     state: present
   tags:
     - consul
+    - bootstrap
 
 - name: install consul-ui
   sudo: yes
@@ -15,6 +16,7 @@
   when: consul_is_server
   tags:
     - consul
+    - bootstrap
 
 - name: configure consul
   sudo: yes
@@ -120,7 +122,7 @@
 
 # Give consul time to elect a leader
 - name: wait for leader
-  command: consul-wait-for-leader.sh
+  command: /usr/local/bin/consul-wait-for-leader.sh
   tags:
     - consul
 
@@ -135,3 +137,6 @@
 - meta: flush_handlers
 
 - include: nginx_proxy.yml
+
+# install distributive, register checks, and run check on provisioning
+- include: distributive.yml

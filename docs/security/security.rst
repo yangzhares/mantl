@@ -184,9 +184,6 @@ The following controls will be implemented:
 - Place nginx authenticating/SSL proxy in front of Marathon (version 0.2)
 - Create a dynamic firewall on each Marathon host that uses consul-template to
   only allow connections from other Marathon nodes. (version 0.2)
-
-References:
-
 - `SSL and Basic Access
   Authentication <https://github.com/mesosphere/marathon/blob/master/docs/docs/ssl-basic-access-authentication.md>`__
 - `Support Zookeeper Authentication

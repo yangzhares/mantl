@@ -22,7 +22,7 @@ Step-by-step Guide
 
 2. Run::
 
-        ./security-setup --enable=false
+        ./security-setup --mesos-framework-auth=false --mesos-iptables=false
 
    The script will ask you for admin password for all the UIs (Mesos, Marathon and Consul).
 
@@ -113,7 +113,7 @@ Step-by-step Guide
 
         spark-shell
 
-   Spark shell should start with no errors::
+   Spark shell should successfully start)::
 
         scala>
 

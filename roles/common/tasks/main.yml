@@ -13,25 +13,36 @@
   sudo: yes
   lineinfile:
     dest: /etc/hosts
-    regexp: "^{{ hostvars[item].ansible_default_ipv4.address }} {{ item }} {{ item }}.novalocal$"
-    line: "{{ hostvars[item].ansible_default_ipv4.address }} {{ item }} {{ item }}.novalocal"
+    regexp: "^{{ hostvars[item].ansible_default_ipv4.address }} {{ item }}{% if use_host_domain %} {{ item }}.{{ host_domain }}{% endif %}$"
+    line: "{{ hostvars[item].ansible_default_ipv4.address }} {{ item }}{% if use_host_domain %} {{ item }}.{{ host_domain}}{% endif %}"
     state: present
   when: hostvars[item].ansible_default_ipv4.address is defined
   with_items: groups['all']
 
-- name: install httpd-tools
+- name: clean hosts file
   sudo: yes
-  yum:
-    name: httpd-tools
-    state: present
+  lineinfile:
+    dest: /etc/hosts
+    regexp: "{{ item }}"
+    state: absent
+  with_items:
+    - '^127\.0\.0\.1(\s+){{ inventory_hostname }}.*'
+    - '^::1(\s+){{ inventory_hostname }}.*'
 
-- name: install nc
+- name: install system utilities
   sudo: yes
   yum:
-    name: nmap-ncat
-    state: present
+    name: "{{ item }}"
+    state: latest
+  with_items:
+    - httpd-tools
+    - nc
+    - openssh
+  tags:
+    - bootstrap
 
 - name: disable firewalld
+  sudo: yes
   service:
     name: firewalld
     enabled: false
@@ -57,6 +68,14 @@
   with_items:
     - name: pip
     - name: setuptools
+
+- name: install distributive
+  sudo: yes
+  yum:
+    name: "https://bintray.com/artifact/download/ciscocloud/rpm/distributive-0.1.2-1.el7.centos.x86_64.rpm"
+    state: present
+  tags:
+    - distributive
 
 - include: users.yml
 - include: ssl.yml

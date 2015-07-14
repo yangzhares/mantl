@@ -19,14 +19,3 @@ Variables
   `zookeeper.service.consul`).
 - `spark_log4j_host` - Hostname for logstash server (default: `localhost`).
 - `spark_log4j_port` - Port for logstash server (default: `4560`).
-
-Example Playbook
-----------------
-
-.. code-block:: yaml+jinja
-
-    ---
-    - hosts: spark
-      gather_facts: no
-      roles:
-        - spark
