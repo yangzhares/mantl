@@ -19,3 +19,4 @@ Variables
 - `kafka_broker_memory`: Specify Java memory setting for broker. Default: `512`
 - `kafka_broker_heap`: Specify Java heap for broker. Default: `256`
 - `debug_enabled`: enable or disable debug mode for kafka-mesos. Default: `false`
+- `enable_client_install`: enable or disable kafka brockers installation on node(s). Default: `false`
