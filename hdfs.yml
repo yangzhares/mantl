@@ -1,6 +1,5 @@
 ---
 - hosts: name_node
-  gather_facts: yes
   roles:
     - {role: hdfs-standalone, hdfs_namenode: true, hdfs_datanode: false}
 
@@ -8,3 +7,8 @@
   gather_facts: no
   roles:
     - {role: hdfs-standalone, hdfs_namenode: false, hdfs_datanode: true}
+
+- hosts: dev
+  gather_facts: no
+  roles:
+    - {role: hdfs-standalone, hdfs_namenode: false, hdfs_datanode: false}

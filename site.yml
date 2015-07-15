@@ -23,55 +23,47 @@
     - nginx
     - logstash
 
-- hosts: consul_servers
+- hosts: control
   roles:
     - consul-template
     - {role: consul, consul_is_server: yes}
 
-- hosts: consul_clients
+- hosts: resource
   roles:
     - consul-template
     - {role: consul, consul_is_server: no}
 
 - include: playbooks/consul-join-wan.yml
 
-- hosts: vault_servers
+- hosts: control
   gather_facts: no
   roles:
-   - vault
-
-- hosts: zookeeper_servers
-  gather_facts: no
-  roles:
+    - vault
     - zookeeper
     - exhibitor
-
-- hosts: mesos_leaders
-  gather_facts: no
-  roles:
     - {role: mesos, mesos_mode: leader}
 
-- hosts: mesos_followers
+- hosts: resource
   gather_facts: no
   roles:
     - {role: mesos, mesos_mode: follower}
 
-- hosts: marathon_servers
+- hosts: control
   gather_facts: no
   roles:
     - marathon
-
-- hosts: chronos_servers
-  gather_facts: no
-  roles:
     - chronos
 
-- hosts: proxy_servers
+- hosts: resource
   gather_facts: no
   roles:
     - haproxy
 
+- hosts: dev
+  gather_facts: no
+  roles:
+    - dev
+
 - include: hdfs.yml
 - include: spark.yml
 - include: kafka.yml
-- include: dev.yml
