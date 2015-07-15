@@ -71,7 +71,11 @@
   roles:
     - haproxy
 
+- hosts: dev
+  gather_facts: no
+  roles:
+    - dev
+
 - include: hdfs.yml
 - include: spark.yml
 - include: kafka.yml
-- include: dev.yml

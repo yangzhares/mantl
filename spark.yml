@@ -1,5 +1,5 @@
 ---
-- hosts: spark
+- hosts: spark:dev
   gather_facts: no
   roles:
     - spark

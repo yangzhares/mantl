@@ -1,5 +1,9 @@
 ---
-- hosts: kafka
+- hosts: kafka:dev
   roles:
     - kafka
+
+- hosts: kafka
+  gather_facts: no
+  roles:
     - kafka-mesos
