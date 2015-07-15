@@ -58,7 +58,7 @@
     mode: 0644
     owner: root
     group: root
-  when: "'zookeeper_servers' in group_names"
+  when: "'control' in group_names"
   tags:
     - logrotate
 
@@ -68,7 +68,7 @@
     path: /var/log/zookeeper/archive
     mode: 0755
     state: directory
-  when: "'zookeeper_servers' in group_names"
+  when: "'control' in group_names"
   tags:
     - logrotate
 

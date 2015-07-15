@@ -7,39 +7,16 @@ host-[01:08]
 host-[01:08]
 
 # control nodes
-[vault_servers]
-host-[01:03]
-
-[consul_servers]
-host-[01:03]
-
-[zookeeper_servers]
-host-[01:03]
-
-[mesos_leaders]
-host-[01:03]
-
-[marathon_servers]
-host-[01:03]
-
-[chronos_servers]
+[control]
 host-[01:03]
 
 # resource nodes
-[consul_clients]
+[resource]
 host-[04:07]
 
-[mesos_followers]
-host-[04:07]
-
-[proxy_servers]
-host-[04:07]
-
-[spark]
-host-[04:07]
-
-[kafka]
-host-[04:07]
+# dev nodes
+[dev]
+host-08
 
 # hdfs-standalone
 [name_node]
@@ -48,10 +25,10 @@ host-01
 [data_nodes]
 host-[04:07]
 
-#dev
-[dev]
-host-08
+# kafka
+[kafka]
+host-[04:07]
 
 # vpn
-[vpn_servers]
+[vpn]
 host-02

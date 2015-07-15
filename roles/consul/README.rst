@@ -27,7 +27,7 @@ commonly used to least.
 .. data:: consul_servers_group
 
    Group to configure join IPs from. For example, if this value is
-   ``consul_servers``, IPs will be calculated from the hosts in that group and
+   ``control``, IPs will be calculated from the hosts in that group and
    added to the list of servers to join. Defaults to ``all``.
 
 .. data:: consul_gossip_key

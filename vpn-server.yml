@@ -1,4 +1,4 @@
 ---
-- hosts: vpn_servers
+- hosts: vpn
   roles:
     - openconnect
