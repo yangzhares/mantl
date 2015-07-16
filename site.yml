@@ -73,5 +73,5 @@
 
 - include: hdfs.yml
 - include: spark.yml
-- include: kafka.yml
 - include: dev.yml
+- include: kafka.yml

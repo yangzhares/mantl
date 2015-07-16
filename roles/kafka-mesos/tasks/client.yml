@@ -1,14 +1,4 @@
 ---
-- name: Wait for Kafka scheduler
-  run_once: true
-  wait_for:
-    host: "{{ ansible_hostname }}"
-    port: 7000
-    timeout: 1800
-    delay: 20
-  tags:
-    - kafka-mesos
-
 - name: Add Kafka brockers
   run_once: true
   sudo: true
