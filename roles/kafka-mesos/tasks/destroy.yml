@@ -1,0 +1,24 @@
+- name: Stop all Kafka brockers
+  run_once: true
+  sudo: true
+  command: "./kafka-mesos.sh stop {{ kafka_brokers }} --api http://{{ kafka_scheduler_hostname }}:7000"
+  args:
+    chdir: "{{ kafka_mesos_install_dir }}"
+  tags:
+    - kafka-mesos
+
+- name: Remove all Kafka brockers
+  run_once: true
+  sudo: true
+  command: "./kafka-mesos.sh remove  {{ kafka_brokers }} --heap {{ kafka_broker_heap }} --mem {{ kafka_broker_memory }} --api http://{{ kafka_scheduler_hostname }}:7000"
+  args:
+    chdir: "{{ kafka_mesos_install_dir }}"
+  tags:
+    - kafka-mesos
+
+- name: Remove Kafka scheduler from marathon
+  run_once: true
+  sudo: true
+  command: "/usr/bin/curl -k -s --user {{ marathon_http_credentials }} -X DELETE  https://{{ marathon }}:8080/v2/apps/kafka-mesos-scheduler"
+  tags:
+    - kafka-mesos

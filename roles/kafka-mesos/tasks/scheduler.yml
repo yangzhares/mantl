@@ -11,18 +11,18 @@
 - name: Deploy Kafka scheduler to marathon
   run_once: true
   sudo: true
-  command: "/usr/bin/curl -k --user {{ marathon_http_credentials }} -X POST -H \"Content-Type: application/json\" -d @kafka.json  https://{{ marathon }}:8080/v2/apps"
-  register: some_variable
+  command: "/usr/bin/curl -k -s --user {{ marathon_http_credentials }} -X POST -H \"Content-Type: application/json\" -d @kafka.json  https://{{ marathon }}:8080/v2/apps"
+  register: kafka_app_status
   args:
     chdir: /tmp
   tags:
     - kafka-mesos
 
 - name: Change Kafka scheduler configuration
-  when: "{"message":"An app with id [kafka-mesos-scheduler] already exists."}" == some_variable
+  when: "{"message":"An app with id [kafka-mesos-scheduler] already exists."}" == kafka_app_status
   run_once: true
   sudo: true
-  command: "/usr/bin/curl -k --user {{ marathon_http_credentials }} -X PUT -H \"Content-Type: application/json\" -d @kafka.json  https://{{ marathon }}:8080/v2/apps/kafka-mesos-scheduler"
+  command: "/usr/bin/curl -k -s --user {{ marathon_http_credentials }} -X PUT -H \"Content-Type: application/json\" -d @kafka.json  https://{{ marathon }}:8080/v2/apps/kafka-mesos-scheduler"
   args:
     chdir: /tmp
   tags:

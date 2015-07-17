@@ -50,9 +50,10 @@
   tags:
     - kafka-mesos
 
+- include: destroy.yml
+  when: destroy_kafka_brockers == true
+
 - include: scheduler.yml
-  
+
 - include: client.yml
   when: enable_client_install == true
-
-- include: config.yml
