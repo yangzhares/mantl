@@ -1,7 +1,7 @@
 - name: Stop all Kafka brockers
   run_once: true
   sudo: true
-  command: "./kafka-mesos.sh stop {{ kafka_brokers }} --api http://{{ kafka_scheduler_hostname }}:7000"
+  command: "./kafka-mesos.sh stop 0..{{ kafka_brokers - 1 }} --api http://{{ kafka_scheduler_hostname }}:7000"
   args:
     chdir: "{{ kafka_mesos_install_dir }}"
   tags:
@@ -10,7 +10,7 @@
 - name: Remove all Kafka brockers
   run_once: true
   sudo: true
-  command: "./kafka-mesos.sh remove  {{ kafka_brokers }} --heap {{ kafka_broker_heap }} --mem {{ kafka_broker_memory }} --api http://{{ kafka_scheduler_hostname }}:7000"
+  command: "./kafka-mesos.sh remove  0..{{ kafka_brokers - 1 }} --heap {{ kafka_broker_heap }} --mem {{ kafka_broker_memory }} --api http://{{ kafka_scheduler_hostname }}:7000"
   args:
     chdir: "{{ kafka_mesos_install_dir }}"
   tags:
