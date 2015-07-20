@@ -35,6 +35,6 @@
     host: "{{ kafka_scheduler_hostname }}"
     port: 7000
     timeout: 20
-    delay: 1800
+    delay: 5
   tags:
     - kafka-mesos
