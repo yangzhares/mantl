@@ -1,38 +1,18 @@
 ---
-- name: Add Kafka brockers on clean environment
-  run_once: true
-  sudo: true
-  command: "./kafka-mesos.sh add  0..{{ kafka_brokers - 1 }} --heap {{ kafka_broker_heap }} --mem {{ kafka_broker_memory }} --api http://{{ kafka_scheduler_hostname }}:7000"
-  register: brocker_failure
-  args:
-    chdir: "{{ kafka_mesos_install_dir }}"
-  tags:
-    - kafka-mesos
-  ignore_errors: yes
-
-- name: Start Kafka brockers on clean environment
-  run_once: true
-  sudo: true
-  command: "./kafka-mesos.sh start 0..{{ kafka_brokers - 1 }} --api http://{{ kafka_scheduler_hostname }}:7000"
-  args:
-    chdir: "{{ kafka_mesos_install_dir }}"
-  tags:
-    - kafka-mesos
-  ignore_errors: yes
-
-- name: Register running brockers
+- name: Calculate running brockers
   shell: ./kafka-mesos.sh status | grep -c "id:.[0-9]"
   register: existing_brockers
   args:
     chdir: "{{ kafka_mesos_install_dir }}"
   tags:
     - kafka-mesos
+  failed_when: existing_brockers.stdout == -1
 
-- name: Additional Kafka brockers
+- name: Add Kafka brockers
   when: "{{ existing_brockers.stdout | int }} < {{ kafka_brokers }}"
   run_once: true
   sudo: true
-  command: './kafka-mesos.sh add {{ existing_brockers.stdout }}..{{ kafka_brokers }} --heap {{ kafka_broker_heap }} --mem {{ kafka_broker_memory }} --api http://{{ kafka_scheduler_hostname }}:7000'
+  command: './kafka-mesos.sh add {{ existing_brockers.stdout }}..{{ kafka_brokers - 1 }} --heap {{ kafka_broker_heap }} --mem {{ kafka_broker_memory }} --api http://{{ kafka_scheduler_hostname }}:7000'
   args:
     chdir: "{{ kafka_mesos_install_dir }}"
   tags:
@@ -42,12 +22,13 @@
   when: "{{ existing_brockers.stdout | int }} < {{ kafka_brokers }}"
   run_once: true
   sudo: true
-  command: "./kafka-mesos.sh start {{ existing_brockers.stdout }}..{{ kafka_brokers }} --api http://{{ kafka_scheduler_hostname }}:7000"
+  command: "./kafka-mesos.sh start {{ existing_brockers.stdout }}..{{ kafka_brokers - 1 }} --api http://{{ kafka_scheduler_hostname }}:7000"
   args:
     chdir: "{{ kafka_mesos_install_dir }}"
   tags:
     - kafka-mesos
-- name: Stop additional Kafka brockers
+
+- name: Stop redundant Kafka brockers
   when: "{{ existing_brockers.stdout | int }} > {{ kafka_brokers }}"
   run_once: true
   sudo: true
@@ -57,7 +38,7 @@
   tags:
     - kafka-mesos
 
-- name: Remove additional Kafka brockers
+- name: Remove redundant Kafka brockers
   when: "{{ existing_brockers.stdout | int }} > {{ kafka_brokers }}"
   run_once: true
   sudo: true

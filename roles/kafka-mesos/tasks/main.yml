@@ -51,7 +51,7 @@
     - kafka-mesos
 
 - include: destroy.yml
-  when: destroy_kafka_brockers == true
+  when: repair == true
 
 - include: scheduler.yml
 

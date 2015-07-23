@@ -31,10 +31,10 @@
 - name: Wait for Kafka scheduler
   run_once: true
   wait_for:
-    state:  started
+    state: started
     host: "{{ kafka_scheduler_hostname }}"
     port: 7000
-    timeout: 20
+    timeout: 300
     delay: 5
   tags:
     - kafka-mesos

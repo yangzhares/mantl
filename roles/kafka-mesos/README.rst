@@ -5,8 +5,8 @@ Kafka Mesos
 
 Variables
 ---------
-- `destroy_kafka_brockers: enable or disable kafka destruction of all brockers on node(s). Default: `false`
-- `enable_client_install`: enable or disable kafka brockers installation on node(s). Default: `false`
+- `repair: enable or disable kafka destruction of all brockers on node(s). Default: `false`
+- `enable_client_install`: enable or disable kafka brockers installation on node(s). Default: `true`
 - `kafka_mesos_install_dir` define folder for kafka-mesos installation. Default: `/opt/kafka-mesos`
 - `kafka_binary_url`: define URL for kafka binary installation. Default: `https://archive.apache.org/dist/kafka/`
 - `kafka_version`: specify version of kafka that will be used. Default: `0.8.2.1`
