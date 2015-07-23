@@ -1,9 +1,12 @@
 ---
-- name: Install Java package
+- name: Install required packages
   sudo: true
   yum:
-    name: java-1.8.0-openjdk
+    name: "{{item}}"
     state: present
+  with_items:
+    - git
+    - java-1.8.0-openjdk
   tags:
     - kafka-mesos
 
