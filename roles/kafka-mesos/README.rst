@@ -5,7 +5,8 @@ Kafka Mesos
 
 Variables
 ---------
-
+- `repair: enable or disable kafka destruction of all brockers on node(s). Default: `false`
+- `enable_client_install`: enable or disable kafka brockers installation on node(s). Default: `true`
 - `kafka_mesos_install_dir` define folder for kafka-mesos installation. Default: `/opt/kafka-mesos`
 - `kafka_binary_url`: define URL for kafka binary installation. Default: `https://archive.apache.org/dist/kafka/`
 - `kafka_version`: specify version of kafka that will be used. Default: `0.8.2.1`
@@ -19,4 +20,3 @@ Variables
 - `kafka_broker_memory`: Specify Java memory setting for broker. Default: `512`
 - `kafka_broker_heap`: Specify Java heap for broker. Default: `256`
 - `debug_enabled`: enable or disable debug mode for kafka-mesos. Default: `false`
-- `enable_client_install`: enable or disable kafka brockers installation on node(s). Default: `false`

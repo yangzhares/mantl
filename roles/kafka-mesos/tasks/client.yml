@@ -1,27 +1,48 @@
 ---
-- name: Wait for Kafka scheduler
-  run_once: true
-  wait_for:
-    host: "{{ ansible_hostname }}"
-    port: 7000
-    timeout: 1800
-    delay: 20
+- name: Calculate running brockers
+  shell: ./kafka-mesos.sh status | grep -c "id:.[0-9]"
+  register: existing_brockers
+  args:
+    chdir: "{{ kafka_mesos_install_dir }}"
   tags:
     - kafka-mesos
+  failed_when: existing_brockers.stdout == -1
 
 - name: Add Kafka brockers
+  when: "{{ existing_brockers.stdout | int }} < {{ kafka_brokers }}"
   run_once: true
   sudo: true
-  command: "./kafka-mesos.sh add  0..{{ kafka_brokers - 1 }} --heap {{ kafka_broker_heap }} --mem {{ kafka_broker_memory }} --api http://{{ kafka_scheduler_hostname }}:7000"
+  command: './kafka-mesos.sh add {{ existing_brockers.stdout }}..{{ kafka_brokers - 1 }} --heap {{ kafka_broker_heap }} --mem {{ kafka_broker_memory }} --api http://{{ kafka_scheduler_hostname }}:7000'
   args:
     chdir: "{{ kafka_mesos_install_dir }}"
   tags:
     - kafka-mesos
 
-- name: Start Kafka brockers
+- name: Start additional Kafka brockers
+  when: "{{ existing_brockers.stdout | int }} < {{ kafka_brokers }}"
   run_once: true
   sudo: true
-  command: "./kafka-mesos.sh start 0..{{ kafka_brokers - 1 }} --api http://{{ kafka_scheduler_hostname }}:7000"
+  command: "./kafka-mesos.sh start {{ existing_brockers.stdout }}..{{ kafka_brokers - 1 }} --api http://{{ kafka_scheduler_hostname }}:7000"
+  args:
+    chdir: "{{ kafka_mesos_install_dir }}"
+  tags:
+    - kafka-mesos
+
+- name: Stop redundant Kafka brockers
+  when: "{{ existing_brockers.stdout | int }} > {{ kafka_brokers }}"
+  run_once: true
+  sudo: true
+  command: "./kafka-mesos.sh stop {{ kafka_brokers }}..{{ existing_brockers.stdout | int - 1 }} --api http://{{ kafka_scheduler_hostname }}:7000"
+  args:
+    chdir: "{{ kafka_mesos_install_dir }}"
+  tags:
+    - kafka-mesos
+
+- name: Remove redundant Kafka brockers
+  when: "{{ existing_brockers.stdout | int }} > {{ kafka_brokers }}"
+  run_once: true
+  sudo: true
+  command: "./kafka-mesos.sh remove {{ kafka_brokers }}..{{ existing_brockers.stdout | int - 1 }} --heap {{ kafka_broker_heap }} --mem {{ kafka_broker_memory }} --api http://{{ kafka_scheduler_hostname }}:7000"
   args:
     chdir: "{{ kafka_mesos_install_dir }}"
   tags:

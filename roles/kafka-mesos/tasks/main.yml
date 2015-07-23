@@ -1,17 +1,12 @@
 ---
-- name: Install git package
+- name: Install required packages
   sudo: true
   yum:
-    name: git
+    name: "{{item}}"
     state: present
-  tags:
-    - kafka-mesos
-
-- name: Install Java package
-  sudo: true
-  yum:
-    name: java-1.8.0-openjdk
-    state: present
+  with_items:
+    - git
+    - java-1.8.0-openjdk
   tags:
     - kafka-mesos
 
@@ -42,10 +37,26 @@
   tags:
     - kafka-mesos
 
+- name: Setup Kafka environment
+  sudo: true
+  template:
+    src: "kafka-mesos.sh.j2"
+    dest: "/etc/profile.d/kafka-mesos.sh"
+  tags:
+    - kafka-mesos
+
+- name: Create Kafka-Mesos configuration
+  sudo: true
+  template:
+    src: "kafka.properties.j2"
+    dest: "{{ kafka_mesos_install_dir }}/kafka-mesos.properties"
+  tags:
+    - kafka-mesos
+
+- include: destroy.yml
+  when: repair == true
+
 - include: scheduler.yml
-  when: kafka_downloaded | changed
 
 - include: client.yml
   when: enable_client_install == true
-
-- include: config.yml
