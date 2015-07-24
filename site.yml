@@ -11,7 +11,7 @@
           directory and re-run this playbook with the `--extra-vars`/`-e` option
           pointing to your `security.yml` (e.g., `-e @security.yml`)
 
-- include: provision-openstack.yml
+- include: playbooks/upgrade-packages.yml serial=100%
 
 - hosts: all
   roles:

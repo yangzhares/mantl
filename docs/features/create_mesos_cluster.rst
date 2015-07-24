@@ -14,24 +14,17 @@ All steps from `Provision Open Stack Cluster <provision_open_stack_cluster.rst>`
 Step-by-step Guide
 ------------------
 
-1. Ping all instances to ensure they are reachable via SSH::
-
-        ansible all -i inventory/<your inventory file> -m ping
-
-   Note: If it fails, you might need to remove old records from `~/.ssh/known_hosts`.
-
-2. Run::
+1. Run::
 
         ./security-setup --mesos-framework-auth=false --mesos-iptables=false
 
    The script will ask you for admin password for all the UIs (Mesos, Marathon and Consul).
 
-3. Add additional users if needed:
+2. Add additional users (if needed):
 
-   Go to `inventory/group_vars/all` folder and edit `users.yml`.
-   Add all the needed users and their public keys.
+   Edit `inventory/group_vars/all/users.yml`.  Add all the needed users and their public keys.
 
-4. If you want to use a particular package of Spark ("spark-1.3.1-bin-hadoop2.6" is used
+3. If you want to use a particular package of Spark ("spark-1.3.1-bin-hadoop2.6" is used
    by default), then edit `roles/spark/defaults/main.yml` and set::
 
         spark_default_package: "<package name>"
@@ -40,8 +33,8 @@ Step-by-step Guide
 
         spark_default_package: "spark-1.3.0-bin-hadoop2.4"
 
-   If later you want to temporarily change the Spark version, run the command below
-   (on the client machine)::
+   If later you want to temporarily change the Spark version, then run the command below
+   on the client machine::
 
         source /opt/<correct spark folder>/conf/spark-env.sh
 
@@ -51,7 +44,7 @@ Step-by-step Guide
 
    It will change the Spark version only for the current user session.
 
-   If you want to permanently change the Spark version, run::
+   If you want to permanently change the Spark version, then run::
 
         sudo ln -s /opt/<correct spark folder> /opt/spark
 
@@ -59,11 +52,11 @@ Step-by-step Guide
 
         sudo ln -s /opt/spark-1.3.0-bin-hadoop2.4 /opt/spark
 
-5. Run::
+4. Run::
 
         ansible-playbook -i inventory/<your inventory file> site.yml -e @security.yml
 
-6. Verify all the services (use "admin" as the user name and the password you set for
+5. Verify all the services (use "admin" as the user name and the password you set for
    `security-setup`):
 
    *Mesos:*
@@ -86,7 +79,7 @@ Step-by-step Guide
    Note: If in Firefox you encounter "Secure Connection Failed" error, please try
    another browser (for example, Google Chrome).
 
-7. Verify HDFS:
+6. Verify HDFS:
 
    Make SSH connection to any edge node (see "dev" role in your inventory file) using
    "centos" user and run::
@@ -106,7 +99,7 @@ Step-by-step Guide
 
    Make sure your file is there.
 
-8. Verify Spark:
+7. Verify Spark:
 
    Make SSH connection to any edge node (see "dev" role in your inventory file) using
    "centos" user and run::
@@ -160,7 +153,7 @@ Step-by-step Guide
 
         Pi is roughly 3.14336
 
-9. Verify Kafka-mesos utility:
+8. Verify Kafka-mesos utility:
 
    Make SSH connection to any edge node (see "dev" role in your inventory file)
    using "centos" user and run::
@@ -193,7 +186,7 @@ Step-by-step Guide
    Note: amount of Kafka brokers and their mem/heap values depend on configuration
    file `roles/kafka/defaults/main.yml` inside your project directory.
 
-10. Verify basic Kafka functionality:
+9. Verify basic Kafka functionality:
 
     Make SSH connection to any edge node (see "dev" role in your inventory file)
     using "centos" user.  Create a topic named "test" with a single partition and one replica::
