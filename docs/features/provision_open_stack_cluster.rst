@@ -62,7 +62,8 @@ Step-by-step Guide
 
    Find a network, which is accessible from your environment (for example, "public-direct-600").
 
-5. Create a new security group called "microservice"::
+5. Create a new security group "microservice" (if it's not there yet) and open
+   all the needed ports::
 
         nova secgroup-create microservice "microservices-infrastructure"
         nova secgroup-add-rule microservice icmp -1 -1 0.0.0.0/0
@@ -75,8 +76,7 @@ Step-by-step Guide
 
 6. Save OpenStack settings in a datacenter file:
 
-   Go to `inventory/group_vars` folder and edit `dc1` (at the moment
-   it's not possible to use files with your own names).  Set "os_auth_url",
+   Edit `inventory/group_vars/dc1`.  Set "os_auth_url",
    "os_tenant_name" and "os_tenant_id" using the values from OpenStack RC-file that
    you got in step 3 (see its content).  Set "os_net_id" to the "id" of the chosen
    network (see step 4).  Set "security_group" to "microservice".
@@ -85,14 +85,17 @@ Step-by-step Guide
 
    Go to `inventory` folder and either edit existing `1-datacenter` file
    or create a new file using that file as a template.  Update the number of hosts
-   and their hostnames if needed.  Update datacenters if needed.
+   and their hostnames if needed.
 
-8. Update the flavor of the instances if needed:
+8. Update the flavor of the instances (if needed):
 
-   Go to `inventory/group_vars/all` folder and edit `all.yml`.  Update
-   "os_flavor_ram" and "os_flavor_include" if needed (it is suggested to set at least
+   Edit `inventory/group_vars/all/all.yml`.  Update
+   "os_flavor_ram" and "os_flavor_include" (it is suggested to set at least
    "8192" and "GP2-Large").  Make sure you have selected an existing
-   "os_flavor_ram/os_flavor_include" combination.
+   "os_flavor_ram/os_flavor_include" combination.  If you want to have different
+   flavors for different node types, then you can also edit
+   `inventory/group_vars/control.yml`, `inventory/group_vars/resource.yml` and
+   `inventory/group_vars/dev.yml`.
 
 9. Add your SSH key to OpenStack:
 
@@ -112,7 +115,13 @@ Step-by-step Guide
 
         ansible-playbook -i inventory/<your inventory file> openstack/destroy-hosts.yml
 
-    Note: It's most likely that you will need to add IPs of provisioned instances into your
+11. It's most likely that you will need to add IPs of provisioned instances into your
     `/etc/hosts`, otherwise you won't be able to access them.  To do that just copy the content
-    of `hosts.merge` (it should be created by `openstack/provision-hosts.yml`) into `/etc/hosts`.
+    of `hosts.merge` (should be created by `openstack/provision-hosts.yml`) into `/etc/hosts`.
     When you destroy the cluster, don't forget to remove them from `/etc/hosts`.
+
+12. Ping all instances to ensure they are reachable via SSH::
+
+        ansible all -i inventory/<your inventory file> -m ping
+
+   Note: If it fails, you might need to remove old records from `~/.ssh/known_hosts`.

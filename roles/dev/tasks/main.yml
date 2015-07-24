@@ -22,6 +22,8 @@
     - wget
     - tmux
     - zsh
+  tags:
+    - dev
 
 # p7zip
 - name: p7zip repository package
@@ -30,6 +32,8 @@
   yum:
     name: http://packages.sw.be/rpmforge-release/rpmforge-release-0.5.2-2.el6.rf.i686.rpm
     state: present
+  tags:
+    - dev
 
 - name: Install p7zip package
   sudo: true
@@ -37,6 +41,8 @@
   yum:
     name: p7zip
     state: present
+  tags:
+    - dev
 
 # RAR
 - name: Install RAR package
@@ -45,6 +51,8 @@
   yum:
     name: http://pkgs.repoforge.org/rar/rar-3.8.0-1.el6.rf.x86_64.rpm
     state: present
+  tags:
+    - dev
 
 # Python 3.3
 - name: Install Software collection utilities package (for Python 3.3)
@@ -53,6 +61,8 @@
   yum:
     name: scl-utils
     state: present
+  tags:
+    - dev
 
 - name: Install Python 3.3 collection repository package
   sudo: true
@@ -60,17 +70,23 @@
   yum:
     name: https://www.softwarecollections.org/en/scls/rhscl/python33/epel-7-x86_64/download/rhscl-python33-epel-7-x86_64.noarch.rpm
     state: present
+  tags:
+    - dev
 
 - name: Install Python 3.3 package
   sudo: true
   yum:
     name: python33
     state: present
+  tags:
+    - dev
 
 - name: Install Pip package
   sudo: true
   ignore_errors: true
   shell: "scl enable python33 \"bash -c 'easy_install pip'\""
+  tags:
+    - dev
 
 # Scala
 - name: Install Scala package
@@ -79,13 +95,24 @@
   yum:
     name: http://downloads.typesafe.com/scala/2.11.6/scala-2.11.6.rpm
     state: present
+  tags:
+    - dev
+
+- name: Install SBT repository
+  sudo: true
+  ignore_errors: true
+  shell: "curl https://bintray.com/sbt/rpm/rpm | tee /etc/yum.repos.d/bintray-sbt-rpm.repo"
+  tags:
+    - dev
 
 - name: Install SBT package
   sudo: true
   ignore_errors: true
   yum:
-    name: http://repo.scala-sbt.org/scalasbt/sbt-native-packages/org/scala-sbt/sbt/0.13.1/sbt.rpm
+    name: sbt
     state: present
+  tags:
+    - dev
 
 # fetch2hdfs.sh
 - name: Put fetch2hdfs.sh
@@ -94,3 +121,5 @@
     src: "fetch2hdfs.sh"
     dest: "/usr/sbin/fetch2hdfs.sh"
     mode: 0775
+  tags:
+    - dev
