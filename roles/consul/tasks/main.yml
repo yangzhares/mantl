@@ -109,6 +109,8 @@
     line: '[{% for host in groups[consul_servers_group] | intersect(groups[consul_dc_group]) %}\"{{ hostvars[host].ansible_default_ipv4.address }}:8300\"{% if not loop.last %},{% endif %}{% endfor %}]'
     state: present
     create: yes
+    owner: consul
+    group: consul
   when: repair_mode is defined and consul_is_server
   tags:
     - consul
