@@ -153,7 +153,19 @@ Step-by-step Guide
 
         Pi is roughly 3.14336
 
-8. Verify Kafka-mesos utility:
+8. Before kakfa-mesos application is installed, a number of created and running bockers can be changed to any quantity.
+
+        Edit variable kafka_brokers: "<number>" in roles/kafka-mesos/defaults/main.yml
+
+   In order to enable brocker installation process variable enable_client_install should be set to "true".
+   In case of "false" value, no any brockers will be installed.
+
+   In order to repair kafka-mesos-scheduler application, variable repair should be set to "true". Default value is "false"
+
+   WARNING:: When repair is set to "true", all existing brockers will be destroyed and kafka-mesos-scheduler application
+             will be removed from Marathon.
+
+9. Verify Kafka-mesos utility:
 
    Make SSH connection to any edge node (see "dev" role in your inventory file)
    using "centos" user and run::
@@ -167,7 +179,7 @@ Step-by-step Guide
    You should obtain something like::
 
         Cluster status received
-        
+
         cluster:
           brokers:
             id: 0
@@ -180,13 +192,13 @@ Step-by-step Guide
               state: running
               endpoint: host-04:4001
               attributes: node_id=host-04
-        
+
         <next output is omitted>
 
    Note: amount of Kafka brokers and their mem/heap values depend on configuration
    file `roles/kafka/defaults/main.yml` inside your project directory.
 
-9. Verify basic Kafka functionality:
+10. Verify basic Kafka functionality:
 
     Make SSH connection to any edge node (see "dev" role in your inventory file)
     using "centos" user.  Create a topic named "test" with a single partition and one replica::
