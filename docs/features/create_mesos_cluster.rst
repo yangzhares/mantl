@@ -153,17 +153,17 @@ Step-by-step Guide
 
         Pi is roughly 3.14336
 
-8. Before kakfa-mesos application is installed, a number of created and running bockers can be changed to any quantity.
+8. Before kakfa-mesos application is installed, a number of created and running brockers can be changed to any quantity.
 
         Edit variable kafka_brokers: "<number>" in roles/kafka-mesos/defaults/main.yml
 
    In order to enable brocker installation process variable enable_client_install should be set to "true".
-   In case of "false" value, no any brockers will be installed.
+   In case of "false" value, no brockers will be installed.
 
-   In order to repair kafka-mesos-scheduler application, variable repair should be set to "true". Default value is "false"
+   In order to repair kafka-mesos-scheduler application, variable repair must be set to "true". Default value is "false"
 
-   WARNING:: When repair is set to "true", all existing brockers will be destroyed and kafka-mesos-scheduler application
-             will be removed from Marathon.
+   WARNING:: When repair is set to "true", all existing brockers are destroyed and kafka-mesos-scheduler application
+             is removed from Marathon.
 
 9. Verify Kafka-mesos utility:
 
