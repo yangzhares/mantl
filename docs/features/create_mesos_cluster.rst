@@ -56,6 +56,10 @@ Step-by-step Guide
 
         ansible-playbook -i inventory/<your inventory file> site.yml -e @security.yml
 
+   If you want to repair existing deployment, then run::
+
+        ansible-playbook -i inventory/<your inventory file> site.yml -e @security.yml -e "repair_mode=true"
+
 5. Verify all the services (use "admin" as the user name and the password you set for
    `security-setup`):
 
