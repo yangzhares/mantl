@@ -43,13 +43,22 @@
   tags:
     - consul
 
+- name: stop nginx-consul
+  sudo: yes
+  service:
+    name: nginx-consul
+    state: stopped
+  when: repair_mode is defined
+  tags:
+    - consul
+
 - name: enable nginx-consul
   sudo: yes
   service:
     name: nginx-consul
     enabled: yes
     state: started
-  notify:
-    - restart nginx-consul
   tags:
     - consul
+
+- meta: flush_handlers
