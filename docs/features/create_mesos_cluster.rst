@@ -113,7 +113,7 @@ Step-by-step Guide
 
 7. Verify Spark:
 
-   Make SSH connection to any edge node (see "dev" role in an inventory file) using
+   Make SSH connection to any edge node (see "dev" role in the inventory file) using
    "centos" user and run::
 
         spark-shell
@@ -167,7 +167,7 @@ Step-by-step Guide
 
 8. Verify Kafka-mesos utility:
 
-   Make SSH connection to any edge node (see "dev" role in inventory file)
+   Make SSH connection to any edge node (see "dev" role in the inventory file)
    using "centos" user and run::
 
         cd /opt/kafka-mesos
@@ -200,7 +200,7 @@ Step-by-step Guide
 
 9. Verify basic Kafka functionality:
 
-    Connect via SSH to any edge node (see "dev" role in inventory file)
+    Connect via SSH to any edge node (see "dev" role in the inventory file)
     using "centos" user.  Create a topic named "test" with a single partition and one replica::
 
         kafka-topics.sh --create --zookeeper zookeeper.service.consul:2181 --replication-factor 1 --partitions 1 --topic test
