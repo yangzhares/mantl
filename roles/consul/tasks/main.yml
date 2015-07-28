@@ -101,6 +101,15 @@
   tags:
     - consul
 
+- name: check whether peers.json exists or not
+  sudo: yes
+  stat:
+    path: /var/lib/consul/raft/peers.json
+  register: peers_json
+  when: repair_mode is defined and consul_is_server
+  tags:
+    - consul
+
 - name: fix peers.json
   sudo: yes
   lineinfile:
@@ -108,10 +117,7 @@
     regexp: .+
     line: '[{% for host in groups[consul_servers_group] | intersect(groups[consul_dc_group]) %}\"{{ hostvars[host].ansible_default_ipv4.address }}:8300\"{% if not loop.last %},{% endif %}{% endfor %}]'
     state: present
-    create: yes
-    owner: consul
-    group: consul
-  when: repair_mode is defined and consul_is_server
+  when: repair_mode is defined and consul_is_server and peers_json.stat.exists
   tags:
     - consul
 
