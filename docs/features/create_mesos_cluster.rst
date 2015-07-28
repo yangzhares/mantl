@@ -56,7 +56,7 @@ Step-by-step Guide
 
         ansible-playbook -i inventory/<your inventory file> site.yml -e @security.yml
 
-   If you want to repair existing deployment, then run::
+   If you need to repair an existing deployment, then run::
 
         ansible-playbook -i inventory/<your inventory file> site.yml -e @security.yml -e "repair_mode=true"
 
