@@ -63,9 +63,12 @@ Step-by-step Guide
 
         ansible-playbook -i inventory/<inventory file> site.yml -e @security.yml
 
-   If you need to repair an existing deployment, then run::
+   When repair of existing cluster is required, the same play can be performed in addition with "repair_mode" set to "true".
+   Simply run::
 
         ansible-playbook -i inventory/<inventory file> site.yml -e @security.yml -e "repair_mode=true"
+
+   This variable will safely restart existing services.
 
 5. Verify all the services (use "admin" as the user name and the password set for
    `security-setup`):
