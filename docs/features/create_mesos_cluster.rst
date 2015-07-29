@@ -4,7 +4,7 @@ Create Mesos Cluster
 Purpose
 -------
 
-Create Mesos Cluster in one datacenter from scratch using microservices-infrastructure project.
+Creation of Mesos Cluster from scratch in one datacenter using microservices-infrastructure project.
 
 Pre-requisites
 --------------
@@ -18,13 +18,13 @@ Step-by-step Guide
 
         ./security-setup --mesos-framework-auth=false --mesos-iptables=false
 
-   The script will ask you for admin password for all the UIs (Mesos, Marathon and Consul).
+   The script will ask for admin password for all the UIs (Mesos, Marathon and Consul).
 
 2. Add additional users (if needed):
 
    Edit `inventory/group_vars/all/users.yml`.  Add all the needed users and their public keys.
 
-3. If you want to use a particular package of Spark ("spark-1.3.1-bin-hadoop2.6" is used
+3. If  particular Spark package is required ("spark-1.3.1-bin-hadoop2.6" is set
    by default), then edit `roles/spark/defaults/main.yml` and set::
 
         spark_default_package: "<package name>"
@@ -33,7 +33,7 @@ Step-by-step Guide
 
         spark_default_package: "spark-1.3.0-bin-hadoop2.4"
 
-   If later you want to temporarily change the Spark version, then run the command below
+   If different version of Spark is required, then run the command below
    on the client machine::
 
         source /opt/<correct spark folder>/conf/spark-env.sh
@@ -42,9 +42,9 @@ Step-by-step Guide
 
         source /opt/spark-1.3.0-bin-hadoop2.4/conf/spark-env.sh
 
-   It will change the Spark version only for the current user session.
+   Note: This shell script will change Spark version only for the current user session and only on temporary basis.
 
-   If you want to permanently change the Spark version, then run::
+   In order to change permanently Spark version run command::
 
         sudo ln -s /opt/<correct spark folder> /opt/spark
 
@@ -52,15 +52,22 @@ Step-by-step Guide
 
         sudo ln -s /opt/spark-1.3.0-bin-hadoop2.4 /opt/spark
 
-4. Run::
+   Before kakfa-mesos application is installed, the number of created and running brockers can be changed.
 
-        ansible-playbook -i inventory/<your inventory file> site.yml -e @security.yml
+           Edit variable kafka_brokers: "<number>" in roles/kafka-mesos/defaults/main.yml
+
+  In order to enable brocker installation process variable enable_client_install should be set to "true".
+  In case of "false" value, no brockers will be installed.
+
+4. The next step is to run the main playbook with security file generated before::
+
+        ansible-playbook -i inventory/<inventory file> site.yml -e @security.yml
 
    If you need to repair an existing deployment, then run::
 
-        ansible-playbook -i inventory/<your inventory file> site.yml -e @security.yml -e "repair_mode=true"
+        ansible-playbook -i inventory/<inventory file> site.yml -e @security.yml -e "repair_mode=true"
 
-5. Verify all the services (use "admin" as the user name and the password you set for
+5. Verify all the services (use "admin" as the user name and the password set for
    `security-setup`):
 
    *Mesos:*
@@ -68,8 +75,6 @@ Step-by-step Guide
    Open *https://<any mesos_leader>:5050*
 
    Open *https://<any mesos_leader>:5050/state.json*
-
-   Open *https://<any mesos_leader>:5050/stats.json*
 
    *Consul:*
 
@@ -80,48 +85,48 @@ Step-by-step Guide
    Open *https://<any marathon_server>:8080*.  Click "+ New App" and create some
    test application (for example, id: "sleep" and command: "sleep 3600").
 
-   Note: If in Firefox you encounter "Secure Connection Failed" error, please try
-   another browser (for example, Google Chrome).
+   Note: In case of error "Secure Connection Failed" in Firefox browser, please try
+   another one (for example, Google Chrome).
 
 6. Verify HDFS:
 
-   Make SSH connection to any edge node (see "dev" role in your inventory file) using
+   Make SSH connection to any edge node (see "dev" role in an inventory file) using
    "centos" user and run::
 
         hdfs dfs -ls /
 
-   You should obtain something like::
+   Output should be the following::
 
         drwxr-xr-x   - hdfs supergroup          0 2015-04-24 14:30 /apps
         drwxrwxrwx   - hdfs supergroup          0 2015-04-24 14:37 /tmp
         drwxr-xr-x   - hdfs supergroup          0 2015-04-24 14:30 /user
 
-   Put a file on HDFS::
+   Put any file on HDFS::
 
         hdfs dfs -put <file>
         hdfs dfs -ls
 
-   Make sure your file is there.
+   Make sure the file is there.
 
 7. Verify Spark:
 
-   Make SSH connection to any edge node (see "dev" role in your inventory file) using
+   Make SSH connection to any edge node (see "dev" role in the inventory file) using
    "centos" user and run::
 
         spark-shell
 
-   Spark shell should successfully start)::
+   Spark shell should successfully start::
 
         scala>
 
-   Run the following commands::
+   Then perform the following commands::
 
         val data = 1 to 10000
         val distData = sc.parallelize(data)
         val filteredData = distData.filter(_< 10)
         filteredData.collect()
 
-   You should obtain::
+   Output should be the following::
 
         res0: Array[Int] = Array(1, 2, 3, 4, 5, 6, 7, 8, 9)
 
@@ -137,7 +142,7 @@ Step-by-step Guide
 
         hdfs dfs -cat /tmp/test/part-00000
 
-   You should obtain::
+   Output should be the following::
 
         1
         2
@@ -153,25 +158,37 @@ Step-by-step Guide
 
         run-example SparkPi
 
-   You should obtain something like::
+   The following output must be::
 
         Pi is roughly 3.14336
 
-8. Verify Kafka-mesos utility:
+8. Before kakfa-mesos application is installed, a number of created and running brockers can be changed to any quantity.
 
-   Make SSH connection to any edge node (see "dev" role in your inventory file)
+        Edit variable kafka_brokers: "<number>" in roles/kafka-mesos/defaults/main.yml
+
+   In order to enable brocker installation process variable enable_client_install should be set to "true".
+   In case of "false" value, no brockers will be installed.
+
+   In order to repair kafka-mesos-scheduler application, variable repair must be set to "true". Default value is "false"
+
+   WARNING:: When repair is set to "true", all existing brockers are destroyed and kafka-mesos-scheduler application
+             is removed from Marathon.
+
+9. Verify Kafka-mesos utility:
+
+   Make SSH connection to any edge node (see "dev" role in the inventory file)
    using "centos" user and run::
 
         cd /opt/kafka-mesos
 
-   After that run::
+   The next step is to run::
 
         ./kafka-mesos.sh status
 
-   You should obtain something like::
+   The following output must be::
 
         Cluster status received
-        
+
         cluster:
           brokers:
             id: 0
@@ -184,20 +201,20 @@ Step-by-step Guide
               state: running
               endpoint: host-04:4001
               attributes: node_id=host-04
-        
+
         <next output is omitted>
 
-   Note: amount of Kafka brokers and their mem/heap values depend on configuration
-   file `roles/kafka/defaults/main.yml` inside your project directory.
+   Note: the number of Kafka brokers and their mem/heap values depend on configuration
+   file `roles/kafka/defaults/main.yml` inside project directory.
 
-9. Verify basic Kafka functionality:
+10. Verify basic Kafka functionality:
 
-    Make SSH connection to any edge node (see "dev" role in your inventory file)
+    Connect via SSH to any edge node (see "dev" role in the inventory file)
     using "centos" user.  Create a topic named "test" with a single partition and one replica::
 
         kafka-topics.sh --create --zookeeper zookeeper.service.consul:2181 --replication-factor 1 --partitions 1 --topic test
 
-    You should obtain::
+    Output should be the following::
 
         Created topic "test".
 
@@ -205,7 +222,7 @@ Step-by-step Guide
 
         kafka-topics.sh --list --zookeeper zookeeper.service.consul:2181
 
-    You should obtain::
+    Output should be the following::
 
         test
 
@@ -221,11 +238,11 @@ Step-by-step Guide
 
         kafka-console-consumer.sh --zookeeper zookeeper.service.consul:2181 --topic test --from-beginning
 
-    You should obtain::
+    Output should be the following::
 
         message one
         message two
 
-    Note: If you have each of the above commands (producer and consumer) running
-    in a different terminal then you should be able to type messages into the
-    producer terminal and see them appear in the consumer terminal.
+    Note: If every of the commands above (producer and consumer) is running
+          in a different terminals then messages typed into the producer terminal
+          appears in the consumer terminal.
