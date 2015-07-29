@@ -33,7 +33,6 @@
   get_url:
     url: "{{ kafka_binary_url }}/{{ kafka_version }}/kafka_{{ kafka_scala_version }}-{{ kafka_version }}.tgz"
     dest: "{{ kafka_mesos_install_dir }}"
-  register: kafka_downloaded
   tags:
     - kafka-mesos
 
@@ -54,7 +53,7 @@
     - kafka-mesos
 
 - include: destroy.yml
-  when: repair == true
+  when: repair_mode is defined
 
 - include: scheduler.yml
 

@@ -19,7 +19,7 @@
     - kafka-mesos
 
 - name: Change Kafka scheduler configuration
-  when: kafka_app_status == '"{\"message\":\"An app with id [kafka-mesos-scheduler] already exists.\"}"'
+  when: kafka_app_status.stdout == '"{\"message\":\"An app with id [kafka-mesos-scheduler] already exists.\"}"'
   run_once: true
   sudo: true
   command: "/usr/bin/curl -k -s --user {{ marathon_http_credentials }} -X PUT -H \"Content-Type: application/json\" -d @kafka.json  https://{{ marathon }}:8080/v2/apps/kafka-mesos-scheduler"
