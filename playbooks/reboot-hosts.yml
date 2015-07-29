@@ -6,7 +6,7 @@
 
   - name: check whether consul is installed or not
     stat:
-      path: /bin/consul
+      path: /usr/bin/consul
     register: is_consul
 
   - name: set consul maintenance enable
