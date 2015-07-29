@@ -59,14 +59,13 @@ Step-by-step Guide
   In order to enable brocker installation process variable enable_client_install should be set to "true".
   In case of "false" value, no brockers will be installed.
 
-  In order to repair kafka-mesos-scheduler application, variable repair must be set to "true". Default value is "false"
-
-  WARNING:: When repair is set to "true", all existing brockers are destroyed and kafka-mesos-scheduler application
-            is removed from Marathon.
-
 4. The next step is to run the main playbook with security file generated before::
 
         ansible-playbook -i inventory/<inventory file> site.yml -e @security.yml
+
+   If you need to repair an existing deployment, then run::
+
+        ansible-playbook -i inventory/<inventory file> site.yml -e @security.yml -e "repair_mode=true"
 
 5. Verify all the services (use "admin" as the user name and the password set for
    `security-setup`):
@@ -76,8 +75,6 @@ Step-by-step Guide
    Open *https://<any mesos_leader>:5050*
 
    Open *https://<any mesos_leader>:5050/state.json*
-
-   Open *https://<any mesos_leader>:5050/stats.json*
 
    *Consul:*
 
