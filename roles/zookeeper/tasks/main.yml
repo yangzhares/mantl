@@ -33,7 +33,6 @@
     src: zookeeper-service.j2
     dest: "/usr/lib/systemd/system/{{ zookeeper_service }}.service"
   notify:
-    - register zookeeper service
     - reload systemd daemon
   tags:
     - zookeeper
@@ -80,5 +79,25 @@
     - zookeeper
 
 - include: collectd.yml
+
+- name: stop zookeeper service
+  sudo: yes
+  service:
+    name: "{{ zookeeper_service }}"
+    state: stopped
+  when: repair_mode is defined
+  tags:
+    - zookeeper
+
+- name: register zookeeper service
+  sudo: yes
+  service:
+    enabled: yes
+    name: "{{ zookeeper_service }}"
+    state: started
+  notify:
+    - wait for zookeeper to listen
+  tags:
+    - zookeeper
 
 - meta: flush_handlers

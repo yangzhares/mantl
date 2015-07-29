@@ -101,7 +101,9 @@
 - name: Install SBT repository
   sudo: true
   ignore_errors: true
-  shell: "curl https://bintray.com/sbt/rpm/rpm | tee /etc/yum.repos.d/bintray-sbt-rpm.repo"
+  get_url:
+    url: "https://bintray.com/sbt/rpm/rpm"
+    dest: "/etc/yum.repos.d/bintray-sbt-rpm.repo"
   tags:
     - dev
 
