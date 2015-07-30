@@ -1,6 +1,5 @@
 ---
 enable_client_install: true
-repair: false
 kafka_mesos_install_dir: "/opt/kafka-mesos"
 kafka_binary_url: "https://archive.apache.org/dist/kafka"
 kafka_version: "0.8.2.1"

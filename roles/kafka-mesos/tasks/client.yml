@@ -1,5 +1,6 @@
 ---
 - name: Calculate running brockers
+  run_once: true
   shell: ./kafka-mesos.sh status | grep -c "id:.[0-9]"
   register: existing_brockers
   args:

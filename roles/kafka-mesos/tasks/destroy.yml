@@ -1,5 +1,6 @@
 ---
 - name: Calculate running brockers
+  run_once: true
   shell: ./kafka-mesos.sh status | grep -c "id:.[0-9]"
   register: existing_brockers
   args:
@@ -9,7 +10,7 @@
   failed_when: existing_brockers.stdout == -1
 
 - name: Stop all Kafka brockers
-  when: existing_brockers | int > 0
+  when: existing_brockers.stdout | int > 0
   run_once: true
   sudo: true
   command: "./kafka-mesos.sh stop 0..{{ existing_brockers.stdout | int - 1 }} --api http://{{ kafka_scheduler_hostname }}:7000"
@@ -19,7 +20,7 @@
     - kafka-mesos
 
 - name: Remove all Kafka brockers
-  when: existing_brockers | int > 0
+  when: existing_brockers.stdout | int > 0
   run_once: true
   sudo: true
   command: "./kafka-mesos.sh remove 0..{{ existing_brockers.stdout | int - 1 }} --heap {{ kafka_broker_heap }} --mem {{ kafka_broker_memory }} --api http://{{ kafka_scheduler_hostname }}:7000"
