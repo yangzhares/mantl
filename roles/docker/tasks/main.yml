@@ -75,12 +75,4 @@
     - docker
     - bootstrap # needed to install Docker images during bootstrap
 
-- name: install docker python module
-  sudo: yes
-  yum:
-    name: docker-python
-    state: latest
-  tags:
-    - docker
-
 - include: collectd.yml
