@@ -8,7 +8,7 @@
 - name: Downloading a public key
   sudo: true
   sudo_user: hdfs
-  fetch: 
+  fetch:
     src: "/home/hdfs/.ssh/id_rsa.pub"
     dest: "/tmp/id_rsa.pub.{{ local_username.stdout }}"
     flat: yes
@@ -65,6 +65,7 @@
   sudo: true
   sudo_user: hdfs
   shell: source /etc/profile.d/hadoop.sh; hadoop-daemon.sh stop namenode; hadoop-daemon.sh start namenode
+  when: hdfs_namenode_data_dir_formatted.stdout == '' or repair_mode is defined
   tags:
     - hdfs
 

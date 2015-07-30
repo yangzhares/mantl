@@ -67,12 +67,13 @@
   sudo: true
   sudo_user: hdfs
   shell: source /etc/profile.d/hadoop.sh; hadoop-daemon.sh stop datanode
+  when: when: external_storage.stdout != '' or repair_mode is defined
   tags:
     - hdfs
 
 - name: Create Hadoop HDFS data node directory
   sudo: true
-  file: 
+  file:
     path: "/dfs/dn"
     owner: hdfs
     group: hdfs
@@ -91,5 +92,6 @@
   sudo: true
   sudo_user: hdfs
   shell: source /etc/profile.d/hadoop.sh; hadoop-daemon.sh start datanode
+  when: when: external_storage.stdout != '' or repair_mode is defined
   tags:
     - hdfs
