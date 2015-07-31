@@ -20,7 +20,7 @@
 - name: set ip
   sudo: yes
   copy:
-    content: "{{ private_ipv4 }}"
+    content: "{{ ansible_default_ipv4.address }}"
     dest: /etc/mesos-slave/ip
   notify: restart mesos follower
   tags:

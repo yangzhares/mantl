@@ -35,7 +35,7 @@
   lineinfile:
     dest: /etc/sysconfig/docker
     regexp: ^other_arg=
-    line: other_arg='--dns {{ private_ipv4 }} --dns-search service.{{ consul_dns_domain }}'
+    line: other_arg='--dns {{ ansible_default_ipv4.address }} --dns-search service.{{ consul_dns_domain }}'
     state: present
     create: yes
   notify:
@@ -74,13 +74,5 @@
   tags:
     - docker
     - bootstrap # needed to install Docker images during bootstrap
-
-- name: install docker python module
-  sudo: yes
-  yum:
-    name: docker-python
-    state: latest
-  tags:
-    - docker
 
 - include: collectd.yml
