@@ -6,6 +6,7 @@
     state: present
   tags:
     - consul
+    - bootstrap
 
 - name: install consul-ui
   sudo: yes
@@ -15,6 +16,16 @@
   when: consul_is_server
   tags:
     - consul
+    - bootstrap
+
+- name: install consul-utils
+  sudo: yes
+  yum:
+    name: "https://bintray.com/artifact/download/ciscocloud/rpm/consul-utils-0.1.0-1.el7.centos.x86_64.rpm"
+    state: present
+  tags:
+    - consul
+    - bootstrap
 
 - name: configure consul
   sudo: yes
@@ -90,6 +101,35 @@
   tags:
     - consul
 
+- name: stop consul
+  sudo: yes
+  service:
+    name: consul
+    state: stopped
+  when: repair_mode is defined
+  tags:
+    - consul
+
+- name: check whether peers.json exists or not
+  sudo: yes
+  stat:
+    path: /var/lib/consul/raft/peers.json
+  register: peers_json
+  when: repair_mode is defined and consul_is_server
+  tags:
+    - consul
+
+- name: fix peers.json
+  sudo: yes
+  lineinfile:
+    dest: /var/lib/consul/raft/peers.json
+    regexp: .+
+    line: '[{% for host in groups[consul_servers_group] | intersect(groups[consul_dc_group]) %}\"{{ hostvars[host].ansible_default_ipv4.address }}:8300\"{% if not loop.last %},{% endif %}{% endfor %}]'
+    state: present
+  when: repair_mode is defined and consul_is_server and peers_json.stat.exists
+  tags:
+    - consul
+
 - name: enable consul
   sudo: yes
   service:
@@ -120,18 +160,17 @@
 
 # Give consul time to elect a leader
 - name: wait for leader
-  command: consul-wait-for-leader.sh
+  command: /usr/local/bin/consul-wait-for-leader.sh
   tags:
     - consul
 
 - meta: flush_handlers
 
 - include: acl.yml
-  when: do_consul_acl
-
-- include: noacl.yml
-  when: not do_consul_acl
 
 - meta: flush_handlers
 
 - include: nginx_proxy.yml
+
+# symlink to distributive checklist, register check with Consul
+- include: distributive.yml

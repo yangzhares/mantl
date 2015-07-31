@@ -5,7 +5,26 @@
     src: exhibitor-service.j2 
     dest: "/usr/lib/systemd/system/{{ exhibitor_service }}.service"
   notify: 
-    - register exhibitor service
     - reload systemd daemon 
   tags: 
     - exhibitor
+
+- name: stop exhibitor service
+  sudo: yes
+  service:
+    name: "{{ exhibitor_service }}"
+    state: stopped
+  when: repair_mode is defined
+  tags:
+    - exhibitor
+
+- name: register exhibitor service
+  sudo: yes
+  service:
+    enabled: yes
+    name: "{{ exhibitor_service }}"
+    state: started
+  tags:
+    - exhibitor
+
+- meta: flush_handlers

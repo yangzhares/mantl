@@ -38,6 +38,11 @@ certificates. For more information, see the :doc:`security-setup
 Deploying software via Ansible
 ------------------------------
 
+.. note:: Ansible requres a Python 2 binary. If yours is not at /usr/bin/python,
+          please view the `Ansible FAQ <http://docs.ansible.com/faq.html>`_. You
+          can add an extra variable to the following commands, e.g.
+          ``ansible -e ansible_python_interpreter=/path/to/python2``.
+
 In the following examples, we're going to assume you deployed hosts using
 Terraform. This project ships with a dynamic inventory file to read Terraform
 ``.tfstate`` files. To use it, just use the ``-i
@@ -48,9 +53,10 @@ First, ping the servers to ensure they are reachable via ssh:
 
 .. code-block:: shell
 
- ansible all -i plugins/inventory/terraform.py -m ping 
+ansible all -i plugins/inventory/terraform.py -m ping 
 
-If any servers fail to connect, check your connection by adding ``-vvvv`` 
+
+If any servers fail to connect, check your connection by adding ``-vvvv``
 for verbose SSH debugging and try again to view the errors in more detail.
 
 Next, deploy the software. First, you'll need to customize a playbook. A sample
@@ -83,7 +89,8 @@ Below are guides customizing your deployment:
 
    ssh_users.rst  
    playbook.rst
-        
+   dockerfile.rst
+
 .. _generated dynamically: http://docs.ansible.com/intro_dynamic_inventory.html
 .. _inventory file: http://docs.ansible.com/intro_inventory.html
 .. _playbook: http://docs.ansible.com/playbooks.html
@@ -95,8 +102,11 @@ Restarting your deployment
 To restart your deployment and make sure all components are restarted and
 working correctly, use the ``playbooks/reboot-hosts.yml`` playbook.
 
-.. code-block:: shell 
+.. code-block:: shell
 
-    ansible-playbook -i inventory/1-datacenter playbooks/reboot-hosts.yml
+    ansible-playbook playbooks/reboot-hosts.yml
 
+Using a Docker Container to Provision your Cluster
+---------------------------------------------------
 
+You can also provision your cluster by running a docker container. See :doc:`dockerfile` for more information.

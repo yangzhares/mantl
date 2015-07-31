@@ -6,6 +6,7 @@
     state: present
   tags:
     - zookeeper
+    - bootstrap
 
 - name: install wait script
   sudo: yes
@@ -32,8 +33,23 @@
     src: zookeeper-service.j2
     dest: "/usr/lib/systemd/system/{{ zookeeper_service }}.service"
   notify:
-    - register zookeeper service
     - reload systemd daemon
+  tags:
+    - zookeeper
+
+- name: ensure zookeeper docker image is present
+  sudo: yes
+  command: docker pull {{ zookeeper_image }}:{{ zookeeper_image_tag }}
+  tags:
+    - zookeeper
+
+- name: create zookeeper log directory
+  sudo: yes
+  file:
+    path: /var/log/zookeeper
+    state: directory
+    mode: 0755
+    setype: svirt_sandbox_file_t
   tags:
     - zookeeper
 
@@ -63,5 +79,25 @@
     - zookeeper
 
 - include: collectd.yml
+
+- name: stop zookeeper service
+  sudo: yes
+  service:
+    name: "{{ zookeeper_service }}"
+    state: stopped
+  when: repair_mode is defined
+  tags:
+    - zookeeper
+
+- name: register zookeeper service
+  sudo: yes
+  service:
+    enabled: yes
+    name: "{{ zookeeper_service }}"
+    state: started
+  notify:
+    - wait for zookeeper to listen
+  tags:
+    - zookeeper
 
 - meta: flush_handlers

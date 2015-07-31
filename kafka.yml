@@ -1,14 +1,9 @@
 ---
-# DC1
-- hosts: dc1:&kafka
-  gather_facts: yes
+- hosts: kafka:dev
   roles:
     - kafka
-    - kafka-mesos
 
-# DC2
-- hosts: dc2:&kafka
-  gather_facts: yes
+- hosts: kafka
+  gather_facts: no
   roles:
-    - kafka
     - kafka-mesos

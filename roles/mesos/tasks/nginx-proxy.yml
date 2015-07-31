@@ -9,9 +9,16 @@
 
 - name: configure nginx
   sudo: yes
-  command: curl -X PUT -d @/etc/mesos-leader.nginx localhost:8500/v1/kv/service/nginx/templates/mesos-leader
+  command: consul-cli kv-write service/nginx/templates/mesos-leader @/etc/mesos-leader.nginx
   tags:
     - mesos
+
+- name: ensure nginx-consul docker image is present
+  sudo: yes
+  command: /usr/bin/docker pull {{ consul_nginx_image }}:{{ consul_nginx_image_tag }}
+  tags:
+    - marathon
+    - bootstrap
 
 - name: configure nginx-mesos-leader
   sudo: yes
@@ -23,11 +30,20 @@
       dest: /usr/lib/systemd/system/nginx-mesos-leader.service
     - src: nginx-mesos-leader.env.j2
       dest: /etc/default/nginx-mesos-leader.env
-  tags:
-    - mesos
-  tags:
+  notify:
     - reload nginx-mesos-leader
     - restart nginx-mesos-leader
+  tags:
+    - mesos
+
+- name: stop nginx-mesos-leader
+  sudo: yes
+  service:
+    name: nginx-mesos-leader
+    state: stopped
+  when: repair_mode is defined
+  tags:
+    - mesos
 
 - name: enable nginx-mesos-leader
   sudo: yes

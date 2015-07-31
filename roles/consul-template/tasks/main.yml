@@ -6,14 +6,24 @@
     state: present
   tags:
     - consul-template
+    - bootstrap
 
-- name: deploy consul config
+- name: configure consul-template
   sudo: yes
   copy:
     src: consul.cfg
     dest: /etc/consul-template/config.d
   notify:
     - reload consul-template
+  tags:
+    - consul-template
+
+- name: stop consul-template
+  sudo: yes
+  service:
+    name: consul-template
+    state: stopped
+  when: repair_mode is defined
   tags:
     - consul-template
 
@@ -25,3 +35,5 @@
     state: started
   tags:
     - consul-template
+
+- meta: flush_handlers

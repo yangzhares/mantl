@@ -1,0 +1,6 @@
+---
+# os_flavor_ram: 8192
+# os_flavor_include: Large
+# os_image_name: centos-7_x86_64-2015-01-27-v6
+
+host_metadata: {"Role": "Resource node"}

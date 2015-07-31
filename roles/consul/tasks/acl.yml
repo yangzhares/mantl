@@ -12,6 +12,7 @@
   sudo: yes
   run_once: yes
   command: /usr/local/bin/consul-acl-bootstrap.sh {{ consul_acl_master_token }} {{ consul_acl_agent_token }}
+  when: consul_is_server
   tags:
     - consul
 

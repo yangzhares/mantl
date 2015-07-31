@@ -11,95 +11,60 @@
           directory and re-run this playbook with the `--extra-vars`/`-e` option
           pointing to your `security.yml` (e.g., `-e @security.yml`)
 
-- include: provision-openstack.yml
+- include: openstack/provision-hosts.yml
+- include: playbooks/upgrade-packages.yml serial=100%
 
 - hosts: all
   roles:
     - common
     - collectd
     - logrotate
-    - consul-template
     - docker
     - dnsmasq
     - nginx
-    - consul
     - logstash
+
+- hosts: control
+  roles:
+    - consul-template
+    - {role: consul, consul_is_server: yes}
+
+- hosts: resource
+  roles:
+    - consul-template
+    - {role: consul, consul_is_server: no}
 
 - include: playbooks/consul-join-wan.yml
 
-- hosts: dc1:&vault_servers
+- hosts: control
   gather_facts: no
   roles:
-   - vault
-
-- hosts: dc1:&zookeeper_servers
-  gather_facts: no
-  roles:
+    - vault
     - zookeeper
     - exhibitor
+    - {role: mesos, mesos_mode: leader}
 
-- hosts: dc1:&mesos_leaders
+- hosts: resource
   gather_facts: no
   roles:
-    - mesos
+    - {role: mesos, mesos_mode: follower}
 
-- hosts: dc1:&mesos_followers
-  gather_facts: no
-  roles:
-    - mesos
-
-- hosts: dc1:&marathon_servers
+- hosts: control
   gather_facts: no
   roles:
     - marathon
-
-- hosts: dc1:&chronos_servers
-  gather_facts: no
-  roles:
     - chronos
 
-- hosts: dc1:&proxy_servers
+- hosts: resource
   gather_facts: no
   roles:
     - haproxy
 
-- hosts: dc2:&vault_servers
+- hosts: dev
   gather_facts: no
   roles:
-   - vault
-
-- hosts: dc2:&zookeeper_servers
-  gather_facts: no
-  roles:
-    - zookeeper
-    - exhibitor
-
-- hosts: dc2:&mesos_leaders
-  gather_facts: no
-  roles:
-    - mesos
-
-- hosts: dc2:&mesos_followers
-  gather_facts: no
-  roles:
-    - mesos
-
-- hosts: dc2:&marathon_servers
-  gather_facts: no
-  roles:
-    - marathon
-
-- hosts: dc2:&chronos_servers
-  gather_facts: no
-  roles:
-    - chronos
-
-- hosts: dc2:&proxy_servers
-  gather_facts: no
-  roles:
-    - haproxy
+    - dev
 
 - include: hdfs.yml
 - include: spark.yml
 - include: kafka.yml
-- include: dev.yml

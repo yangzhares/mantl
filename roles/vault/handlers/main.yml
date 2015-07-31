@@ -1,10 +1,4 @@
 ---
-- name: reload vault
-  sudo: yes
-  command: systemctl reload vault
-  notify:
-    - wait for vault to listen
-
 - name: restart vault
   sudo: yes
   command: systemctl restart vault

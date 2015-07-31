@@ -1,30 +1,25 @@
 ---
-- name: Install git package
+- name: Install required packages
   sudo: true
   yum:
-    name: git
+    name: "{{item}}"
     state: present
+  with_items:
+    - git
+    - java-1.8.0-openjdk
   tags:
     - kafka-mesos
 
-- name: Install Java package
+- name: Download kafka-mesos repo
   sudo: true
-  yum:
-    name: java-1.8.0-openjdk
-    state: present
-  tags:
-    - kafka-mesos
-
-- name: Download kafka-mesos repo 
-  sudo: true
-  git: 
-    repo: "{{ kafka_mesos_repo }}" 
+  git:
+    repo: "{{ kafka_mesos_repo }}"
     dest: "{{ kafka_mesos_install_dir }}"
     force: yes
   tags:
     - kafka-mesos
 
-- name: Build kafka-mesos project 
+- name: Build kafka-mesos project
   sudo: true
   command: "./gradlew jar"
   args:
@@ -34,18 +29,33 @@
     - kafka-mesos
 
 - name: Download Kafka binary
-  sudo: true 
-  get_url: 
+  sudo: true
+  get_url:
     url: "{{ kafka_binary_url }}/{{ kafka_version }}/kafka_{{ kafka_scala_version }}-{{ kafka_version }}.tgz"
     dest: "{{ kafka_mesos_install_dir }}"
-  register: kafka_downloaded
   tags:
-    - kafka-mesos 
+    - kafka-mesos
+
+- name: Setup Kafka environment
+  sudo: true
+  template:
+    src: "kafka-mesos.sh.j2"
+    dest: "/etc/profile.d/kafka-mesos.sh"
+  tags:
+    - kafka-mesos
+
+- name: Create Kafka-Mesos configuration
+  sudo: true
+  template:
+    src: "kafka.properties.j2"
+    dest: "{{ kafka_mesos_install_dir }}/kafka-mesos.properties"
+  tags:
+    - kafka-mesos
+
+- include: destroy.yml
+  when: repair_mode is defined
 
 - include: scheduler.yml
-  when: kafka_downloaded | changed
 
-#- include: client.yml
-#  when: kafka_downloaded | changed
-
-- include: config.yml
+- include: client.yml
+  when: enable_client_install == true

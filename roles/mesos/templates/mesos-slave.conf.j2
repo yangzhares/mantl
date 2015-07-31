@@ -4,10 +4,9 @@ LoadPlugin python
     ModulePath "/usr/share/collectd/plugins/"
     Import "mesos-slave"
     <Module "mesos-slave">
-        Host "localhost"
+        Host "{{ inventory_hostname }}.node.{{ consul_dns_domain }}"
         Port 5051
         Verbose false
-        Version "0.21.0"
+        Version "0.23.0"
     </Module>
 </Plugin>
-

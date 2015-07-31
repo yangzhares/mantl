@@ -11,9 +11,16 @@
 
 - name: configure nginx
   sudo: yes
-  command: curl -X PUT -d @/etc/marathon/marathon.nginx localhost:8500/v1/kv/service/nginx/templates/marathon
+  command: consul-cli kv-write service/nginx/templates/marathon @/etc/marathon/marathon.nginx
   tags:
     - marathon
+
+- name: ensure consul-nginx docker image is present
+  sudo: yes
+  command: /usr/bin/docker pull {{ consul_nginx_image }}:{{ consul_nginx_image_tag }}
+  tags:
+    - marathon
+    - bootstrap
 
 - name: configure nginx-marathon
   sudo: yes

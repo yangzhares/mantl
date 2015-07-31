@@ -23,6 +23,7 @@ Vagrant.configure(2) do |config|
   config.vm.synced_folder ".", "/vagrant", disabled: true
 
   config.vm.network :forwarded_port, guest: 2181,  host: 2181  # ZooKeeper
+  config.vm.network :forwarded_port, guest: 4400,  host: 4400  # Chronos
   config.vm.network :forwarded_port, guest: 5050,  host: 5050  # Mesos leader
   config.vm.network :forwarded_port, guest: 15050, host: 15050 # Mesos leader UI
   config.vm.network :forwarded_port, guest: 5051,  host: 5051  # Mesos follower
@@ -44,13 +45,11 @@ Vagrant.configure(2) do |config|
     ansible.extra_vars = { ansible_ssh_user: 'vagrant' }
     ansible.playbook = "vagrant.yml"
     ansible.groups = {
-      "consul_servers" => ["default"],
-      "mesos_leaders" => ["default"],
-      "vagrant" => ["default"],
-      "zookeeper_servers" => ["default"]
+      "control" => ["default"],
+      "vagrant" => ["default"]
     }
     ansible.extra_vars = load_security.merge({
-      "consul_servers_group" => "consul_servers",
+      "consul_servers_group" => "control",
       "consul_dns_domain" => "consul",
       "consul_dc" => "vagrant",
       "consul_acl_datacenter" => "vagrant",
@@ -62,6 +61,6 @@ Vagrant.configure(2) do |config|
 
   config.vm.provider :virtualbox do |vb|
     vb.customize ['modifyvm', :id, '--cpus', 1]
-    vb.customize ['modifyvm', :id, '--memory', 1024]
+    vb.customize ['modifyvm', :id, '--memory', 1536]
   end
 end

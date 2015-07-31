@@ -1,12 +1,5 @@
 ---
-# DC1
-- hosts: dc1:&spark
-  gather_facts: no
-  roles:
-    - spark
-
-# DC2
-- hosts: dc2:&spark
+- hosts: resource:dev
   gather_facts: no
   roles:
     - spark

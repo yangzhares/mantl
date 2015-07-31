@@ -1,6 +1,4 @@
 ---
-- hosts: all
-  roles:
     - common
     - collectd
     - logrotate
@@ -14,3 +12,4 @@
     - zookeeper
     - mesos
     - marathon
+    - chronos

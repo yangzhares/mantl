@@ -24,11 +24,11 @@ Currently workflow is:
 3. These triggers automate the whole testing process.
 4. We're using following naming template for jobs:
 
-    -     **View** reflects the particular tenant which was used for deployment process, it gathers all jobs tied to this tenant.
-    -     Trigger type - **COMMIT** for commit trigger, job can be started manually, **PR** for pull request trigger, job can't be started manually.
-    -     Branch name which is being tested by job, e.g. **master** or **qa-integration**
-    -     QA Tenant name where job is restricted to run, e.g. **CCS-MI-US-INTERNAL-1-QA-1**
-    -     Job named as **destroy** destroys cluster in the given tenant. This job starts as a madnatory post-build step of deploying job. This job could be started manually.
+    - **View** reflects the particular tenant which was used for deployment process, it gathers all jobs tied to this tenant.
+    - Trigger type - **COMMIT** for commit trigger, job can be started manually, **PR** for pull request trigger, job can't be started manually.
+    - Branch name which is being tested by job, e.g. **master** or **qa-integration**
+    - QA Tenant name where job is restricted to run, e.g. **CCS-MI-US-INTERNAL-1-QA-1**
+    - Job named as **destroy** destroys cluster in the given tenant. This job starts as a madnatory post-build step of deploying job. This job could be started manually.
 
 So you get the main idea of job naming conventions.
 
@@ -90,13 +90,13 @@ The following components and features are covered by automated testing:
 ##### Core Components and Features
 
 - [x] Mesos
-	1. verify HTML respond on port :5050
-	2. verify state :5050/state.json
-	3. verify status :5050/stats.json
+	* verify HTML respond on port :5050
+	* verify state :5050/state.json
+	* verify status :5050/stats.json
 - [x] Consul
-	1. verify if consul service is up and running on each host
-	2. get catalog/services list
-	3. verify catalog/services if status is "passing"  
+	* verify if consul service is up and running on each host
+	* get catalog/services list
+	* verify catalog/services if status is "passing"  
 - [ ] Multi-datacenter
 - [ ] High availablity
 - [ ] Rapid immutable deployment (with Terraform + Packer)
@@ -104,20 +104,32 @@ The following components and features are covered by automated testing:
 ##### Mesos Frameworks
 
 - [x] Marathon
-	1. create test app "sleep 3600" using REST API
-	2. verify app status using REST API
-	3. delete app using REST API
+	* create test app "sleep 3600" using REST API
+	* verify app status using REST API
+	* delete app using REST API
 - [ ] Kubernetes
-- [ ] Kafka
+- [x] Kafka
+	* create/start Kafka brokers
+	* create/verify if Kafka Topic is created
+	* send/receive/verify messages in Kafka Topic created above
 - [ ] Riak
 - [ ] Cassandra
 - [ ] Elasticsearch
 - [x] HDFS
-	1. upload file to each HDFS
-	2. remove file from each HDFS
-- [ ] Spark
+	* upload file to each HDFS
+	* remove file from each HDFS
+- [x] Spark
+	* runs testing code shown below using scala
+	```
+	val data = 1 to 10000
+	val distData = sc.parallelize(data)
+	val filteredData = distData.filter(_< 10)
+	filteredData.collect()
+	```
+	* save above results using hdfs storage
+	* runs Spark Pi example and verify result
 - [ ] Storm
 - [ ] Chronos
 - [x] Logstash
-	1. verify if collectd service is up and running on each host
+	* verify if collectd service is up and running on each host
 
