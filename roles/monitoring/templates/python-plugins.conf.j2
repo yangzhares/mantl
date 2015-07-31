@@ -15,7 +15,7 @@ LoadPlugin python
     Host "{{ mesos_master_host }}"
     Port {{ mesos_master_port }}
     Verbose false
-    Version "0.21.0"
+    Version "0.23.0"
   </Module>
 
   Import "mesos-slave"
@@ -24,7 +24,7 @@ LoadPlugin python
     Host "{{ mesos_slave_host }}"
     Port {{ mesos_slave_port }}
     Verbose false
-    Version "0.21.0"
+    Version "0.23.0"
   </Module>
 
   Import "marathon"
