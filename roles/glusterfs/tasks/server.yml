@@ -41,6 +41,23 @@
   tags:
     - glusterfs
 
+- name: install rpcbind
+  sudo: yes
+  yum:
+    name: rpcbind
+    state: present
+  tags:
+    - glusterfs
+
+- name: enable and start rpcbind
+  sudo: yes
+  shell: "{{item}}"
+  with_items:
+    - systemctl enable rpcbind
+    - systemctl start rpcbind
+  tags:
+    - glusterfs
+
 - name: install server packages
   sudo: yes
   yum:
@@ -60,6 +77,16 @@
   with_items:
     - glusterd
     - glusterfsd
+  tags:
+    - glusterfs
+
+- name: create consul service
+  sudo: yes
+  template:
+    src: glusterfs.json.j2
+    dest: /etc/consul/glusterfs.json
+  notify:
+    - reload consul
   tags:
     - glusterfs
 
@@ -93,16 +120,6 @@
   gluster_volume:
     name: "{{ glusterfs_container_data_name }}"
     state: started
-  tags:
-    - glusterfs
-
-- name: create consul service
-  sudo: yes
-  template:
-    src: glusterfs.json.j2
-    dest: /etc/consul/glusterfs.json
-  notify:
-    - reload consul
   tags:
     - glusterfs
 
