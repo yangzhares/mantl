@@ -1,0 +1,27 @@
+---
+- name: kube2pyconsul | Write pod file
+  sudo: yes
+  template:
+    src: kube2pyconsul-rc.yaml.j2
+    dest: "{{ kube_manifest_dir }}/kube2pyconsul-rc.yaml"
+  register: dns_rc_def
+  when: dns_setup
+  tags:
+    - addons
+    - kube2pyconsul
+
+- name: kube2pyconsul | Create or update replication controller
+  sudo: yes
+  kube:
+    namespace: kube-system
+    resource: rc
+    name: kube-consul-v1
+    filename: "{{ kube_manifest_dir }}/kube2pyconsul-rc.yaml"
+    state: "{{ dns_rc_def.changed | ternary('latest','present') }}"
+    config: "{{ kube_config_dir }}/kubectl.kubeconfig"
+  when: dns_setup
+  delegate_to: "{{ groups[master_group_name][0] }}"
+  run_once: true
+  tags:
+    - addons
+    - kube2pyconsul

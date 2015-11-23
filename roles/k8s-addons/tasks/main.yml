@@ -64,6 +64,9 @@
 - include: skydns.yml
   when: dns_setup
 
+- include: kube2pyconsul.yml
+  when: dns_setup
+
 - include: kube-ui.yml
   when: enable_ui
 

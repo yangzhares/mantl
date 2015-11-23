@@ -1,0 +1,35 @@
+apiVersion: v1
+kind: ReplicationController
+metadata:
+  name: kube-consul-v1
+  namespace: kube-system
+  labels:
+    k8s-app: kube-consul
+    version: v1
+    kubernetes.io/cluster-service: "true"
+spec:
+  replicas: {{ dns_replicas }}
+  selector:
+    k8s-app: kube-consul
+    version: v1
+  template:
+    metadata:
+      labels:
+        k8s-app: kube-consul
+        version: v1
+        kubernetes.io/cluster-service: "true"
+    spec:
+      containers:
+      - name: kube2pyconsul
+        image: hub.docker.com/r/zogg/kube2pyconsul:1.0
+        resources:
+          limits:
+            cpu: 100m
+            memory: 50Mi
+        args:
+        - --consul-agent=https://{{ private_ipv4 }}:8500
+        - --kube-master=https://{{ groups[master_group_name][0] }}:{{ kube_master_port }}
+        - --consul-auth=admin,{{ nginx_admin_password }}
+        - --kube-auth=kube,{{ kube_users.kube.pass }}
+      dnsPolicy: Default  # Don't use cluster DNS.
+
