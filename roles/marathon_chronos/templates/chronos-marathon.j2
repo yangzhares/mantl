@@ -1,0 +1,21 @@
+{
+  "id": "chronos",
+  "instances": 1,
+  "cpus": 1,
+  "cmd": "chronos run_jar --master {{ chronos_master }} --zk_hosts {{ chronos_zk_hosts }} --http_port {{ chronos_http_port }} --mesos_framework_name {{ chronos_mesos_framework_name }} --hostname $HOST --cluster_name {{ chronos_cluster_name }} --mesos_task_cpu {{ chronos_mesos_task_cpu }} --mesos_task_disk {{ chronos_mesos_task_disk }} --zk_timeout {{ chronos_mesos_zk_timeout }}",
+  "mem": 1024,
+  "ports": [ 14400
+  ],
+  "disk": 0.0,
+  "env": {
+    "NO_OP": ""
+  },
+  "container": {
+    "type": "DOCKER",
+    "docker": {
+      "image": "{{ chronos_image }}:{{ chronos_image_tag }}",
+      "network": "HOST"
+    }
+  }
+}
+

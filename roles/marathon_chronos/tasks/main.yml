@@ -1,0 +1,51 @@
+---
+- name: generate marathon config
+  sudo: yes
+  template:
+    src: chronos-marathon.j2
+    dest: /tmp/chronos.json
+  tags:
+    - chronos
+
+- name: start chronos
+  run_once: true
+  when: not do_mesos_framework_auth|bool
+  sudo: yes
+  command: 'curl -X PUT -d@/tmp/chronos.json -H "Content-Type: application/json" http://marathon.service.consul:18080/v2/apps/chronos'
+  failed_when: "'deploymentId' not in result.stdout"
+  register: result
+  tags:
+    - chronos
+
+- name: determine worker node
+  run_once: true
+  shell: curl marathon.service.consul:8080/v2/apps/chronos/tasks | awk ' {print $3} '
+  register: worker_node
+  until: worker_node.stdout != ""
+  retries: 10
+  delay: 20
+  tags:
+    - chronos
+
+- name: clear consul configuration
+  sudo: yes
+  file:
+    dest: /etc/consul/chronos.json
+    state: absent
+  notify:
+    - reload consul
+  tags:
+    - chronos
+
+
+- name: generate chronos consul service
+  sudo: yes
+  when: inventory_hostname in "{{ worker_node.stdout }}"
+  delegate_to: "{{ inventory_hostname }}"
+  template:
+    src: chronos-consul.j2
+    dest: "{{ consul_dir }}/chronos.json"
+  notify:
+    - reload consul
+  tags:
+    - chronos

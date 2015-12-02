@@ -80,7 +80,6 @@
     - zookeeper
     - mesos
     - marathon
-    - chronos
     - mantlui
 
 # The edge role exists solely for routing traffic into the cluster. Firewall
@@ -115,3 +114,5 @@
     glusterfs_mode: client
   roles:
     - glusterfs
+    - marathon_chronos
+
