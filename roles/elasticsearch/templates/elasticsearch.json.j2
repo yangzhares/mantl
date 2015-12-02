@@ -1,0 +1,25 @@
+{
+  "id": "elasticsearch",
+  "container": {
+    "docker": {
+      "image": "{{ elasticsearch_image }}:{{ elasticsearch_image_tag }}",
+      "network": "HOST",
+      "forcePullImage": true
+    }
+  },
+  "args": [
+    "--zookeeperMesosUrl", "zk://{{ zookeeper_dns }}:{{ zookeeper_port }}/{{ mesos_zk_chroot }}",
+    "--executorImage", "{{ elasticsearch_executor_image }}:{{ elasticsearch_executor_image_tag }}",
+    "--executorForcePullImage", "true",
+    "--elasticsearchRam", "{{ elasticsearchRam }}",
+    "--elasticsearchClusterName", "{{ elasticsearchClusterName }}",
+    "--frameworkName", "{{ frameworkName }}",
+    "--dataDir", "{{ elasticsearch_data_dir }}"
+    ],
+  "cpus": 0.2,
+  "mem": 512.0,
+  "env": {
+    "JAVA_OPTS": "-Xms128m -Xmx256m"
+  },
+  "instances": 1
+}

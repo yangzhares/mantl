@@ -1,6 +1,9 @@
 ---
-haproxy_image: ciscocloud/haproxy-consul
-haproxy_image_tag: 0.2
+#haproxy_image: ciscocloud/haproxy-consul
+#haproxy_image_tag: 0.2
+
+haproxy_image: corebug/haproxy-consul
+haproxy_image_tag: 0.2-es-alpha
 
 # Set the domain that haproxy uses to match URLs to internal apps.
 # For example, if all your apps will be

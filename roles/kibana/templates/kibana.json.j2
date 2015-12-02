@@ -1,0 +1,32 @@
+{
+  "container": {
+    "type": "DOCKER",
+    "docker": {
+      "image": "{{ kibana_image }}:{{ kibana_image_tag }}",
+      "network": "BRIDGE",
+      "portMappings": [
+          {
+              "containerPort": 5601,
+              "hostPort": 0,
+              "protocol": "tcp"
+          }
+      ]
+    }
+  },
+  "env": {
+    "ELASTICSEARCH_URL": "http://{{ elasticsearch_framework_executor_name }}.service.consul:9200"
+  },
+  "healthChecks": [{
+    "protocol": "HTTP",
+    "path": "/",
+    "portIndex": 0
+  }],
+  "id": "kibana",
+  "instances": 1,
+  "cpus": 0.1,
+  "mem": 128,
+  "ports": [
+    5601
+  ]
+}
+

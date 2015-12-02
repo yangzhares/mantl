@@ -1,0 +1,27 @@
+---
+- name: create json files for jobs
+  sudo: yes
+  template:
+    src: 'kibana.json.j2'
+    dest: /etc/marathon/kibana.json
+  run_once: true
+  tags:
+    - kibana
+
+- name: destroy jobs
+  run_once: true
+  sudo: yes
+  command: 'curl -X DELETE http://localhost:18080/v2/apps/kibana'
+  changed_when: false
+  run_once: true
+  tags:
+    - kibana
+
+- name: start jobs
+  run_once: true
+  sudo: yes
+  run_once: true
+  command: 'curl -X PUT -d@/etc/marathon/kibana.json -H "Content-Type: application/json" http://localhost:18080/v2/apps/kibana'
+  changed_when: false
+  tags:
+    - kibana

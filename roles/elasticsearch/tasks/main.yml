@@ -1,0 +1,31 @@
+# Check we can ping marathon (GET) to a page and it returns a status 200
+- name: ping marathon
+  uri:
+    url: "http://localhost:18080/v2/apps"
+    method: GET
+    status_code: 200
+  run_once: true
+  tags:
+    - elasticsearch
+
+- name: create json files for jobs
+  sudo: yes
+  template:
+    src: '{{ item }}.json.j2'
+    dest: /etc/marathon/{{ item }}.json
+  run_once: true
+  with_items:
+    - elasticsearch
+  tags:
+    - elasticsearch
+
+- name: start jobs
+  run_once: true
+  sudo: yes
+  command: 'curl -X PUT -d@/etc/marathon/{{ item }}.json -H "Content-Type: application/json" http://localhost:18080/v2/apps/{{ item }}'
+  changed_when: false
+  run_once: true
+  with_items:
+    - elasticsearch
+  tags:
+    - elasticsearch

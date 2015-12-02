@@ -1,0 +1,4 @@
+---
+kibana_image: kibana
+kibana_image_tag: 4.1.2
+elasticsearch_framework_executor_name: elasticsearch-executor

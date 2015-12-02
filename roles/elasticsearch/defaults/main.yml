@@ -1,0 +1,19 @@
+---
+elasticsearch_image: pnwtrifork/elasticsearch-scheduler
+elasticsearch_image_tag: 0.23.0
+elasticsearch_executor_image: pnwtrifork/elasticsearch-executor
+elasticsearch_executor_image_tag: 0.23.0
+
+
+
+marathon_port: 18080
+marathon_url: http://marathon.service.{{ consul_dns_domain }}:{{ marathon_port }}
+zookeeper_port: 2181
+zookeeper_dns: zookeeper.service.{{ consul_dns_domain }}
+mesos_zk_chroot: mesos
+
+
+elasticsearchRam: 4096
+elasticsearchClusterName: Mantl
+frameworkName: elasticsearch
+elasticsearch_data_dir: /tmp/mesos/slaves/elasticsearch
