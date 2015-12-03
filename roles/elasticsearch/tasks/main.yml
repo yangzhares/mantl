@@ -1,4 +1,16 @@
 # Check we can ping marathon (GET) to a page and it returns a status 200
+- name: install required python modules
+  sudo: yes
+  pip:
+    name: "{{ item.name }}"
+    state: latest
+  with_items:
+    - name: python-consul
+    - name: httplib2
+  tags:
+    - bootstrap
+    - elasticsearch
+
 - name: ping marathon
   uri:
     url: "http://localhost:18080/v2/apps"
