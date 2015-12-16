@@ -15,7 +15,7 @@ ExecStartPre=-/usr/bin/docker pull {{ logstash_image }}:{{ logstash_image_tag }}
 ExecStart=/usr/bin/docker run \
     --rm \
     --name=logstash \
-    --hostname={{ inventory_nodename }} \
+    --hostname={{ ansible_nodename }} \
     --log-driver=none \
     --privileged=true \
     --publish=1514:1514 \
