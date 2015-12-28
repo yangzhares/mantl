@@ -1,0 +1,6 @@
+---
+- hosts: role=control
+  tasks:
+  - name: Remove Consul's raft peers database
+    become: yes
+    shell: rm -f /var/lib/consul/raft/peers.json
