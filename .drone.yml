@@ -11,7 +11,6 @@ build:
     - ln -sf $$CI_MATRIX_TERRAFORM_FILE terraform.tf
     - ln -sf $$CI_MATRIX_ANSIBLE_FILE terraform.yml
     - testing/integration-test.sh
-    - rm security.yml terraform.tf terraform.yml
 
 matrix:
   CI_MATRIX_ANSIBLE_FILE:
