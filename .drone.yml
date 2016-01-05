@@ -10,7 +10,6 @@ build:
     - ./security-setup
     - ln -sf $$CI_MATRIX_TERRAFORM_FILE terraform.tf
     - ln -sf $$CI_MATRIX_ANSIBLE_FILE terraform.yml
-    - env
     - testing/integration-test.sh
     - rm security.yml terraform.tf terraform.yml
 
