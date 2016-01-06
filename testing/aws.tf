@@ -6,7 +6,7 @@ module "aws-drone-testing" {
   source = "./terraform/aws"
   availability_zone = "eu-central-1a"
   ssh_username = "centos"
-  source_ami = "ami-61bbf104"
+  source_ami = "ami-e68f82fb"
   short_name = "drone-ci"
   long_name = "ciscocloud-drone-ci"
 
