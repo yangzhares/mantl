@@ -1,10 +1,10 @@
 provider "aws" {
-  region = "us-east-1"
+  region = "eu-central-1"
 }
 
 module "aws-drone-testing" {
   source = "./terraform/aws"
-  availability_zone = "us-east-1e"
+  availability_zone = "eu-central-1a"
   ssh_username = "centos"
   source_ami = "ami-61bbf104"
   short_name = "drone-ci"
