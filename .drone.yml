@@ -1,0 +1,19 @@
+build:
+  image: sehqlr/mantl
+  environment:
+    AWS_ACCESS_KEY_ID: "$$AWS_ACCESS_KEY_ID"
+    AWS_SECRET_ACCESS_KEY: "$$AWS_SECRET_ACCESS_KEY"
+    DIGITALOCEAN_TOKEN: "$$DIGITALOCEAN_TOKEN"
+    GOOGLE_CREDENTIALS: "$$GOOGLE_CREDENTIALS"
+  commands:
+    - ssh-keygen -t rsa -N '' -f ~/.ssh/id_rsa && eval `ssh-agent -s` && ssh-add ~/.ssh/id_rsa
+    - ./security-setup
+    - ln -sf $$CI_MATRIX_TERRAFORM_FILE terraform.tf
+    - ln -sf $$CI_MATRIX_ANSIBLE_FILE terraform.yml
+    - testing/integration-test.sh
+
+matrix:
+  CI_MATRIX_ANSIBLE_FILE:
+    - terraform.sample.yml
+  CI_MATRIX_TERRAFORM_FILE:
+    - testing/aws.tf
