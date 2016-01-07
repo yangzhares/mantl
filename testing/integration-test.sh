@@ -37,4 +37,6 @@ testing/health-checks.py $control_hosts || EXIT_CODE=1
 
 retry_command "terraform destroy -force -state=$TERRAFORM_STATE_ROOT/terraform.tfstate"
 
+rm security.yml terraform.tf terraform.yml
+
 exit $EXIT_CODE
