@@ -56,5 +56,5 @@ if __name__ == "__main__":
     sleep(60*2)  # two minutes
     print("Health check starting now")
     cluster_health_check(address_list)
-    print("Health check finished, with " + NUM_FAILS + " failures")
+    print("Health check finished, with " + str(NUM_FAILS) + " failures")
     sys.exit(EXIT_STATUS)
