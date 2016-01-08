@@ -32,11 +32,9 @@ def node_health_check(node_address):
         health_checks = json.loads(f.read().decode('utf8'))
 
         for check in health_checks:
+            print(check['Name'] + ": " + check['Status'])
             if check['Status'] != "passing":
-                print(check['Name'] + ": not passing.")
                 EXIT_STATUS = 1
-            else:
-                print(check['Name'] + ": passing.")
     except Exception, e:
         print("Skipping IP ", node_address, " due to this error\n", e)
 
