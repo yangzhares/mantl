@@ -3,7 +3,7 @@
 ## This integration test assumes that ./terraform.yml and ./terraform.tf are already in place
 
 EXIT_CODE=0 # passing until proven failed
-RETRY_ATTEMPTS=2
+RETRY_ATTEMPTS=3
 
 # this section needs to make fewer assumptions of the build env
 # it currently makes an assumption that the build is in a docker container
