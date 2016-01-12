@@ -7,6 +7,7 @@ from time import sleep
 import urllib2
 
 
+NUM_SKIPS = 0
 NUM_FAILS = 0
 EXIT_STATUS = 0
 
@@ -23,6 +24,7 @@ def get_credentials():
 
 
 def node_health_check(node_address):
+    global NUM_SKIPS
     global NUM_FAILS
     global EXIT_STATUS
     url = "https://" + node_address + "/consul/v1/health/state/any"
@@ -40,6 +42,7 @@ def node_health_check(node_address):
                 EXIT_STATUS = 1
     except Exception, e:
         print("Skipping IP ", node_address, " due to this error\n", e)
+        NUM_SKIPS += 1
 
 
 def cluster_health_check(ip_addresses):
