@@ -25,6 +25,7 @@ function retry_command() {
 	fi
 }
 
+ssh-keygen -t rsa -N '' -f ~/.ssh/id_rsa && eval `ssh-agent -s` && ssh-add ~/.ssh/id_rsa
 ./security-setup
 
 terraform get
