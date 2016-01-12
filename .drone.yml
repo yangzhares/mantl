@@ -6,7 +6,6 @@ build:
     DIGITALOCEAN_TOKEN: "$$DIGITALOCEAN_TOKEN"
     GOOGLE_CREDENTIALS: "$$GOOGLE_CREDENTIALS"
   commands:
-    - echo "build_number = $$BUILD_NUMBER" > terraform.tfvars
     - ssh-keygen -t rsa -N '' -f ~/.ssh/id_rsa && eval `ssh-agent -s` && ssh-add ~/.ssh/id_rsa
     - ln -sf $$CI_MATRIX_TERRAFORM_FILE terraform.tf
     - ln -sf $$CI_MATRIX_ANSIBLE_FILE terraform.yml

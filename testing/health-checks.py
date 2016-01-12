@@ -56,7 +56,7 @@ def cluster_health_check(ip_addresses):
 if __name__ == "__main__":
 
     print("Starting Health Check script.")
-    if os.environ["EXIT_STATUS"] == 0:
+    if os.environ["EXIT_CODE"] == 0:
         print("Waiting for services")
         sleep(60*2)  # two minutes
     address_list = sys.argv[1:]
