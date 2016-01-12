@@ -28,7 +28,7 @@ function retry_command() {
 ./security-setup
 
 terraform get
-retry_command "terraform apply -state=$TERRAFORM_STATE_ROOT/terraform.tfstate"
+retry_command "terraform apply -state=$TERRAFORM_STATE_ROOT/terraform.tfstate -var 'build_number=$CI_BUILD_NUMBER'"
 
 ansible_commands="ansible-playbook playbooks/wait-for-hosts.yml --private-key ~/.ssh/id_rsa"
 ansible_commands+=" && ansible-playbook terraform.yml --extra-vars=@security.yml --private-key ~/.ssh/id_rsa"
@@ -38,7 +38,7 @@ control_hosts=$(plugins/inventory/terraform.py --hostfile | awk '/control/ {prin
 
 testing/health-checks.py $control_hosts || EXIT_CODE=1
 
-retry_command "terraform destroy -force -state=$TERRAFORM_STATE_ROOT/terraform.tfstate"
+retry_command "terraform destroy -force -state=$TERRAFORM_STATE_ROOT/terraform.tfstate -var 'build_number=$CI_BUILD_NUMBER'"
 
 rm security.yml terraform.tf terraform.yml
 

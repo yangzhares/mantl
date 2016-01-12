@@ -1,3 +1,5 @@
+variable "build_number" {}
+
 provider "aws" {
   region = "eu-central-1"
 }
