@@ -2,7 +2,7 @@
 
 ## This integration test assumes that ./terraform.yml and ./terraform.tf are already in place
 
-EXIT_CODE=0 # passing until proven failed
+export EXIT_CODE=0 # passing until proven failed
 RETRY_ATTEMPTS=3
 
 # this section needs to make fewer assumptions of the build env
