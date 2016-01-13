@@ -40,6 +40,7 @@
     - logstash
     - nginx
     - consul
+    - etcd
     - dnsmasq
 
 # ROLES - after provisioning the software that's common to all hosts, we do
@@ -61,6 +62,7 @@
     mesos_mode: follower
   roles:
     - mesos
+    - calico
 
 # the control nodes are necessarily more complex than the worker nodes, and have
 # ZooKeeper, Mesos, and Marathon leaders. In addition, they control Vault to
@@ -79,6 +81,7 @@
     - vault
     - zookeeper
     - mesos
+    - calico
     - marathon
     - chronos
     - mantlui
