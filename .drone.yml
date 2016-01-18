@@ -1,14 +1,14 @@
 build:
   image: sehqlr/mantl
-  environment:
-    AWS_ACCESS_KEY_ID: "$$AWS_ACCESS_KEY_ID"
-    AWS_SECRET_ACCESS_KEY: "$$AWS_SECRET_ACCESS_KEY"
-    DIGITALOCEAN_TOKEN: "$$DIGITALOCEAN_TOKEN"
-    GOOGLE_CREDENTIALS: "$$GOOGLE_CREDENTIALS"
   commands:
-    - ln -sf $$CI_MATRIX_TERRAFORM_FILE terraform.tf
-    - ln -sf $$CI_MATRIX_ANSIBLE_FILE terraform.yml
-    - testing/integration-test.sh
+    - exit 0
+    
+publish:
+  sehqlr/mantl-testing:
+    image: sehqlr/mantl-testing
+    terraform.tfvars: "$$TFVARS"
+    terraform.tf: $$CI_MATRIX_TERRAFORM_FILE
+    terraform.yml: $$CI_MATRIX_ANSIBLE_FILE
 
 matrix:
   CI_MATRIX_ANSIBLE_FILE:
