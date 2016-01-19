@@ -3,10 +3,7 @@
 ## This integration test assumes that ./terraform.yml and ./terraform.tf are already in place
 
 export EXIT_CODE=0 # passing until proven failed
-RETRY_ATTEMPTS=3
-
-# this section needs to make fewer assumptions of the build env
-# it currently makes an assumption that the build is in a docker container
+RETRY_ATTEMPTS=2
 
 function retry_command() {
 	for i in `seq 1 $RETRY_ATTEMPTS`
@@ -25,22 +22,39 @@ function retry_command() {
 	fi
 }
 
-ssh-keygen -t rsa -N '' -f ~/.ssh/id_rsa && eval `ssh-agent -s` && ssh-add ~/.ssh/id_rsa
+function skip_if_failed() {
+	if [ $EXIT_CODE -eq 0 ]
+	then
+		echo -e "CMD: $1"
+		eval $1
+		if [ $? -ne 0 ]
+		then
+			EXIT_CODE=1
+			echo "CMD FAILED, SETTING EXIT CODE TO $EXIT_CODE"
+			return
+		else
+			echo "CMD SUCCESS, ON TO NEXT CMD"
+			return
+		fi
+	else
+		echo -e "CMD \"$1\" ABORTED DUE TO PREVIOUS FAILURE"
+	fi
+
+}
+
+ssh-keygen -N '' -f ~/.ssh/id_rsa && eval `ssh-agent -s` && ssh-add ~/.ssh/id_rsa
 ./security-setup
 
-terraform get
-retry_command "terraform apply -state=$TERRAFORM_STATE_ROOT/terraform.tfstate -var 'build_number=$CI_BUILD_NUMBER'"
+skip_if_failed "terraform get"
+skip_if_failed "terraform apply -state=$TERRAFORM_STATE_ROOT/terraform.tfstate"
+skip_if_failed "ansible-playbook playbooks/wait-for-hosts.yml --private-key ~/.ssh/id_rsa"
+skip_if_failed "ansible-playbook -e 'serial=0' playbooks/upgrade-packages.yml"
+skip_if_failed "ansible-playbook terraform.yml --extra-vars=@security.yml --private-key ~/.ssh/id_rsa"
+skip_if_failed "testing/health-checks.py $(plugins/inventory/terraform.py --hostfile | awk '/control/ {print $1}')"
 
-ansible_commands="ansible-playbook playbooks/wait-for-hosts.yml --private-key ~/.ssh/id_rsa"
-ansible_commands+=" && ansible-playbook terraform.yml --extra-vars=@security.yml --private-key ~/.ssh/id_rsa"
-retry_command "$ansible_commands"
-
-control_hosts=$(plugins/inventory/terraform.py --hostfile | awk '/control/ {print $1}')
-
-testing/health-checks.py $control_hosts || EXIT_CODE=1
-
+# must retry for terraform bugs
 retry_command "terraform destroy -force -state=$TERRAFORM_STATE_ROOT/terraform.tfstate -var 'build_number=$CI_BUILD_NUMBER'"
 
-rm security.yml terraform.tf terraform.yml
+rm security.yml terraform.tf terraform.yml # convenient for local builds
 
 exit $EXIT_CODE
