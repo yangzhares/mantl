@@ -1,16 +1,17 @@
 build:
   image: sehqlr/mantl
   environment:
-    TF_VAR_build_number: $$BUILD_NUMBER
     AWS_ACCESS_KEY_ID: "$$AWS_ACCESS_KEY_ID"
     AWS_SECRET_ACCESS_KEY: "$$AWS_SECRET_ACCESS_KEY"
+    DIGITALOCEAN_TOKEN: "$$DIGITALOCEAN_TOKEN"
+    GOOGLE_CREDENTIALS: "$$GOOGLE_CREDENTIALS"
     OS_AUTH_URL: "$$OS_AUTH_URL"
+    OS_PASSWORD: "$$OS_PASSWORD"
+    OS_REGION_NAME: "$$OS_REGION_NAME"
     OS_TENANT_ID: "$$OS_TENANT_ID"
     OS_TENANT_NAME: "$$OS_TENANT_NAME"
     OS_USERNAME: "$$OS_USERNAME"
-    OS_PASSWORD: "$$OS_PASSWORD"
-    OS_REGION_NAME: "$$OS_REGION_NAME"
-    GOOGLE_CREDENTIALS: "$$GOOGLE_CREDENTIALS"
+    TF_VAR_build_number: $$BUILD_NUMBER
   commands:
     - ln -sf $$CI_MATRIX_ANSIBLE_FILE terraform.yml
     - ln -sf $$CI_MATRIX_TERRAFORM_FILE terraform.tf
@@ -20,5 +21,7 @@ matrix:
   CI_MATRIX_ANSIBLE_FILE:
     - terraform.sample.yml
   CI_MATRIX_TERRAFORM_FILE:
+    - testing/cisco-os.tf
     - testing/aws.tf
     - testing/gce.tf
+    - testing/do.tf
