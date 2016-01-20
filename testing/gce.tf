@@ -1,6 +1,7 @@
 variable "build_number" {}
 
 provider "google" {
+  account_file = ""
   region = "us-central1"
   project = "mantl-ci"
 }
