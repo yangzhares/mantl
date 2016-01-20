@@ -5,7 +5,7 @@ module "drone-ci-keypair" {
   keypair_name = "drone-ci-${var.build_number}-key"
 }
 
-module "dc2-hosts-floating" {
+module "drone-ci-hosts-floating" {
   source = "./terraform/openstack/hosts-floating"
   datacenter = "drone-ci-${var.build_number}"
   control_flavor_name = "CO2-Medium"
