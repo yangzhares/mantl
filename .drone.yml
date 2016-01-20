@@ -21,7 +21,5 @@ matrix:
   CI_MATRIX_ANSIBLE_FILE:
     - terraform.sample.yml
   CI_MATRIX_TERRAFORM_FILE:
-    - testing/cisco-os.tf
     - testing/aws.tf
-    - testing/gce.tf
     - testing/do.tf
