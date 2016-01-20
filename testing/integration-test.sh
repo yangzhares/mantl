@@ -53,7 +53,7 @@ skip_if_failed "ansible-playbook terraform.yml --extra-vars=@security.yml --priv
 skip_if_failed "testing/health-checks.py $(plugins/inventory/terraform.py --hostfile | awk '/control/ {print $1}')"
 
 # must retry for terraform bugs
-retry_command "terraform destroy -force -state=$TERRAFORM_STATE_ROOT/terraform.tfstate -var 'build_number=$CI_BUILD_NUMBER'"
+retry_command "terraform destroy -force -state=$TERRAFORM_STATE_ROOT/terraform.tfstate"
 
 rm security.yml terraform.tf terraform.yml # convenient for local builds
 
