@@ -47,7 +47,7 @@ ssh-keygen -N '' -f ~/.ssh/id_rsa && eval `ssh-agent -s` && ssh-add ~/.ssh/id_rs
 
 skip_if_failed "terraform get"
 skip_if_failed "terraform apply -state=$TERRAFORM_STATE_ROOT/terraform.tfstate"
-repeat_command "ansible-playbook playbooks/wait-for-hosts.yml --private-key ~/.ssh/id_rsa"
+retry_command "ansible-playbook playbooks/wait-for-hosts.yml --private-key ~/.ssh/id_rsa"
 skip_if_failed "ansible-playbook -e 'serial=0' playbooks/upgrade-packages.yml"
 skip_if_failed "ansible-playbook terraform.yml --extra-vars=@security.yml --private-key ~/.ssh/id_rsa"
 skip_if_failed "testing/health-checks.py $(plugins/inventory/terraform.py --hostfile | awk '/control/ {print $1}')"
