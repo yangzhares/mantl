@@ -1,6 +1,5 @@
 #!/usr/bin/env python
 from __future__ import print_function
-import os
 import sys
 import json
 import base64
@@ -55,12 +54,13 @@ def cluster_health_check(ip_addresses):
 
 if __name__ == "__main__":
 
-    print("Starting Health Check scrip).")
-    if os.environ["EXIT_CODE"] == 0:
-        print("Waiting for services")
-        sleep(60*2)  # two minutes
+    print("Starting Health Check script.")
+    print("Waiting for services")
+    sleep(60*2)  # two minutes
     address_list = sys.argv[1:]
     print("Health check starting now")
     cluster_health_check(address_list)
-    print("Health check finished, with " + str(NUM_SKIPS) + " skips and " + str(NUM_FAILS) + " failures")
+    msg = "Health check finished, with " + str(NUM_SKIPS) + " skips"
+    msg += " and " + str(NUM_FAILS) + " failures"
+    print(msg)
     sys.exit(EXIT_STATUS)
