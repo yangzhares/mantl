@@ -2,10 +2,11 @@ build:
   linting:
     image: sehqlr/mantl
     commands:
-      - exit 0
+      - echo "ansible-lint checking coming soon!"
   provision:
     image: sehqlr/mantl
     environment:
+      # for local testing, fill in the cloud provider credentials here; secrets are not decrypted on local builds or PRs
       AWS_ACCESS_KEY_ID: "$$AWS_ACCESS_KEY_ID"
       AWS_SECRET_ACCESS_KEY: "$$AWS_SECRET_ACCESS_KEY"
       DIGITALOCEAN_TOKEN: "$$DIGITALOCEAN_TOKEN"
