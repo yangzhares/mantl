@@ -18,6 +18,7 @@ variable "ssh_user" {default = "centos"}
 variable "worker_count" {default = 1}
 variable "worker_type" {default = "n1-highcpu-2"}
 variable "zone" {default = "us-central1-a"}
+variable "image_name" {default = "centos-7-v20160119"}
 
 # Network
 resource "google_compute_network" "mi-network" {
@@ -102,7 +103,7 @@ resource "google_compute_instance" "mi-control-nodes" {
   tags = ["${var.short_name}", "control"]
 
   disk {
-    image = "centos-7-v20150526"
+    image = "${var.image_name}"
     size = "${var.control_volume_size}"
     auto_delete = true
   }
@@ -149,7 +150,7 @@ resource "google_compute_instance" "mi-worker-nodes" {
   tags = ["${var.short_name}", "worker"]
 
   disk {
-    image = "centos-7-v20150526"
+    image = "${var.image_name}"
     size = "${var.worker_volume_size}"
     auto_delete = true
   }
@@ -196,7 +197,7 @@ resource "google_compute_instance" "mi-edge-nodes" {
   tags = ["${var.short_name}", "edge"]
 
   disk {
-    image = "centos-7-v20150526"
+    image = "${var.image_name}"
     size = "${var.edge_volume_size}"
     auto_delete = true
   }
