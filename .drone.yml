@@ -1,7 +1,25 @@
 build:
-  linting:
+  analysis:
     image: sehqlr/mantl
+    environment:
+      # these dummy credentials are for terraform plan, to validate tf config files
+      AWS_ACCESS_KEY_ID: "*****"
+      AWS_SECRET_ACCESS_KEY: "*****"
+      DIGITALOCEAN_TOKEN: "*****"
+      GOOGLE_CREDENTIALS: "{\"json\":\"true\"}"
+      OS_AUTH_URL: "*****"
+      OS_PASSWORD: "*****"
+      OS_REGION_NAME: "*****"
+      OS_TENANT_ID: "*****"
+      OS_TENANT_NAME: "*****"
+      OS_USERNAME: "*****"
+      TF_VAR_build_number: $$BUILD_NUMBER
     commands:
+      - ssh-keygen -N '' -f ~/.ssh/id_rsa && eval `ssh-agent -s` && ssh-add ~/.ssh/id_rsa
+      - ln -sf $$CI_MATRIX_ANSIBLE_FILE terraform.yml
+      - ln -sf $$CI_MATRIX_TERRAFORM_FILE terraform.tf
+      - terraform get
+      - terraform plan -state=$TERRAFORM_STATE_ROOT/terraform.tfstate
       - echo "ansible-lint checking coming soon!"
   provision:
     image: sehqlr/mantl
@@ -19,8 +37,6 @@ build:
       OS_USERNAME: "$$OS_USERNAME"
       TF_VAR_build_number: $$BUILD_NUMBER
     commands:
-      - ln -sf $$CI_MATRIX_ANSIBLE_FILE terraform.yml
-      - ln -sf $$CI_MATRIX_TERRAFORM_FILE terraform.tf
       - testing/integration-test.sh
     when:
       event: push

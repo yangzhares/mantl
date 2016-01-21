@@ -42,7 +42,6 @@ function skip_if_failed() {
 
 }
 
-ssh-keygen -N '' -f ~/.ssh/id_rsa && eval `ssh-agent -s` && ssh-add ~/.ssh/id_rsa
 ./security-setup
 
 skip_if_failed "terraform get"
