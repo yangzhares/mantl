@@ -1,0 +1,27 @@
+{
+    "id": "calico-packaging", 
+    "cpus": 1,
+    "mem": 870.0,
+    "instances": 1,
+    "uris": [
+    ],
+    "container": {
+      "type": "DOCKER",
+      "docker": {
+        "image": "asteris/packaging"
+      }
+    },
+    "args": ["--package=calico"],
+    "env": {
+      "BINTRAY_PROJECT": "testing/calico",
+      "BINTRAY_USER": "{{ bintray_user }}",
+      "BINTRAY_API_KEY": "{{ bintray_api_key }}"
+    },
+    "volumes": [
+      {
+        "containerPath": "/out",
+        "hostPath": "/tmp/out"
+      }
+    ]
+}
+

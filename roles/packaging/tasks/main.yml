@@ -1,0 +1,25 @@
+---
+- name: /etc/marathon is present
+  sudo: yes
+  file:
+    path: /etc/marathon
+    mode: 0777
+    state: directory
+  tags:
+    - packaging
+
+- name: Put marathon-app definitions
+  sudo: yes
+  template:
+    src: calico-packaging.marathon
+    dest: /etc/marathon/calico-packaging.json
+  when: inventory_hostname in groups['role=control']
+  tags:
+    - packaging
+
+- name: Launch marathon apps
+  command: 'curl -X PUT -d@/etc/marathon/calico-packaging.json -H "Content-Type: application/json" http://localhost:18080/v2/apps/calico-packaging'
+  run_once: yes
+  when: inventory_hostname == groups['role=control'][0]
+  tags:
+    - packaging
