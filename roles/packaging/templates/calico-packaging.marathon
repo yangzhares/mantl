@@ -13,7 +13,7 @@
     },
     "args": ["--package=calico"],
     "env": {
-      "BINTRAY_PROJECT": "asteris/testing",
+      "BINTRAY_PROJECT": "{{ bintray_project }}",
       "BINTRAY_USER": "{{ bintray_user }}",
       "BINTRAY_API_KEY": "{{ bintray_api_key }}",
       "MARATHON_CREDS": "{{ marathon_http_credentials }}"
