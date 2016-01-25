@@ -8,7 +8,7 @@
   tags:
     - packaging
 
-- name: Put marathon-app definitions
+- name: Put calico-packaging definitions
   sudo: yes
   template:
     src: calico-packaging.marathon
@@ -16,10 +16,30 @@
   when: inventory_hostname in groups['role=control']
   tags:
     - packaging
+    - calico-packaging
 
-- name: Launch marathon apps
+- name: Launch marathon calico-packaging app
   command: 'curl -X PUT -d@/etc/marathon/calico-packaging.json -H "Content-Type: application/json" http://localhost:18080/v2/apps/calico-packaging'
   run_once: yes
   when: inventory_hostname == groups['role=control'][0]
   tags:
     - packaging
+    - calico-packaging
+
+- name: Put mesos-packaging definitions
+  sudo: yes
+  template:
+    src: mesos-packaging.marathon
+    dest: /etc/marathon/mesos-packaging.json
+  when: inventory_hostname in groups['role=control']
+  tags:
+    - packaging
+    - mesos-packaging
+
+- name: Launch marathon mesos-packaging app
+  command: 'curl -X PUT -d@/etc/marathon/mesos-packaging.json -H "Content-Type: application/json" http://localhost:18080/v2/apps/mesos-packaging'
+  run_once: yes
+  when: inventory_hostname == groups['role=control'][0]
+  tags:
+    - packaging
+    - mesos-packaging

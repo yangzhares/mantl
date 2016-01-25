@@ -1,0 +1,28 @@
+{
+    "id": "mesos-packaging", 
+    "cpus": 1,
+    "mem": 5000.0,
+    "instances": 1,
+    "uris": [
+    ],
+    "container": {
+      "type": "DOCKER",
+      "docker": {
+        "image": "asteris/packaging"
+      }
+    },
+    "args": ["--package=mesos"],
+    "env": {
+      "BINTRAY_PROJECT": "{{ bintray_project }}",
+      "BINTRAY_USER": "{{ bintray_user }}",
+      "BINTRAY_API_KEY": "{{ bintray_api_key }}",
+      "MARATHON_CREDS": "{{ marathon_http_credentials }}"
+    },
+    "volumes": [
+      {
+        "containerPath": "/out",
+        "hostPath": "/tmp/out"
+      }
+    ]
+}
+
