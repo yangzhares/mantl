@@ -87,16 +87,26 @@
     - kubernetes-master
     - kubernetes-addons
 
+
 - hosts: role=kubeworker
-  # role=worker hosts are a subset of "all". Since we already gathered facts on
-  # all servers, we can skip it here to speed up the deployment.
   gather_facts: yes
   vars:
     consul_dns_domain: consul
   roles:
-    - flannel
+    - calico
     - kubernetes
     - kubernetes-node
+
+- hosts: role=control
+  gather_facts: yes
+  vars:
+    consul_dns_domain: consul
+    consul_servers_group: role=control
+  roles:
+    - kubernetes
+    - kubernetes-master
+    - kubernetes-addons
+
 
 # The edge role exists solely for routing traffic into the cluster. Firewall
 # settings should be such that web traffic (ports 80 and 443) is exposed to the
