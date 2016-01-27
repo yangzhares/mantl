@@ -111,7 +111,7 @@
   when: provider == 'openstack'
 
 - include: kubernetes.yml
-  when: kube_build is defined
+  when: kube_version is defined
 
 - name: reload calico systemd file
   sudo: yes
