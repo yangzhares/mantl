@@ -1,4 +1,12 @@
 ---
+- name: evaluate first_master
+  add_host:
+    name: "{{ groups[master_group_name][0] }}"
+    groups: first_master
+    when: "master in groups and groups[master_group_name] | length > 1"
+  tags:
+    - common
+
 - include: skydns.yml
   when: dns_setup and 'first_master' in group_names
 

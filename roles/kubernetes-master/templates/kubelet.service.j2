@@ -5,6 +5,8 @@ After=docker.service
 Requires=docker.service
 
 [Service]
+EnvironmentFile=/etc/kubernetes/environ
+
 ExecStart=/usr/bin/kubelet \
   --api-servers=http://localhost:8085 \
   --register-node=false \
@@ -12,7 +14,11 @@ ExecStart=/usr/bin/kubelet \
   --allow-privileged=true \
   --cluster-dns={{ dns_server }} \
   --cluster-domain={{ dns_domain }} \
-  --config={{ kube_manifest_dir }}
+  --config={{ kube_manifest_dir }} {% if enable_cloud_provider %}\
+  --cloud-provider={{ cloud_provider }} \
+  --cloud-config={{ cloud_provider_config }} {% endif %} \
+  {% if groups['role=kubeworker'][0]['calico_image'] is defined -%}--network_plugin=calico{% endif %}
+
 Restart=always
 RestartSec=10
 
