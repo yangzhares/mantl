@@ -53,10 +53,10 @@
   roles:
     - common
     - lvm
+    - docker
     - collectd
     - logrotate
     - consul-template
-    - docker
     - logstash
     - nginx
     - consul
