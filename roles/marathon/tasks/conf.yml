@@ -38,6 +38,15 @@
   tags:
     - marathon
 
+- name: lock down marathon config directory
+  sudo: yes
+  file:
+    state: directory
+    mode: 0600
+    recurse: true
+  tags:
+    - marathon
+
 - name: create marathon store directory
   sudo: yes
   file:
