@@ -21,6 +21,11 @@
     - docker
     - bootstrap
 
+- name: check if we can use overlayfs
+  rpmver:
+    kernel: 3.10.0-327
+    assert: ">="
+
 - name: check if docker storage already set up with devicemapper
   sudo: yes
   shell: "test -f /etc/sysconfig/docker-storage-setup && . /etc/sysconfig/docker-storage-setup && echo ${STORAGE_DRIVER:-NOT_SET}"
