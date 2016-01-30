@@ -28,6 +28,7 @@
   tags:
     - disk
     - docker
+    - bootstrap
 
 - name: set docker_configure_lvm
   set_fact:
@@ -35,6 +36,7 @@
   tags:
     - disk
     - docker
+    - bootstrap
 
 - name: create backing storage volume for docker storage
   sudo: yes
@@ -46,6 +48,7 @@
   tags:
     - disk
     - docker
+    - bootstrap
 
 - name: create backing storage filesystem for docker storage
   sudo: yes
@@ -57,6 +60,7 @@
   tags:
     - disk
     - docker
+    - bootstrap
 
 - name: create mount point for docker storage
   sudo: yes
@@ -68,6 +72,7 @@
   tags:
     - disk
     - docker
+    - bootstrap
 
 - name: mount docker storage
   sudo: yes
@@ -82,6 +87,7 @@
   tags:
     - disk
     - docker
+    - bootstrap
 
 - name: setup docker storage
   sudo: yes
@@ -117,6 +123,7 @@
     state: directory
   tags:
     - docker
+    - bootstrap
 
 - name: create docker entry for syslogd
   sudo: yes
@@ -130,6 +137,7 @@
     - restart rsyslog
   tags:
     - docker
+    - bootstrap
 
 
 - name: configure docker consul dns
@@ -152,6 +160,7 @@
     state: directory
   tags:
     - docker
+    - bootstrap
 
 - name: setup private docker registry credentials
   sudo: yes
@@ -175,6 +184,8 @@
 
 - name: enable docker
   sudo: yes
+  # TODO: remove
+  failed_when: no
   service:
     name: docker
     enabled: yes
@@ -182,5 +193,26 @@
   tags:
     - docker
     - bootstrap # needed to install Docker images during bootstrap
+
+# TODO: remove all debug messages
+- name: collect docker journal logs
+  become: yes
+  command: journalctl -u docker -l --no-pager
+  register: journal_logs
+  tags:
+    - bootstrap
+
+- name: print docker journal logs
+  debug:
+    msg: "{{ journal_logs.stdout }}"
+  tags:
+    - bootstrap
+
+- name: print kernel version
+  debug:
+    msg: "{{ ansible_kernel }}"
+  failed_when: yes
+  tags:
+    - bootstrap
 
 - include: collectd.yml

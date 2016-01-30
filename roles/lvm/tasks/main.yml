@@ -7,3 +7,4 @@
   when: lvm_physical_device == ""
   tags:
     - lvm
+    - bootstrap

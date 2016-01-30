@@ -10,14 +10,23 @@
     - bootstrap
     - lvm
 
+- name: make packer library writable
+  file:
+    path: /tmp/packer-provisioner-ansible-local/library
+    state: directory
+    mode: 0777
+  when: packer
+
 - name: update lvg ansible module
   connection: local
   run_once: yes
+  become: yes
   get_url:
     url: https://raw.githubusercontent.com/ansible/ansible-modules-extras/02b68be09dca9760a761d4147f76cfc940c41cba/system/lvg.py
     dest: "{{ playbook_dir }}/library/lvg.py"
   tags:
     - docker
+    - bootstrap
 
 - name: install LVM tools
   sudo: yes
@@ -35,6 +44,7 @@
   register: volume_groups
   tags:
     - docker
+    - bootstrap
     - lvm
 
 - name: Create volume group
@@ -45,7 +55,18 @@
   when: volume_groups.stdout.find(lvm_volume_group_name) == -1
   tags:
     - docker
+    - bootstrap
     - lvm
+
+- name: delete lvg ansible module
+  connection: local
+  become: yes
+  file:
+    path: "{{ playbook_dir }}/library/lvg.py"
+    state: absent
+  tags:
+    - docker
+    - bootstrap
 
 - name: enable lvmetad service
   sudo: yes
@@ -55,9 +76,11 @@
     state: started
   tags:
     - docker
+    - bootstrap
     - lvm
 
 - name: save volume group name as fact
   set_fact:  volume_group_name="{{ lvm_volume_group_name }}"
   tags:
     - lvm
+    - bootstrap
