@@ -7,11 +7,19 @@
   tags:
     - chronos
 
+- name: make mesosphere repo disabled by default
+  sudo: yes
+  command: yum-config-manager --disable "{{ item }}"
+  with_items:
+    - mesosphere
+    - mesosphere-noarch
+
 - name: install chronos package
   sudo: yes
   yum:
     name: "{{ chronos_package }}"
     state: present
+    enablerepo: mesosphere
   tags:
     - chronos
 

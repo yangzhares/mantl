@@ -16,6 +16,13 @@
   tags:
     - zookeeper
 
+- name: make mesosphere repo disabled by default
+  sudo: yes
+  command: yum-config-manager --disable "{{ item }}"
+  with_items:
+    - mesosphere
+    - mesosphere-noarch
+
 - name: install zookeeper scripts
   sudo: yes
   copy:
@@ -73,6 +80,7 @@
   yum:
     name: mesosphere-zookeeper
     state: present
+    enablerepo: mesosphere
   tags:
     - zookeeper
 
