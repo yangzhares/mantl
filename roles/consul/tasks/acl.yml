@@ -24,6 +24,7 @@
   template:
     src: agent_acl.json.j2
     dest: /etc/consul/agent_acl.json
+    mode: 0700
   notify:
     - restart consul
   tags:

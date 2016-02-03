@@ -19,6 +19,7 @@
     dest: /etc/consul/{{ item }}
     owner: consul
     group: consul
+    mode: 0700
   with_items:
     - consul.json
     - acl.json
@@ -70,6 +71,22 @@
     - check-service-active
   tags:
     - consul
+
+- name: config dir owned by consul
+  sudo: yes
+  file:
+    path: /etc/consul
+    state: directory
+    owner: consul
+    group: consul
+    recurse: yes
+
+- name: /var/lib/consul perms
+  sudo: yes
+  file:
+    path: /var/lib/consul
+    state: directory
+    mode: 0770
 
 - name: enable consul
   sudo: yes
