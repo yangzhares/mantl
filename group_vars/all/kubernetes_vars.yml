@@ -11,7 +11,7 @@ package_channel: stable
 
 # Kubernetes build to use, stable is used by default. 
 # Place "testing" here to use latest build avialable.
-kube_version: v1.1.3
+kube_version: v1.1.4
 
 # Users to create for basic auth in Kubernetes API via HTTP
 kube_users:
