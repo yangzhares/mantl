@@ -56,6 +56,10 @@ resource "google_compute_firewall" "mi-firewall-internal" {
   source_ranges = ["${google_compute_network.mi-network.ipv4_range}"]
 
   allow {
+    protocol = "4"
+  }
+
+  allow {
     protocol = "tcp"
     ports = ["1-65535"]
   }

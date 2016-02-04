@@ -75,6 +75,7 @@
     mesos_mode: follower
   roles:
     - mesos
+    - calico
 
 - hosts: role=kubeworker
   gather_facts: yes
@@ -102,6 +103,7 @@
     - vault
     - zookeeper
     - mesos
+    - calico
     - marathon
     - chronos
     - mantlui
