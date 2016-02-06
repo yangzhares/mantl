@@ -11,7 +11,6 @@ env:
 install: "pip install -r requirements.txt"
 
 before_script:
-  - python2 testing/test-health-checks.py
   - ssh-keygen -N '' -f ~/.ssh/id_rsa && eval $(ssh-agent) && ssh-add ~/.ssh/id_rsa
   - ln -sf $ANSIBLE_PLAYBOOK terraform.yml
   - ln -sf $TERRAFORM_FILE terraform.tf
@@ -22,7 +21,10 @@ before_script:
   - curl -SL -o terraform.zip https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform_${TERRAFORM_VERSION}_linux_amd64.zip
   - unzip -d $HOME/bin terraform.zip
 
-script: python2 testing/build-cluster.py
+script:
+  - find . -name "*.yml" -exec ansible-lint {} +
+  - python2 testing/test-health-checks.py
+  - python2 testing/build-cluster.py
 
 # Just once doesn't always work
 after_script:
