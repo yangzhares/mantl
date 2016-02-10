@@ -89,8 +89,6 @@
 
 - include: calico-configure.yml
 
-- include: calico-configure.yml
-
 - name: reload calico systemd file
   sudo: yes
   command: "systemctl daemon-reload"
@@ -121,17 +119,6 @@
   register: mesos_agent_active
   failed_when: false
   changed_when: false
-
-- name: configure mesos-slave for networking integration
-  sudo: yes
-  template:
-    src: executor_environment_variables
-    dest: /etc/mesos-slave/executor_environment_variables
-    mode: 0644
-  notify:
-    - restart mesos agent
-  tags:
-    - calico
 
 - meta: flush_handlers
 
