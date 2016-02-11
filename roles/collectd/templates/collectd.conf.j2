@@ -1,7 +1,5 @@
 # collectd
 
-Hostname "{{ inventory_hostname }}"
-FQDNLookup false
 Interval 10
 Include "/etc/collectd.d/"
 TypesDB "/usr/share/collectd/types.db"
@@ -13,20 +11,17 @@ LoadPlugin "interface"
 LoadPlugin "load"
 LoadPlugin "memory"
 LoadPlugin "network"
-LoadPlugin "processes"
-LoadPlugin "swap"
 LoadPlugin "syslog"
-LoadPlugin "uptime"
-LoadPlugin "users"
 
 <Plugin "cpu">
   ReportByState true
-  ReportByCpu true
+  ReportByCpu false
   ValuesPercentage true
 </Plugin>
 
 <Plugin "memory">
   ValuesPercentage true
+  ValuesAbsolute true
 </Plugin>
 
 <Plugin "df">
@@ -68,7 +63,7 @@ LoadPlugin "users"
 </Plugin>
 
 <Plugin "syslog">
-  LogLevel "err"
+  LogLevel "info"
 </Plugin>
 
 <Plugin "network">

@@ -41,12 +41,15 @@
   with_items:
     - dockerplugin.py
     - dockerplugin.db
+  tags:
+    - docker
+    - collectd
 
 - name: configure collectd docker plugin
   sudo: yes
   copy:
     src: dockerplugin.conf
-    dest: /etc/collectd.d/docker.conf
+    dest: /etc/collectd.d/dockerplugin.conf
   notify:
     - restart collectd
   tags:
