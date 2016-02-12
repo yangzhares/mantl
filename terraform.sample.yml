@@ -1,8 +1,17 @@
 ---
-# CHECK SECURITY - when customizing you should leave this in. If you
-# take it out and forget to specify security.yml, security could be turned off
-# on components in your cluster!
-- include: playbooks/check-requirements.yml
+# CHECK SECURITY - when customizing you should leave this in. If you take it out
+# and forget to specify security.yml, security could be turned off on components
+# in your cluster!
+- hosts: localhost
+  gather_facts: no
+  tasks:
+    - name: check for security
+      when: security_enabled is not defined or not security_enabled
+      fail:
+        msg: |
+          Security is not enabled. Please run `security-setup` in the root
+          directory and re-run this playbook with the `--extra-vars`/`-e` option
+          pointing to your `security.yml` (e.g., `-e @security.yml`)
 
 # BASICS - we need every node in the cluster to have common software running to
 # increase stability and enable service discovery. You can look at the
@@ -16,6 +25,10 @@
     # this variable.
     # consul_acl_datacenter: your_primary_datacenter
 
+    # consul_dns_domain is repeated across these plays so that all the
+    # components know what information to use for this values to help with
+    # service discovery.
+    consul_dns_domain: consul
     consul_servers_group: role=control
   roles:
     - common
@@ -44,6 +57,7 @@
   # all servers, we can skip it here to speed up the deployment.
   gather_facts: no
   vars:
+    consul_dns_domain: consul
     mesos_mode: follower
   roles:
     - mesos
@@ -56,6 +70,7 @@
 - hosts: role=control
   gather_facts: no
   vars:
+    consul_dns_domain: consul
     consul_servers_group: role=control
     mesos_leaders_group: role=control
     mesos_mode: leader
@@ -67,6 +82,32 @@
     - marathon
     - chronos
     - mantlui
+    - mesos-elasticsearch
+  
+- hosts: role=edge
+  gather_facts: no
+  vars:
+    # this is the domain that traefik will match on to do host-based HTTP
+    # routing. Set it to a domain you control and add a star domain to route
+    # traffic. (EG *.marathon.localhost)
+    #
+    # For those migrating from haproxy, this variable serves the same purpose
+    # and format as `haproxy_domain`.
+    traefik_marathon_domain: marathon.localhost
+  roles:
+    - nginx-es
+
+- hosts: role=control
+  gather_facts: no
+  vars:
+    consul_dns_domain: consul
+    consul_servers_group: role=control
+    mesos_leaders_group: role=control
+    mesos_mode: leader
+    zookeeper_server_group: role=control
+  roles:
+    - mesos-logstash
+    - mesos-kibana
 
 # The edge role exists solely for routing traffic into the cluster. Firewall
 # settings should be such that web traffic (ports 80 and 443) is exposed to the

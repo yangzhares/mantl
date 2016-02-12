@@ -1,0 +1,18 @@
+---
+kibana_version: "4.3.1"
+
+kibana_ram: 1024
+kibana_disk: 1024
+kibana_cpu: 1.0
+
+framework_name: "kibana"
+framework_version: "0.3.0"
+framework_download_url: "https://github.com/mesos/kibana/releases/download/{{ framework_version }}/kibana-{{ framework_version }}.jar"
+
+
+mesos_zk_auth: "{% if zk_mesos_user_secret is defined %}{{ zk_mesos_user }}:{{ zk_mesos_user_secret }}@{% endif %}"
+mesos_zk_dns: "zookeeper.service.{{ consul_dns_domain }}"
+mesos_zk_port: 2181
+mesos_zk_chroot: mesos
+mesos_zk: zk://{{ mesos_zk_dns }}:{{ mesos_zk_port }}/{{ mesos_zk_chroot }}
+mesos_leaders_group: role=control

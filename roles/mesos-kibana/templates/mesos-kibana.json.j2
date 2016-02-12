@@ -1,0 +1,20 @@
+{
+  "id": "{{ framework_name }}",
+  "uris": [
+    "{{ framework_download_url }}"
+  ],
+  "args": ["java", "-jar", "kibana-{{ framework_version }}.jar",
+    "-zookeeper", "{{ mesos_zk }}",
+    "-version", "{{ kibana_version }}",
+    "-elasticsearch", "http://es-proxy.service.consul:9200",
+    "-mem", "{{ kibana_ram }}",
+    "-cpu", "{{ kibana_cpu }}",
+    "-disk", "{{ kibana_disk }}"
+  ],
+  "cpus": 0.2,
+  "mem": 512.0,
+  "env": {
+    "JAVA_OPTS": "-Xms128m -Xmx256m"
+  },
+  "instances": 1
+}

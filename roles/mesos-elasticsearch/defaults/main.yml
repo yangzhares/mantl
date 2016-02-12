@@ -1,0 +1,18 @@
+---
+framework_version: "0.7.1"
+
+elasticsearch_ram: 4096
+elasticsearch_disk: 20480
+elasticsearch_cpu: 2.0
+elasticsearch_port_http: 9200
+elasticsearch_port_transport: 9300
+elasticsearch_ports: "{{ elasticsearch_port_http }},{{ elasticsearch_port_transport }}"
+elasticsearch_cluster_name: "es-cluster"
+
+framework_name: "elasticsearch"
+framework_ui_port: 31100
+framework_use_docker: false
+framework_download_url: "https://github.com/mesos/elasticsearch/releases/download/{{ framework_version }}/scheduler-{{ framework_version }}.jar"
+
+elasticsearch_dns: "zookeeper.service.{{ consul_dns_domain }}"
+elasticsearch_http: "http://{{ elasticsearch_dns }}:{{ elasticsearch_port_http }}"

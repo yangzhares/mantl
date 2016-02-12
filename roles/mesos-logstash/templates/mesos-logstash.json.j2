@@ -1,0 +1,22 @@
+{
+  "id": "{{ framework_name }}",
+  "cpus": 1,
+  "mem": 1024.0,
+  "instances": 1,
+  "uris": [
+    "{{ framework_download_url }}"
+  ],
+  "args": [ "java", "-jar", "logstash-mesos-scheduler.jar"],
+  "env": {
+    "ENABLE_DOCKER": "{{ framework_enable_docker }}",
+    "MESOS_ROLE": "{{ mesos_role }}",
+    "ZK_URL": "{{ mesos_zk }}",
+    "LOGSTASH_ELASTICSEARCH_URL": "http://es-proxy.service.consul:9200",
+    "LOGSTASH_HEAP_SIZE": "{{ logstash_heap_size }}",
+    "EXECUTOR_HEAP_SIZE": "{{ executor_heap_size }}",
+    "ENABLE_SYSLOG": "{{ framework_enable_syslog }}",
+    "ENABLE_FILE": "{{ framework_enable_file }}",
+    "ENABLE_FAILOVER": "{{ framework_enable_failover }}",
+    "EXECUTOR_FILE_PATH": "{{ framework_executor_file_path }}"
+  }
+}

@@ -1,0 +1,22 @@
+---
+framework_name: "logstash"
+framework_version: "0.8.0"
+framework_enable_docker: false
+framework_enable_syslog: false
+framework_enable_file: true
+framework_enable_failover: false
+framework_executor_file_path: "/var/lib/mesos/slaves/*/frameworks/*/executors/*/runs/*/stdout, /var/lib/mesos/slaves/*/frameworks/*/executors/*/runs/*/stderr, /var/log/mesos/*.INFO, /var/log/mesos/*.WARNING"
+framework_download_url: "https://github.com/mesos/logstash/releases/download/{{ framework_version }}/logstash-mesos-scheduler.jar"
+
+mesos_role: "*"
+
+
+mesos_zk_auth: "{% if zk_mesos_user_secret is defined %}{{ zk_mesos_user }}:{{ zk_mesos_user_secret }}@{% endif %}"
+mesos_zk_dns: "zookeeper.service.{{ consul_dns_domain }}"
+mesos_zk_port: 2181
+mesos_zk_chroot: mesos
+mesos_zk: zk://{{ mesos_zk_auth }}{{ mesos_zk_dns }}:{{ mesos_zk_port }}/{{ mesos_zk_chroot }}
+mesos_leaders_group: role=control
+
+logstash_heap_size: "256"
+executor_heap_size: "512"

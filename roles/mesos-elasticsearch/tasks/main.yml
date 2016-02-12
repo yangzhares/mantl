@@ -1,0 +1,25 @@
+# Include mesos vars so that we can access the zk information in the json file
+- include_vars: roles/mesos/defaults/main.yml
+
+- name: create json files for jobs
+  sudo: yes
+  run_once: true
+  template:
+    src: '{{ item }}.json.j2'
+    dest: /etc/marathon/{{ item }}.json
+  with_items:
+    - mesos-elasticsearch
+  tags:
+    - mesos-elasticsearch
+
+- name: install mesos elasticsearch framework
+  run_once: true
+  sudo: yes
+  command: 'curl -X PUT -d@/etc/marathon/{{ item }}.json -H "Content-Type: application/json" http://localhost:18080/v2/apps/{{ item }}'
+  changed_when: false
+  failed_when: "'deploymentId' not in result.stdout"
+  register: result
+  with_items:
+    - mesos-elasticsearch
+  tags:
+    - mesos-elasticsearch

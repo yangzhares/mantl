@@ -1,0 +1,36 @@
+{
+  "id": "{{ framework_name }}",
+  "cpus": 1,
+  "mem": 512,
+  "instances": 1,
+  "uris": [
+    "{{ framework_download_url }}"
+  ],
+  "args": [ "java", "-jar", "scheduler-{{ framework_version }}.jar",
+    "--zookeeperMesosUrl", "{{ mesos_zk }}",
+    "--elasticsearchCpu", "{{ elasticsearch_cpu }}",
+    "--elasticsearchRam", "{{ elasticsearch_ram }}",
+    "--elasticsearchDisk", "{{ elasticsearch_disk }}",
+    "--elasticsearchPorts", "{{ elasticsearch_ports }}",
+    "--frameworkUseDocker", "{{ framework_use_docker }}",
+    "--elasticsearchClusterName", "{{ elasticsearch_cluster_name }}",
+    "--frameworkName", "{{ framework_name }}",
+    "--webUiPort", "{{ framework_ui_port }}"
+  ],
+  "env": {
+    "JAVA_OPTS": "-Xms32m -Xmx256m"
+  },
+  "ports": [{{ framework_ui_port }}],
+  "requirePorts": true,
+  "healthChecks": [
+    {
+      "gracePeriodSeconds": 120,
+      "intervalSeconds": 10,
+      "maxConsecutiveFailures": 6,
+      "path": "/",
+      "portIndex": 0,
+      "protocol": "HTTP",
+      "timeoutSeconds": 5
+    }
+  ]
+}
