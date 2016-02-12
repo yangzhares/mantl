@@ -1,0 +1,11 @@
+{
+  "service": {
+    "name": "es-proxy",
+    "port": 9200,
+    "check": {
+      "script": "/usr/local/bin/check-service-active nginx-elasticsearch",
+      "interval": "15s",
+      "timeout": "2s"
+    }
+  }
+}
