@@ -9,7 +9,7 @@ minion_group_name: role=kubeworker
 # Which type of packages should be used for deployment: stable, testing
 package_channel: stable
 
-# Kubernetes build to use, stable is used by default. 
+# Kubernetes build to use, stable is used by default.
 # Place "testing" here to use latest build avialable.
 kube_version: v1.1.4
 
