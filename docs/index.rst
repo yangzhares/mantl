@@ -30,6 +30,7 @@ Features
 * `mesos-consul <https://github.com/CiscoCloud/mesos-consul>`_ populating Consul
   service discovery with Mesos tasks
 * `marathon-consul <https://github.com/CiscoCloud/marathon-consul>`_ update
+* `Kubernetes <http://kubernetes.io>`_ container orchestration (optional)
   consul k/v with Marathon tasks
 * Multi-datacenter support
 * High availablity
