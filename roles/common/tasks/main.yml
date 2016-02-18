@@ -46,12 +46,16 @@
   yum:
     name: epel-release
     state: latest
+  tags:
+    - bootstrap
 
 - name: install pip
   sudo: yes
   yum:
     name: python-pip
     state: latest
+  tags:
+    - bootstrap
 
 - name: update setuptools and pip
   sudo: yes
@@ -61,6 +65,8 @@
   with_items:
     - name: pip
     - name: setuptools
+  tags:
+    - bootstrap
 
 - name: install distributive
   sudo: yes
@@ -69,6 +75,7 @@
     state: present
   tags:
     - distributive
+    - bootstrap
 
 - name: disable requiretty in sudoers
   sudo: yes
