@@ -10,6 +10,7 @@
   failed_when: >
     mount_cmd.rc != 0
     and "* existing mount at ssh/" not in mount_cmd.stderr
+    and "* cannot mount under existing mount 'ssh/'" not in mount_cmd.stderr
   tags:
     - vault
 
