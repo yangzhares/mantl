@@ -11,6 +11,7 @@
   tags:
     - docker
     - collectd
+    - bootstrap
 
 - name: create collectd config directory
   sudo: yes
