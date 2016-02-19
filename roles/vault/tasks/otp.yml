@@ -14,12 +14,13 @@
     - vault
 
 - name: create ssh role
-  # Currently uses one CIDR per host.
+  # "ssh" in ansible_ssh_port is deprecated in 2.0
   command: >
     vault write "{{ vault_command_options }}"
     ssh/roles/otp_key_role key_type=otp
     default_user={{ ansible_ssh_user }}
-    cidr_list={% for ip in ansible_all_ipv4_addresses %}{{ ip }}/32,{% endfor %}127.0.0.1/32
+    allowed_users={{ ansible_ssh_user }}
+    port={{ ansible_ssh_port }}
   tags:
     - vault
 
