@@ -16,12 +16,14 @@
 
 - name: create ssh role
   # "ssh" in ansible_ssh_port is deprecated in 2.0
+  # This CIDR list allows for generation for any IP address
   command: >
     vault write "{{ vault_command_options }}"
     ssh/roles/otp_key_role key_type=otp
     default_user={{ ansible_ssh_user }}
     allowed_users={{ ansible_ssh_user }}
     port={{ ansible_ssh_port }}
+    cidr_list=0.0.0.0/0
   tags:
     - vault
 
