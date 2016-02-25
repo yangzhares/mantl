@@ -1,5 +1,4 @@
-# Complete the ELK stack. Run this playbook after running the core playbook
-# (terraform.sample.yml)
+# Set up an ELK stack.
 
 # CHECK SECURITY - when customizing you should leave this in. If you take it out
 # and forget to specify security.yml, security could be turned off on components
@@ -8,4 +7,5 @@
 
 - hosts: role=control
   roles:
+    - logstash
     - elk

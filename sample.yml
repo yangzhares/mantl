@@ -24,7 +24,6 @@
     - logrotate
     - consul-template
     - docker
-    - logstash
     - nginx
     - consul
     - dnsmasq
