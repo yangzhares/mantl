@@ -79,7 +79,8 @@ def list_ports(token, public_url):
     """List Neutron ports"""
 
     headers = {'X-Auth-Token': token}
-    auth_url = public_url + "v2.0/ports"
+    # Add '/' before 'v2.0/ports' to avoid the failure like "requests.exceptions.InvalidURL: Failed to parse: hf1-neutron.qa.webex.com:443v2" when unlock neutron ports to allow calico traffic in Openstack.
+    auth_url = public_url + "/v2.0/ports"
     r = requests.get(auth_url, headers=headers)
 
     if r.text:
@@ -103,7 +104,8 @@ def update_port(token, public_url, port_id, mac_address, calico_network):
                           ]
                         }
               }
-    auth_url = public_url + "v2.0/ports/" + port_id
+    # Add '/' before 'v2.0/ports' to avoid the failure like "requests.exceptions.InvalidURL: Failed to parse: hf1-neutron.qa.webex.com:443v2" when unlock neutron ports to allow calico traffic in Openstack.
+    auth_url = public_url + "/v2.0/ports/" + port_id
     r = requests.put(auth_url, headers=headers, data=json.dumps(payload))
 
     parsed_json = json.loads(r.text)
